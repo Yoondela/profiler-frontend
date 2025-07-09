@@ -1,0 +1,12 @@
+@use './abstracts/variables.module' as *;
+@use './abstracts/mixins.module' as *;
+
+@use './components/navbar.module';
+
+/* Global styles */
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #f9f9f9;
+  color: #222;
+}
