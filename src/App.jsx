@@ -2,6 +2,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useEffect } from 'react';
 import Navbar from './components/Navbar';
 import UserProfile from './components/view/UserProfileView';
+import CreateUser from './components/sync/CreateNewUser';
 
 function App() {
   const { isLoading, isAuthenticated, loginWithRedirect } = useAuth0();
@@ -16,6 +17,7 @@ function App() {
 
   return (
     <div>
+      <CreateUser />
       <Navbar />
       <UserProfile />
       {/* <Welcome /> */}
