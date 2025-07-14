@@ -2,6 +2,7 @@
 @use './abstracts/mixins.module' as *;
 
 @use './components/navbar.module';
+@use './pages/profile-page.module';
 
 /* Global styles */
 body {
