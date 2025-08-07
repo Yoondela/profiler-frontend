@@ -13,7 +13,7 @@ export default function CreateUser() {
         const accessToken = await getAccessTokenSilently({
           audience: import.meta.env.VITE_AUTH0_AUDIENCE,
         });
-        console.log('token:', accessToken);
+
         const res = await fetch('http://localhost:3000/api/users', {
           method: 'POST',
           headers: {
@@ -23,6 +23,7 @@ export default function CreateUser() {
           body: JSON.stringify({
             name: user.name,
             email: user.email,
+            sub: user.sub,
           }),
         });
 

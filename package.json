@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "yarn lint && vite",
+    "dev:skip-lint": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "lint:fix": "eslint --fix",

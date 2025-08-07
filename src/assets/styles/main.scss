@@ -4,6 +4,8 @@
 @use './components/navbar.module';
 @use './pages/profile-page.module';
 
+@use 'tailwindcss';
+
 /* Global styles */
 body {
   margin: 0;
