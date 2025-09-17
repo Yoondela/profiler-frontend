@@ -59,7 +59,7 @@ export default function Navbar() {
         style={{ backgroundColor: avatarColor }}
         onClick={toggleUserMenu}
       >
-        {userInitial}
+        <p>{userInitial}</p>
       </div>
       {pageMenuOpen && (
         <div className="navbar__menu">
@@ -82,7 +82,7 @@ export default function Navbar() {
               Profile
             </Link>
 
-            <Link to="/" onClick={() => setUserMenuOpen(false)}>
+            <Link to="/user-schedule" onClick={() => setUserMenuOpen(false)}>
               <Calendar size={16} style={{ marginRight: '8px' }} />
               Manage Schedule
             </Link>

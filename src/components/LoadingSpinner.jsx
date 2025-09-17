@@ -1,8 +1,10 @@
 // src/components/LoadingSpinner.jsx
-export default function LoadingSpinner() {
+// src/components/Spinner.jsx
+export default function Spinner({ text }) {
   return (
-    <div style={{ padding: '2rem', textAlign: 'center' }}>
-      <p>Loading...</p>
-    </div>
+    <span className="flex items-center gap-2">
+      <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
+      {text || ''}
+    </span>
   );
 }
