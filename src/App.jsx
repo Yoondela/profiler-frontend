@@ -5,8 +5,9 @@ import Navbar from './components/Navbar';
 import Sidebar from './components/view/Sidebar';
 import UserProfile from './components/view/UserProfileView';
 import UserSchedule from './components/view/UserScheduleView';
-import CreateUser from './components/sync/CreateNewUser';
+// import CreateUser from './components/sync/CreateNewUser';
 import { Toaster } from 'react-hot-toast';
+import ProtectedFetcher from './components/view/TestProtected';
 // import Home from "./pages/Home";
 // import About from "./pages/About";
 
@@ -24,9 +25,10 @@ function App() {
   return (
     <div>
       {/* Runs only once on signup/login */}
-      <CreateUser />
+      {/* <CreateUser /> */}
 
       <Navbar />
+      <ProtectedFetcher />
 
       <div className="flex">
         <div className="sidebar-side">
