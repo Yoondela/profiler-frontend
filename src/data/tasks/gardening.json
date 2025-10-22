@@ -1,0 +1,37 @@
+{
+    "General": [
+      "Watering Plants",
+      "Weeding",
+      "Trimming Bushes",
+      "Sweeping Leaves",
+      "Soil Turning"
+    ],
+    "Lawn": [
+      "Mowing",
+      "Edging",
+      "Aerating",
+      "Fertilizing"
+    ],
+    "Plants": [
+      "Pruning",
+      "Replanting",
+      "Mulching",
+      "Deadheading"
+    ],
+    "Outdoor Cleaning": [
+      "Patio Cleaning",
+      "Garden Furniture Wiping",
+      "Fence Washing"
+    ],
+    "Final Touches": [
+      "Pest Control",
+      "Adding Compost",
+      "Applying Mulch"
+    ],
+    "Additional": [
+      "Installing New Plants",
+      "Setting Up Irrigation",
+      "Tree Trimming",
+      "Rock Garden Maintenance"
+    ]
+  }

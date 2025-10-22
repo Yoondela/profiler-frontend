@@ -1,3 +1,4 @@
+@use '../abstracts/variables.module';
 
 .layout {
     display: flex;
@@ -11,7 +12,7 @@
     // right: 0;
     // bottom: 0;
     height: 90vh;
-    background: #3B82F6;
+    background: variables.$theme-color;
     color: white;
     padding: 1rem 0;
     transition: width 0.3s ease;

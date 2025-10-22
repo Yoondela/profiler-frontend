@@ -1,0 +1,137 @@
+/*
+-----------------------------------------------------------------------
+  Typography CSS
+-----------------------------------------------------------------------
+*/
+
+@use 'sass:color';
+@use 'variables.module';
+@use 'mixins.module';
+
+body {
+    color: variables.$body-color;
+    // @include font-size(variables.$font-size-base);
+    font-family: variables.$body-font;
+    font-weight: variables.$body-font-weight;
+    line-height: variables.$body-line-height;
+    margin: 0;
+    overflow-x: hidden;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    color: variables.$heading-color;
+    font-family: variables.$heading-font;
+    font-weight: variables.$heading-font-weight;
+    line-height: 1.1;
+    margin-bottom: 10px;
+    margin-top: 0;
+}
+
+a {
+    color: variables.$theme-color;
+    text-decoration: none;
+    // @include transition(0.3s);
+
+    &:hover,
+    &:active,
+    &:focus {
+        box-shadow: none;
+        color: color.adjust(variables.$theme-color, $lightness: -15%);
+        outline: none;
+        text-decoration: none;
+    }
+
+    img {
+        border: none;
+    }
+}
+
+.btn:focus {
+    box-shadow: none;
+}
+
+p {
+    margin-bottom: 30px;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+:active,
+:focus {
+    box-shadow: none;
+    outline: none !important;
+}
+
+::selection {
+    background: variables.$theme-color;
+    color: variables.$white;
+    text-shadow: none;
+}
+
+::-moz-selection {
+    background: variables.$theme-color; /* Firefox */
+    color: variables.$white;
+    text-shadow: none;
+}
+
+::-webkit-selection {
+    background: variables.$theme-color; /* Safari */
+    color: variables.$white;
+    text-shadow: none;
+}
+
+img {
+    max-width: 100%;
+}
+
+iframe {
+    border: none !important;
+}
+
+textarea,
+input {
+    &:focus,
+    &:active {
+        outline: none;
+    }
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+
+    li {
+        list-style: none;
+    }
+}
+
+pre,
+ul,
+ol,
+dl,
+dd,
+blockquote,
+address,
+table,
+fieldset {
+    margin-bottom: 30px;
+}
+
+table p {
+    margin-bottom: 0;
+}

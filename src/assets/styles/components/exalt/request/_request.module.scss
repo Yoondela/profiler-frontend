@@ -1,0 +1,373 @@
+
+@use '../../../abstracts/variables.module';
+
+
+// requester style
+
+.service-request-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  padding: 1.5rem;
+
+}
+
+.service-request-container, .booking-review-container{
+  // background-color: aqua;
+
+  .title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  .dropdown-container {
+    position: relative;
+    display: flex;
+    margin-bottom: 1rem;
+    width: 100%; /* Ensure the container takes full width */
+    padding: 0.75rem; /* Add padding to the container */
+    border: 1px solid #ccc; /* Apply border to the container */
+    border-radius: 8px; /* Apply border radius to the container */
+    font-size: 1rem; /* Apply font size to the container */
+    background: white; /* Apply background to the container */
+    cursor: pointer; /* Apply cursor to the container */
+    transition: all 0.3s ease-in-out; /* Apply transition to the container */
+  }
+
+  .briefcase-icon, .calendar-icon {
+    margin-top: 3px;
+    opacity: 60%;
+  }
+  
+  .dropdown, .time-picker, .date-picker{
+    width: 100%; /* Ensure the dropdown takes full width */
+    padding-left: .7rem;
+    border: none; /* Remove border from the dropdown */
+    background: transparent; /* Make the dropdown background transparent */
+    appearance: none; /* Remove default appearance */
+    cursor: pointer; /* Ensure the cursor is a pointer */
+    font-size: inherit; /* Inherit font size from the container */
+    outline: none;
+  }
+  
+  .dropdown option:hover {
+    // background-color: #f0a500; /* Style for hovered options */
+  }
+  
+  .dropdown-container:focus-within {
+    border: none; /* Remove border when focused */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15); /* Apply box shadow when focused */
+    border-radius: 8px; /* Ensure border radius is preserved */
+  }
+  
+  .dropdown-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: gray;
+    pointer-events: none; /* Ensure the icon doesn't interfere with clicks */
+  }
+  .input-container {
+    position: relative; /* Ensure relative positioning for any absolute children */
+    display: flex;
+    width: 100%; /* Ensure the container takes full width */
+    padding: 0.75rem; /* Add padding to the container */
+    border: 1px solid #ccc; /* Apply border to the container */
+    border-radius: 8px; /* Apply border radius to the container */
+    font-size: 1rem; /* Apply font size to the container */
+    margin-bottom: 1rem; /* Add margin to the container */
+    background: white; /* Apply background to the container */
+    transition: all 0.3s ease-in-out; /* Apply transition to the container */
+  }
+
+  .location-icon, .time-icon {
+    margin-top: 3px;
+    opacity: 60%;
+  }
+  
+  .location-input {
+    padding-left: .7rem;
+    width: 100%; /* Ensure the input takes full width */
+    border: none; /* Remove border from the input */
+    background: transparent; /* Make the input background transparent */
+    font-size: inherit; /* Inherit font size from the container */
+    outline: none; /* Remove default focus outline */
+  }
+  
+  .input-container:focus-within {
+    border: none; /* Remove border when focused */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15); /* Add shadow on focus */
+    background: #fff; /* Ensure background remains white */
+  }
+
+  .clear-location {
+    margin-right: .2rem;
+    border-radius: 50%;
+  }
+
+  .local {
+    width: 100%;
+  }
+
+  .req-bottom {
+    display: flex;  
+    justify-content: space-between;
+    margin-right: 15px;
+  }
+
+  .edit-tasks {
+    font-size: 16px;
+    &:disabled {
+      color: #ddd;
+      cursor: not-allowed;
+    }
+  }
+  .request-button {
+    width: 90px;
+    padding: 0.75rem;
+    background: variables.$theme-color;
+    color: white;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+
+    &:hover {
+      background: variables.$theme-color;
+    }
+
+    &:disabled {
+      background: gray;
+      cursor: not-allowed;
+    }
+  }
+
+  .slider-btns {
+    display: flex;
+    justify-content: space-between;
+    .right-btn {
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      width: 300px;
+      .small-btn {
+        width: 60px;
+        height: 30px;
+        padding-top: 4px;
+        // background: $theme-color;
+        color: white;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    
+        &:hover {
+          background: variables.$theme-color;
+        }
+        &:disabled {
+          // background: gray;
+          color: grey;
+          cursor: not-allowed;
+        }
+      }
+
+      .detailed-btn {
+        width: 150px !important;
+      }
+    }
+  }
+}
+
+// .booker-form-container {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   width: 100vh;
+// }
+
+.image-container {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  justify-content: center;
+}
+//   .service-image {
+//     width: 100%;
+//     border-radius: 10px;
+//     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+//   }
+// }
+
+// .request-reviewer {
+//   background-color: variables.$theme-color1;
+//   border-radius: 13px;
+//   height: 100%;
+//   width: 100%;
+
+//   .slider-btns {
+//     margin: 50px 80px;
+//   }
+// }
+
+// .booking-review-container, .request-reviewer {
+//   margin-top: 150px !important;
+//   // Header section
+//   .booker-header {
+//     text-align: center;
+//     margin-top: 2rem;
+//     margin-bottom: 2rem;
+
+//     h2 {
+//       font-size: 2rem;
+//       color:variables.$black-333;
+//       font-weight: 600;
+//       margin-bottom: 4rem;
+//     }
+//   }
+
+//   .review-fields {
+//     display: flex;
+//     justify-content: space-between;
+//     gap: 3rem;
+//     padding: 0 5rem;
+//     // margin-bottom: 50px;
+  
+//     span {
+//       font-size: 1.3rem;
+//       text-transform: capitalize;
+//       margin-right: 22px;
+//       font-weight: 500;
+//       color: #333;
+//     }
+
+//     .field {
+//       font-size: larger;
+//     }
+  
+//     .review-left {
+//       display: flex;
+//       align-items: center;
+  
+//       table {
+//         width: 100%;
+  
+//         td {
+//           padding: 8px 0;
+//           vertical-align: top;
+//         }
+//       }
+//     }
+  
+//     .review-right {
+//       border-left: #999 solid 1px;
+//       // flex-shrink: 3rem;
+//       h3 {
+//         margin-bottom: 10px;
+//         font-size: 1.5rem;
+//         color: #333;
+//         padding: 0 18px;
+//       }
+//       .task-preview {
+//         min-width: 200px;
+//         max-width: 280px;
+//         height: 250px;
+//         margin-bottom: 1rem;
+//         padding: 18px;
+//         // background-color: #fafafa;
+//         overflow: auto;
+//         // box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); // subtle shadow
+//         // border-radius: 8px; // optional, can uncomment if you want rounded edges
+  
+//         strong {
+//           display: block;
+//           margin-top: 10px;
+//           // color: #555;
+//         }
+  
+//         ul {
+//           list-style: none; // remove default bullets
+//           padding-left: 0;
+//           margin: 5px 0;
+        
+//           li {
+//             font-size: 0.95rem;
+//             // color: #444;
+//             margin-bottom: 4px;
+//             position: relative;
+//             padding-left: 13px;
+        
+//             &::before {
+//               content: '-';
+//               position: absolute;
+//               left: 0;
+//               // color: #444;
+//             }
+//           }
+//         }       
+//       }
+//     }
+//   }
+  
+// }
+
+/*----------------------------------
+  Responsive Upwards (mobile-first)
+----------------------------------*/
+
+/* ≥480px */
+@media (min-width: 480px) {
+  
+  
+}
+
+/* ≥576px */
+@media (min-width: 576px) {
+  .service-request-wrapper {
+    flex-direction: row;
+    gap: 2rem;
+  }
+  .image-container > .service-image {
+    border-radius: 12px;
+  }
+}
+
+/* ≥768px */
+@media (min-width: 768px) {
+  }
+
+/* ≥992px */
+@media (min-width: 992px) {
+  .service-request-wrapper { 
+    padding: 4.5rem; // put this style at global container
+  }
+  .service-request-container, .booking-review-container{
+    max-width: 500px;
+  }
+}
+
+/* ≥1200px */
+@media (min-width: 1200px) {
+  .service-request-wrapper { 
+    gap: 3.5rem !important;
+    padding: 0 12rem;
+  }
+}
+
+/* ≥1400px */
+@media (min-width: 1400px) {
+  .service-request-wrapper { 
+    // gap: 0.5rem !important;
+    // padding: 0 47rem;
+  }
+  .image-container {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    justify-content: center;
+  }
+}
+

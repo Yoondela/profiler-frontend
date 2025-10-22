@@ -1,3 +1,5 @@
+@use '../abstracts/variables.module';
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -8,8 +10,8 @@
   right: 0;
   z-index: 1000;
   padding: .6rem;
-  background-color: #fff;
-  border-bottom: 1px solid #eee;
+  background-color: lighten(variables.$theme-color, 30%);
+  // border-bottom: 1px solid black;
 
   &__left {
     display: flex;

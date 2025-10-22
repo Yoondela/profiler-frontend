@@ -1,0 +1,35 @@
+{
+    "General": [
+      "Exterior Rinse",
+      "Soap Application",
+      "Hand Washing",
+      "Final Rinse",
+      "Drying"
+    ],
+    "Wheels": [
+      "Tire Cleaning",
+      "Rim Scrubbing",
+      "Brake Dust Removal"
+    ],
+    "Windows": [
+      "Exterior Glass Cleaning",
+      "Interior Glass Cleaning"
+    ],
+    "Interior": [
+      "Vacuuming",
+      "Dashboard Wipe Down",
+      "Seat Cleaning"
+    ],
+    "Final Touches": [
+      "Waxing",
+      "Tire Shine",
+      "Air Freshening"
+    ],
+    "Additional": [
+      "Deep Interior Cleaning",
+      "Pet Hair Removal",
+      "Leather Conditioning",
+      "Engine Bay Cleaning"
+    ]
+  }
+  

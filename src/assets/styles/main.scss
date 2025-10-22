@@ -1,16 +1,41 @@
 @use './abstracts/variables.module' as *;
 @use './abstracts/mixins.module' as *;
+@use './abstracts/typography.module' as *;
+@use './abstracts/imported.module' as *;
+@use './components/globals.module';
 @use './components/navbar.module';
 @use './components/sidebar.module';
 @use './pages/profile-page.module';
+@use './components/exalt/intro.module';
+@use './components/exalt/request/request.module';
+@use './components/exalt/request/requester-slide.module';
+@use './components/exalt/request/req-popup.module';
+@use './components/exalt/request/tasks-popup.module';
+
 
 /* Global styles */
 body {
   margin: 0;
-  font-family: 'Inter', sans-serif;
-  background-color: #f9f9f9;
-  color: #222;
+  font-family: 'Poppins';
+  background-color: $white;
+  color: #666666;
+  font-weight: 400;
+  line-height: 1.7;
+  word-wrap: break-word;
+  // overflow: hidden;
 }
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin: 30px auto;
+    // background-color: yellow;
+  }
 
 .with-sidebar {
   // margin-left: 250px; // match sidebar width
@@ -20,3 +45,23 @@ body {
   // background-color: aqua;
   // overflow-y: auto; // this scrolls instead of the sidebar
 }
+
+  /* WebKit (Chrome, Edge, Safari) */
+  ::-webkit-scrollbar {
+    width: 6px; /* Width of the scrollbar */
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: $theme-color1; /* Track color */
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #888; /* Thumb color */
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Thumb hover color */
+  }
+

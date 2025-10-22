@@ -31,7 +31,7 @@ export default [
       'react/jsx-uses-react': 'warn', // 👈 helps detect React in JSX
       'react/jsx-uses-vars': 'warn', // 👈 helps detect variables used in JSX
       'prettier/prettier': 'error',
-      'no-unused-vars': 'error',
+      'no-unused-vars': 'warn',
       'no-undef': 'error',
     },
     settings: {

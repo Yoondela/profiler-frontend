@@ -1,0 +1,33 @@
+[
+    {
+        "slider": [
+            {
+                "id": 1,
+                "backgroundImage": "/img/hero-slider/intro1.jpg",
+                "title": "We clean your home",
+                "subTitle": "inspire 2026",
+                "desc": "cleaning services",
+                "buttonText": "Explore"
+            },
+            {
+                "id": 2,
+                "backgroundImage": "/img/hero-slider/wash-car-1.jpg",
+                "title": "We give your car a wash",
+                "subTitle": "inspire 2026",
+                "desc": "exalt cleaning service is here for you",
+                "buttonText": "Book now"
+            },
+            {
+                "id": 3,
+                "backgroundImage": "/img/hero-slider/gardening-2.jpg",
+                "title": "We do your garden",
+                "subTitle": "inspire 2026",
+                "desc": "with our trusted gardener",
+                "buttonText": "Book now"
+            }
+        ]
+    },
+    {
+        "qute": "Exalt is a home cleaning service based in East London. <br /> We keep your home and your car clean to doing and maintaining your garden."
+    }
+]

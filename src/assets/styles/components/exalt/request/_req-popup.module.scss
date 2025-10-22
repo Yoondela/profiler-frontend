@@ -1,0 +1,148 @@
+@use '../../../abstracts/variables.module';
+// Popup Styles
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 99998;
+}
+
+.popup {  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  max-width: 420px;
+  width: 80%;
+  height: 30%;
+  transition: transform 0.2s ease-in-out;
+  z-index: 99999;
+
+  .closer {
+    align-self: flex-end;
+    margin: 16px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #888;
+
+    &:hover {
+      color: #555;
+    }
+  }
+}
+
+.popup-sub-title {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.popup-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.subject-size {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.size-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  background: #f7f7f7;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.size-item:hover {
+  background: #e2e8f0;
+  transform: scale(1.05);
+}
+
+.size-item.selected {
+  background: #e2e8f0;
+  transform: scale(1.05);
+  border-bottom: variables.$theme-color solid 2px;
+}
+
+.size-item p {
+  margin-top: 8px;
+  font-weight: 500;
+  color: #333;
+}
+
+.popup-list {
+  list-style: none;
+  padding: 0;
+}
+
+.popup-item {
+  padding: 12px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.3s, transform 0.2s;
+  margin-bottom: 8px;
+  background: #f8f9fa;
+
+  &:hover {
+    background-color: #e9ecef;
+    transform: translateX(4px);
+  }
+}
+
+.close-button {
+  width: 100%;
+  margin-top: 24px;
+  padding: 12px;
+  background: variables.$theme-color;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.remove-or-cancel {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 16px;
+
+  .cancel-remove {
+    color: variables.$theme-color;
+    cursor: pointer;
+    transition: color 0.3s;
+
+    &:hover {
+      color: lighten-color(variables.$theme-color, 10%);
+    }
+  }
+}
+
+/* ≥1200px */
+@media (min-width: 1200px) {
+  .popup {
+    max-width: 500px;
+    width: 400px;
+    height: 265px;
+  }
+}

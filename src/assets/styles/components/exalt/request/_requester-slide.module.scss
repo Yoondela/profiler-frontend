@@ -1,0 +1,73 @@
+@use '../../../abstracts/variables.module';
+
+.container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .requester-container {
+    margin-top: 4rem;
+    // Header section
+    .requester-header {
+      text-align: center;
+
+      h2 { // Take to globals
+        font-size: 2rem;
+        color:variables.$black-333;
+        font-weight: 600;
+      }
+    }
+  }
+  
+  .component { // Globals
+    position: absolute;
+    width: 100%;
+  }
+  
+  .slide-enter {
+    transform: translateX(100%);
+  }
+  
+  .slide-enter-active {
+    transform: translateX(0);
+    transition: transform 1000ms ease-in-out;
+  }
+  
+  .slide-exit {
+    transform: translateX(0);
+  }
+  
+  .slide-exit-active {
+    transform: translateX(-100%);
+    transition: transform 1000ms ease-in-out;
+  }
+
+  /* ≥1200px */
+@media (min-width: 1200px) {
+    .requester-container {
+      margin-top: 7rem;
+    // Header section
+    .requester-header {
+      margin: 0;
+      padding: 0;
+      text-align: center;
+
+      h2 { // Take to globals
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+      }
+    }
+  }
+}
+ 
+  /* ≥1400px */
+@media (min-width: 1400px) {
+    .requester-container {
+      margin-top: 7rem;
+    // Header section
+    .requester-header {
+      margin-bottom: 5rem;
+    }
+  }
+}

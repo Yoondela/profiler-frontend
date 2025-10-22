@@ -1,0 +1,36 @@
+{
+    "General": [
+      "Floors",
+      "Surfaces",
+      "Trash Removal",
+      "Disinfecting",
+      "Mirrors",
+      "Windows"
+    ],
+    "Kitchen": [
+      "Appliances",
+      "Dishes",
+      "Cabinet Wiping"
+    ],
+    "Bathroom": [
+      "Toilet",
+      "Shower/Tub",
+      "Sink Cleaning"
+    ],
+    "Bedroom": [
+      "Bed Making",
+      "Organizing"
+    ],
+    "Living Area": [
+      "Dusting",
+      "Organizing"
+    ],
+    "Additional": [
+      "Laundry",
+      "Dishwashing",
+      "Deep Cleaning",
+      "Organizing Closets",
+      "Pet Care"
+    ]
+  }
+  
