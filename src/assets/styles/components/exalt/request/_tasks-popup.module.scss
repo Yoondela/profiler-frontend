@@ -1,3 +1,4 @@
+@use "sass:color";
 @use '../../../abstracts/variables.module';
 
 // Popup Styles
@@ -79,7 +80,7 @@
     transition: color 0.2s ease-in-out;
 
     &:hover {
-      color: lighten(variables.$theme-color, 10%);
+      color: color.adjust(variables.$theme-color, $lightness: 10%);
     }
   }
 }

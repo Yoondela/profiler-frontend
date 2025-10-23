@@ -40,7 +40,7 @@ export default function ServiceRequestForm({ onEdit, setGoToReview }) {
   const [service, setService] = useState(userService || '');
   const [location, setLocation] = useState(userLocation?.address || '');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [confirmRequest, setConfirmRequest] = useState(false);
+  const [showSizePopup, setShowSizePopup] = useState(false);
   const [selectedSize, setSelectedSize] = useState('');
   const [showReview, setShowReview] = useState(false);
   const [showTasksPopup, setShowTasksPopup] = useState(false);
@@ -73,11 +73,6 @@ export default function ServiceRequestForm({ onEdit, setGoToReview }) {
     setUserService(value);
   };
 
-  const goToTasks = () => {
-    setConfirmRequest(false);
-    setShowTasksPopup(true);
-  };
-
   const handleLocationChange = () => {
     const places = searchBoxRef.current.getPlaces();
     if (!places || places.length === 0) return;
@@ -89,6 +84,11 @@ export default function ServiceRequestForm({ onEdit, setGoToReview }) {
 
     setLocation(locationData.address);
     setUserLocation(locationData);
+  };
+
+  const goToTasks = () => {
+    setShowSizePopup(false);
+    setShowTasksPopup(true);
   };
 
   const selectedIcons = serviceIcons[service] || [];
@@ -162,7 +162,7 @@ export default function ServiceRequestForm({ onEdit, setGoToReview }) {
         <div className="req-bottom">
           <button
             className="request-button"
-            onClick={() => setConfirmRequest(true)}
+            onClick={() => setShowSizePopup(true)}
             disabled={!service || !location}
           >
             Get
@@ -181,12 +181,12 @@ export default function ServiceRequestForm({ onEdit, setGoToReview }) {
         />
       </div>
 
-      {confirmRequest && (
+      {showSizePopup && (
         <SelectSizePopup
           service={service}
           selectedSize={subjectSize}
           setSelectedSize={setSubjectSize}
-          onCancel={() => setConfirmRequest(false)}
+          onCancel={() => setShowSizePopup(false)}
           onConfirm={goToTasks}
         />
       )}

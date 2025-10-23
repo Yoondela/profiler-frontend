@@ -4,8 +4,11 @@ import SEO from '../components/sub/seo/seo.jsx';
 import Layout from '../layouts/layout.jsx';
 // import Header from './header/index.jsx';
 import IntroContainer from '../containers/home/intro/intro-container.jsx';
-import RequesterSlide from '../components/request/requester/RequesterSlide.jsx';
 import { ServiceRequestProvider } from '../components/request/contexts/ServiceRequestContext.jsx';
+import SumedBenefits from '../components/sumed-benefits/benefits.jsx';
+// import Booker from '../components/request/booker/Booker.jsx';
+import Requester from '../components/request/requester/Requester.jsx';
+import Booker from '../components/request/booker/Booker.jsx';
 const HomePage = () => {
   return (
     <React.Fragment>
@@ -19,15 +22,10 @@ const HomePage = () => {
             </div>
           </div>
           <ServiceRequestProvider>
-            <RequesterSlide />
+            <Requester />
+            <SumedBenefits />
+            <Booker />
           </ServiceRequestProvider>
-          {/* <Requester />
-                    <UseEx />
-                    <Booker />
-                    <SumedBenefits />
-                    <SimpleBookingProcess />
-                    <FAQs />
-                    <Footer /> */}
           <ScrollToTop />
         </div>
       </Layout>

@@ -19,7 +19,7 @@ const RequesterSlide = ({
   const handleCloseTasksPanel = () => setShowTasksPanel(false);
 
   return (
-    <div classname="container">
+    <div className="container">
       <div className="containe requester-container">
         <div className="requester-header">
           <h2>Get a service</h2>
