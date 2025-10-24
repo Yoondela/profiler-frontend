@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Pencil } from 'lucide-react';
 import toast from 'react-hot-toast';
-import ProfileHeader from '../  ProfileHeader';
+import ProfileHeader from '../ProfileHeader';
 import Spinner from '../LoadingSpinner';
 import {
   diffShallow,
@@ -16,6 +16,7 @@ export default function UserProfileView() {
 
   // Remote data
   const [userAccount, setUserAccount] = useState(null);
+  const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(true);
 
   // Edit modes
@@ -52,6 +53,8 @@ export default function UserProfileView() {
       if (!user?.email) return;
       const account = await fetchProfile(user.email);
       setUserAccount(account);
+      console.log('Loaded user profile:', account);
+      setUserId(account.user._id);
     } catch (err) {
       console.error('Failed to fetch profile:', err);
     } finally {
@@ -212,7 +215,7 @@ export default function UserProfileView() {
   // -------------------- Render -------------------- //
   return (
     <div className="profile-page">
-      <ProfileHeader userName={userData.name} />
+      <ProfileHeader userName={userData.name} userId={userId} />
       <div className="profile-page__divider" />
 
       <div className="profile-page__user-info-container">

@@ -5,12 +5,22 @@ import 'react-datepicker/dist/react-datepicker.css';
 import TimeIcon from '../../../assets/icons/other/clock.svg?react';
 import CalendarIcon from '../../../assets/icons/other/calendar.svg?react';
 
-const timeSlots = Array.from({ length: 12 }, (_, index) => {
-  const hours = 8 + Math.floor(index / 2);
-  const minutes = index % 2 === 0 ? '00' : '30';
-  return `${hours}:${minutes} AM`;
-});
-timeSlots[timeSlots.length - 1] = '2:30 PM';
+const timeSlots = [
+  '8:00 AM',
+  '8:30 AM',
+  '9:00 AM',
+  '9:30 AM',
+  '10:00 AM',
+  '10:30 AM',
+  '11:00 AM',
+  '11:30 AM',
+  '12:00 PM',
+  '12:30 PM',
+  '1:00 PM',
+  '1:30 PM',
+  '2:00 PM',
+  '2:30 PM',
+];
 
 export default function TimeAndDate({
   onNext,
@@ -23,8 +33,9 @@ export default function TimeAndDate({
   const [selectedTime, setSelectedTime] = useState(userTime || '');
 
   const handleTimeChange = (e) => {
-    setUserTime(e.target.value);
-    setSelectedTime(e.target.value);
+    const value = e.target.value;
+    setSelectedTime(value);
+    setUserTime(value);
   };
 
   const handleDateChange = (date) => {
@@ -39,16 +50,18 @@ export default function TimeAndDate({
         <p className="paragraph">
           What day and hour would you like to book for?
         </p>
+
         <div className="input-container">
           <CalendarIcon width="20" height="20" className="calendar-icon" />
           <DatePicker
-            selected={userDate}
+            selected={selectedDate}
             onChange={handleDateChange}
             className="date-picker"
             placeholderText="Select a date"
             minDate={new Date()}
           />
         </div>
+
         <div className="dropdown-container">
           <TimeIcon width="20" height="20" className="time-icon" />
           <select
@@ -67,6 +80,7 @@ export default function TimeAndDate({
           </select>
           <FaChevronDown className="dropdown-icon" />
         </div>
+
         <button
           className="request-button"
           onClick={onNext}

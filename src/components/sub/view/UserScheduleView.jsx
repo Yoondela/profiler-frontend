@@ -1,5 +1,5 @@
 import { Menu, Transition } from '@headlessui/react';
-import ProfileHeader from '../  ProfileHeader';
+import ProfileHeader from '../ProfileHeader';
 import { RxDotsVertical, RxChevronLeft, RxChevronRight } from 'react-icons/rx';
 import {
   add,

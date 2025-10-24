@@ -1,0 +1,182 @@
+@use '../../../abstracts/variables.module';
+
+.booker-container {
+  padding: 0 1.5rem;
+
+  // Header section
+  .booker-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+
+    h2 {
+      font-size: 1.5rem;
+      color: variables.$black-333;
+      font-weight: 600;
+    }
+  }
+}
+
+.booker-child-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto 5rem;
+  height: fit-content;
+
+  .booker {
+    display: flex;
+    flex-direction: column; // mobile = stacked layout
+    gap: 1rem;
+
+    .booker-left {
+      width: 100%;
+      height: 300px;
+      background-color: variables.$theme-color1;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .booker-right {
+      width: 100%;
+      .booker-terms {
+        background-color: #f9f9f9;
+        border-left: 5px solid variables.$theme-color;
+        padding: 1rem;
+        border-radius: 13px;
+        height: auto;
+        max-height: 400px;
+        font-family: Arial, sans-serif;
+        overflow-y: auto;
+
+        h2 {
+          color: #333;
+          font-size: 1.25rem;
+          margin-bottom: 1rem;
+        }
+
+        ul {
+          list-style: none;
+          padding: 0;
+
+          li {
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            color: #555;
+            position: relative;
+            padding-left: 2.5rem;
+
+            &:nth-child(1)::before {
+              content: "\f00d";
+              font-family: "Font Awesome 5 Free";
+              font-weight: 900;
+              color: #4a90e2;
+              font-size: 1.1rem;
+              position: absolute;
+              left: 0;
+              top: 0;
+            }
+
+            &:nth-child(2)::before {
+              content: "\f133";
+              font-family: "Font Awesome 5 Free";
+              font-weight: 900;
+              color: #4a90e2;
+              font-size: 1.1rem;
+              position: absolute;
+              left: 0;
+              top: 0;
+            }
+
+            &:nth-child(3)::before {
+              content: "\f0f3";
+              font-family: "Font Awesome 5 Free";
+              font-weight: 900;
+              color: #4a90e2;
+              font-size: 1.1rem;
+              position: absolute;
+              left: 0;
+              top: 0;
+            }
+
+            ol {
+              list-style: disc inside;
+              padding-left: 1rem;
+              margin-top: 0.5rem;
+
+              li {
+                color: #666;
+                padding-left: 0;
+                position: static;
+
+                &:before {
+                  content: none;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /* -------- Tablet breakpoint (≥768px) -------- */
+  @media (min-width: 768px) {
+    max-width: 90%;
+    margin-bottom: 7rem;
+
+    .booker {
+      gap: 2rem;
+
+      .booker-left {
+        height: 400px;
+      }
+
+      .booker-right .booker-terms {
+        max-height: 450px;
+      }
+    }
+
+    .booker-container .booker-header h2 {
+      font-size: 1.75rem;
+    }
+  }
+
+  /* -------- Desktop breakpoint (≥992px) -------- */
+  @media (min-width: 992px) {
+    max-width: 80%;
+    margin-bottom: 10rem;
+
+    .booker {
+      flex-direction: row; // side-by-side
+      align-items: stretch;
+      gap: 0;
+
+      .booker-left {
+        width: 65%; // 👈 larger side (main visual)
+        border-top-left-radius: 13px;
+        border-bottom-left-radius: 13px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        height: 500px;
+      }
+
+      .booker-right {
+        width: 35%; // 👈 smaller side (terms)
+        .booker-terms {
+          border-left: none;
+          border-right: 5px solid variables.$theme-color;
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+          border-top-right-radius: 13px;
+          border-bottom-right-radius: 13px;
+          height: 500px;
+        }
+      }
+    }
+
+    .booker-container .booker-header h2 {
+      font-size: 2rem;
+    }
+  }
+}

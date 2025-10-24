@@ -42,4 +42,63 @@ const CreateUser = () => {
   return null;
 };
 
-export { CreateUser };
+const getUserById = async (userId) => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  try {
+    const accessToken = await getAccessTokenSilently({
+      audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+    });
+
+    const res = await fetch(`http://localhost:3000/api/users/${userId}`, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error('Error fetching user from backend:', err);
+    throw err;
+  }
+};
+
+const getUserByEmail = async (email) => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  try {
+    const accessToken = await getAccessTokenSilently({
+      audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+    });
+
+    const res = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/api/users/email/${encodeURIComponent(email)}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(
+        errorData.message || `Request failed with status ${res.status}`
+      );
+    }
+
+    console.log('Fetched user by email:', res);
+
+    return await res.json();
+  } catch (err) {
+    console.error('Error fetching user by email:', err);
+    throw err;
+  }
+};
+
+export { CreateUser, getUserById, getUserByEmail };
