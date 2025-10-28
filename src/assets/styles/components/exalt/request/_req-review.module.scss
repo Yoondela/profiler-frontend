@@ -1,0 +1,113 @@
+@use '../../../abstracts/variables.module.scss';
+
+.request-reviewer {
+  background-color: variables.$theme-color1;
+  border-radius: 13px;
+  height: 100%;
+  width: 100%;
+
+  .slider-btns {
+    margin: 50px 80px;
+  }
+}
+
+.booking-review-container, .request-reviewer {
+  margin-top: 150px !important;
+  // Header section
+  .booker-header {
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+
+    h2 {
+      font-size: 2rem;
+      color:variables.$black-333;
+      font-weight: 600;
+      margin-bottom: 4rem;
+    }
+  }
+
+  .review-fields {
+    display: flex;
+    justify-content: space-between;
+    gap: 3rem;
+    padding: 0 5rem;
+    // margin-bottom: 50px;
+  
+    span {
+      font-size: 1.3rem;
+      text-transform: capitalize;
+      margin-right: 22px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .field {
+      font-size: larger;
+    }
+  
+    .review-left {
+      display: flex;
+      align-items: center;
+  
+      table {
+        width: 100%;
+  
+        td {
+          padding: 8px 0;
+          vertical-align: top;
+        }
+      }
+    }
+  
+    .review-right {
+      border-left: #999 solid 1px;
+      // flex-shrink: 3rem;
+      h3 {
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+        color: #333;
+        padding: 0 18px;
+      }
+      .task-preview {
+        min-width: 200px;
+        max-width: 280px;
+        height: 250px;
+        margin-bottom: 1rem;
+        padding: 18px;
+        // background-color: #fafafa;
+        overflow: auto;
+        // box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); // subtle shadow
+        // border-radius: 8px; // optional, can uncomment if you want rounded edges
+  
+        strong {
+          display: block;
+          margin-top: 10px;
+          // color: #555;
+        }
+  
+        ul {
+          list-style: none; // remove default bullets
+          padding-left: 0;
+          margin: 5px 0;
+        
+          li {
+            font-size: 0.95rem;
+            // color: #444;
+            margin-bottom: 4px;
+            position: relative;
+            padding-left: 13px;
+        
+            &::before {
+              content: '-';
+              position: absolute;
+              left: 0;
+              // color: #444;
+            }
+          }
+        }       
+      }
+    }
+  }
+  
+}

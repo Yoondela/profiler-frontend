@@ -1,19 +1,16 @@
-// components/popups/SelectSizePopup.jsx
 import { motion } from 'framer-motion';
 import { X } from 'lucide-react';
 import PlHolderIcon from '../../../assets/icons/booking-process-icons/file-config-svgrepo-com.svg?react';
-
 import CarSmallIcon from '../../../assets/icons/subject-size/car/small-car.svg?react';
 import CarLargeIcon from '../../../assets/icons/subject-size/car/mid-car-suv.svg?react';
 import CarXLIcon from '../../../assets/icons/subject-size/car/large-car.svg?react';
-
 import Clean1Icon from '../../../assets/icons/subject-size/house/small-house-3.svg?react';
 import Clean2Icon from '../../../assets/icons/subject-size/house/small-house.svg?react';
 import Clean3Icon from '../../../assets/icons/subject-size/house/mid-house.svg?react';
-
 import GardenSmallIcon from '../../../assets/icons/subject-size/field/numeric-1.svg?react';
 import GardenMediumIcon from '../../../assets/icons/subject-size/field/numeric-2.svg?react';
 import GardenLargeIcon from '../../../assets/icons/subject-size/field/numeric-3.svg?react';
+import { useServiceBooking } from '../contexts/ServiceBookingContext';
 
 const sizeOptions = {
   'Car Wash': ['SM', 'L', 'XL'],
@@ -27,17 +24,12 @@ const serviceIcons = {
   Gardening: [GardenSmallIcon, GardenMediumIcon, GardenLargeIcon],
 };
 
-export default function SelectSizePopup({
-  service,
-  selectedSize,
-  setSelectedSize,
-  onConfirm,
-  onCancel,
-}) {
-  const options = sizeOptions[service] || [];
-  const icons = serviceIcons[service] || [];
+export default function SelectSizePopup({ onConfirm, onCancel }) {
+  const { userService, subjectSize, setSubjectSize } = useServiceBooking();
+  const options = sizeOptions[userService] || [];
+  const icons = serviceIcons[userService] || [];
 
-  if (!service) return null;
+  if (!userService) return null;
 
   return (
     <div className="popup-overlay">
@@ -58,8 +50,8 @@ export default function SelectSizePopup({
             return (
               <div
                 key={index}
-                className={`size-${index + 1} size-item ${selectedSize === size ? 'selected' : ''}`}
-                onClick={() => setSelectedSize(size)}
+                className={`size-${index + 1} size-item ${subjectSize === size ? 'selected' : ''}`}
+                onClick={() => setSubjectSize(size)}
               >
                 <div className="subject">
                   <IconComponent width="40" height="40" />
@@ -78,7 +70,7 @@ export default function SelectSizePopup({
           <button
             className="cancel-remove"
             onClick={onConfirm}
-            disabled={!selectedSize}
+            disabled={!subjectSize}
           >
             Ok
           </button>

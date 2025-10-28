@@ -2,44 +2,30 @@ import { useState } from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { X, Briefcase } from 'lucide-react';
-// import CleaningTasksChecklist from '../pickers/CleaningTasks';
 import BriefcaseIcon from '../../../assets/icons/other/briefcase.svg?react';
 import LocationIcon from '../../../assets/icons/other/location.svg?react';
-// import TaskPanel from '../request-service/task-panel';
 import SelectSizePopup from '../modals/GetSizePopup';
 import SelectTasksPopup from '../modals/SelectTasksPopup';
-import { set } from 'date-fns';
+import { useServiceBooking } from '../contexts/ServiceBookingContext';
 
-export default function ServiceAndAddress({
-  onNext,
-  onBack,
-  onEdit,
-  setUserService,
-  userService,
-  setUserLocation,
-  userLocation,
-}) {
-  const [service, setService] = useState(userService || '');
-  const [location, setLocation] = useState(userLocation || '');
+export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
+  const {
+    userService,
+    setUserService,
+    userLocation,
+    setUserLocation,
+    subjectSize,
+    setSubjectSize,
+    serviceTasks,
+    setServiceTasks,
+  } = useServiceBooking();
+
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [showSizePopup, setShowSizePopup] = useState(false);
-  const [selectedSize, setSelectedSize] = useState('');
   const [showTasksPopup, setShowTasksPopup] = useState(false);
-  const [selectedTasks, setSelectedTasks] = useState({});
 
-  const handleServiceChange = (e) => {
-    setUserService(e.target.value);
-    setService(e.target.value);
-  };
-
-  const handleLocationChange = (e) => {
-    setUserLocation(e.target.value);
-    setLocation(e.target.value);
-  };
-
-  const showInputs = () => {
-    alert(service + '|' + location);
-  };
+  const handleServiceChange = (e) => setUserService(e.target.value);
+  const handleLocationChange = (e) => setUserLocation(e.target.value);
 
   const goToTasks = () => {
     setShowSizePopup(false);
@@ -50,14 +36,13 @@ export default function ServiceAndAddress({
     <div className="booker-form-container">
       <div className="service-request-container">
         <h2 className="title">Service And Address</h2>
-        <p className="paragraph">What service do you require ?</p>
+        <p className="paragraph">What service do you require?</p>
 
         <div className="dropdown-container">
           <BriefcaseIcon width="20" height="20" className="briefcase-icon" />
           <select
             className="dropdown"
-            placeholder="pick service"
-            value={service}
+            value={userService}
             onChange={handleServiceChange}
           >
             <option value="" disabled>
@@ -69,22 +54,24 @@ export default function ServiceAndAddress({
           </select>
           <FaChevronDown className="dropdown-icon" />
         </div>
+
         <div className="input-container">
           <LocationIcon width="20" height="20" className="location-icon" />
           <input
             type="text"
             placeholder="Location"
             className="location-input"
-            value={userLocation}
+            value={userLocation || ''}
             onChange={handleLocationChange}
           />
         </div>
+
         <div className="slider-btns">
           <div className="left-btn">
             <button
               className="request-button"
               onClick={() => setShowSizePopup(true)}
-              disabled={!service || !location}
+              disabled={!userService || !userLocation}
             >
               Next
             </button>
@@ -93,7 +80,7 @@ export default function ServiceAndAddress({
             <button
               className="pref-button small-btn"
               onClick={onEdit}
-              disabled={!service}
+              disabled={!userService}
             >
               Edit
             </button>
@@ -103,24 +90,26 @@ export default function ServiceAndAddress({
           </div>
         </div>
       </div>
+
       {showSizePopup && (
         <SelectSizePopup
-          service={service}
-          selectedSize={selectedSize}
-          setSelectedSize={setSelectedSize}
+          service={userService}
+          selectedSize={subjectSize}
+          setSelectedSize={setSubjectSize}
           onConfirm={goToTasks}
           onCancel={() => setShowSizePopup(false)}
         />
       )}
+
       {showTasksPopup && (
         <SelectTasksPopup
-          service={service}
+          service={userService}
           onCancel={() => setShowTasksPopup(false)}
           onConfirm={() => {
             setShowTasksPopup(false);
             onNext();
           }}
-          setSelectedTasks={setSelectedTasks}
+          setSelectedTasks={setServiceTasks}
         />
       )}
     </div>

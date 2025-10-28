@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import TimeIcon from '../../../assets/icons/other/clock.svg?react';
 import CalendarIcon from '../../../assets/icons/other/calendar.svg?react';
+import { useServiceBooking } from '../contexts/ServiceBookingContext';
 
 const timeSlots = [
   '8:00 AM',
@@ -24,11 +25,13 @@ const timeSlots = [
 
 export default function TimeAndDate({
   onNext,
-  userTime,
-  setUserTime,
-  userDate,
-  setUserDate,
+  // userTime,
+  // setUserTime,
+  // userDate,
+  // setUserDate,
 }) {
+  const { userDate, userTime, setUserDate, setUserTime } = useServiceBooking();
+
   const [selectedDate, setSelectedDate] = useState(userDate || null);
   const [selectedTime, setSelectedTime] = useState(userTime || '');
 

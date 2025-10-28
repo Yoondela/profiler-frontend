@@ -9,7 +9,7 @@ import {
   diffPreferences,
   fetchProfile,
   updateProfile,
-} from '../sync/SyncProfile'; // adjust path as needed
+} from '../../../api/sync/SyncProfile'; // adjust path as needed
 
 export default function UserProfileView() {
   const { user, isAuthenticated, isLoading } = useAuth0();

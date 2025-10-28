@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import Navbar from './components/sub/Navbar';
-import { CreateUser } from './components/sub/sync/SyncUser';
+import { CreateUser } from './api/sync/SyncUser';
 import { Toaster } from 'react-hot-toast';
 import AppRoutes from './routes/AppRoutes';
+import { UserProvider } from './api/context/userContext';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -24,10 +25,12 @@ function App() {
 
   return (
     <div>
-      <CreateUser />
-      <Navbar />
-      <AppRoutes />
-      <Toaster position="top-right" />
+      <UserProvider>
+        <CreateUser />
+        <Navbar />
+        <AppRoutes />
+        <Toaster position="top-right" />
+      </UserProvider>
     </div>
   );
 }

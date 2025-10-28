@@ -13,7 +13,9 @@
 @use './components/exalt/request/tasks-popup.module';
 @use './components/exalt/benefits.module';
 @use './components/exalt/request/booker.module';
-
+@use './components/exalt/request/req-review.module';
+@use './components/provider-dash.module';
+@use './components/exalt/user-avater.module';
 
 /* Global styles */
 body {
