@@ -46,7 +46,7 @@ export const diffPreferences = (original, updated) => {
 export const fetchProfile = async (userEmail) => {
   if (!userEmail) return null;
   const res = await axios.get(
-    `http://localhost:3000/api/profiles/me/mail/${userEmail}`
+    `${import.meta.env.VITE_API_URL}/profiles/me/mail/${userEmail}`
   );
   return res.data.userAccount;
 };
@@ -55,7 +55,7 @@ export const fetchProfile = async (userEmail) => {
 export const updateProfile = async (userEmail, changes) => {
   if (!userEmail) throw new Error('No user email provided');
   const res = await axios.patch(
-    `http://localhost:3000/api/profiles/update-by-mail/${userEmail}`,
+    `${import.meta.env.VITE_API_URL}/profiles/update-by-mail/${userEmail}`,
     changes
   );
   return res.data;
