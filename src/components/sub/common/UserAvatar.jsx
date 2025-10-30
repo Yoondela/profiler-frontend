@@ -42,6 +42,11 @@ export default function UserAvatar() {
 
   const toggleMenu = () => setMenuOpen((prev) => !prev);
 
+  const handleLogout = () => {
+    setMenuOpen(false);
+    logout({ logoutParams: { returnTo: window.location.origin } });
+  };
+
   return (
     <div className="user-avatar-container">
       <div
@@ -71,7 +76,7 @@ export default function UserAvatar() {
           <div
             onClick={() => {
               setMenuOpen(false);
-              logout({ returnTo: window.location.origin });
+              logout({ logoutParams: { returnTo: window.location.origin } });
             }}
             className="user-menu-logout"
           >

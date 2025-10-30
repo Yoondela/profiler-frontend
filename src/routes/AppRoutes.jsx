@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
+import AuthCallback from '@/pages/AuthCallsback';
 import HomePage from '../pages/home';
 import UserProfile from '../components/sub/view/UserProfileView';
 import UserSchedule from '../components/sub/view/UserScheduleView';
@@ -10,6 +11,7 @@ function AppRoutes() {
     <Routes>
       {/* Home */}
       <Route path="/" element={<HomePage />} />
+      <Route path="/callback" element={<AuthCallback />} />
 
       {/* All routes that use Sidebar */}
       <Route element={<SidebarLayout />}>

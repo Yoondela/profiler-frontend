@@ -15,18 +15,10 @@ import './assets/css/animate.css';
 function App() {
   const { isLoading, isAuthenticated, loginWithRedirect } = useAuth0();
 
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      loginWithRedirect();
-    }
-  }, [isLoading, isAuthenticated, loginWithRedirect]);
-
-  if (isLoading || !isAuthenticated) return <p>Loading...</p>;
-
   return (
     <div>
       <UserProvider>
-        <CreateUser />
+        {isAuthenticated && !isLoading && <CreateUser />}
         <Navbar />
         <AppRoutes />
         <Toaster position="top-right" />
