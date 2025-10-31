@@ -12,7 +12,7 @@ export default function Navbar() {
   const togglePageMenu = () => setPageMenuOpen((prev) => !prev);
 
   return (
-    <nav className="flex items-center justify-between px-6 py-3 bg-gray-300 shadow-md">
+    <nav className="navbar flex items-center justify-between px-6 py-3 bg-gray-300 shadow-md">
       {/* Left Section */}
       <div className="flex items-center gap-4">
         <Link
