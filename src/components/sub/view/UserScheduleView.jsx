@@ -1,3 +1,7 @@
+import { useApiClient } from '@/api/useApiClient';
+import { useAuth0 } from '@auth0/auth0-react';
+import { getUserID } from '@/api/sync/SyncUser';
+import { useEffect, useState, Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import ProfileHeader from '../ProfileHeader';
 import { RxDotsVertical, RxChevronLeft, RxChevronRight } from 'react-icons/rx';
@@ -15,7 +19,6 @@ import {
   parseISO,
   startOfToday,
 } from 'date-fns';
-import { Fragment, useState } from 'react';
 
 // Sample meetings data
 const meetings = [
@@ -71,6 +74,62 @@ export default function UserSchedule() {
   let [selectedDay, setSelectedDay] = useState(today);
   let [currentMonth, setCurrentMonth] = useState(format(today, 'MMM-yyyy'));
   let firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date());
+
+  const [bookings, setBookings] = useState([]);
+  // const [selectedDayBooking, setSelectedDayBooking] = new Date();
+
+  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const [backendUserId, setBackendUserId] = useState(null);
+  const api = useApiClient();
+
+  useEffect(() => {
+    async function loadBackendUser() {
+      if (!isAuthenticated || !user) return;
+      const id = await getUserID(getAccessTokenSilently, user.email);
+      setBackendUserId(id);
+    }
+    loadBackendUser();
+  }, [isAuthenticated, user, getAccessTokenSilently]);
+
+  useEffect(() => {
+    if (!backendUserId) return;
+    async function fetchBookings() {
+      try {
+        const res = await api.get(`/bookings/client/${backendUserId}?status=accepted`);
+        console.log('res.data:', res.data);
+        const mapped = res.data.map(b => {
+          const dateString = b.forDate?.substring(0,10);
+          const timeString = b.forTime || "09:00";
+        
+          const start = new Date(`${dateString} ${timeString}`);
+          const end = new Date(start.getTime() + 60 * 60 * 1000);
+        
+          return {
+            id: b._id,
+            name: b.provider?.name || "Unknown",
+            service: b.serviceType,
+            startDatetime: start.toISOString(),
+            endDatetime: end.toISOString(),
+          }
+        });
+
+        console.log('mapped bookings:', mapped);
+        setBookings(mapped);
+        console.log('bookings fetched for calendar', res.data);
+      } catch (err) {
+        console.error('Failed to fetch bookings:', err);
+      }
+    }
+    fetchBookings();
+  },  [backendUserId, api]);
+
+  const selectedDayBookings = bookings.filter((b) =>
+    isSameDay(parseISO(b.startDatetime), selectedDay)
+  );
+
+  console.log('selectedDayBookings:', selectedDayBookings);
+
+
 
   let days = eachDayOfInterval({
     start: firstDayCurrentMonth,
@@ -179,8 +238,8 @@ export default function UserSchedule() {
                     </button>
 
                     <div className="w-1 h-1 mx-auto mt-1">
-                      {meetings.some((meeting) =>
-                        isSameDay(parseISO(meeting.startDatetime), day)
+                      {bookings.some((booking) =>
+                        isSameDay(parseISO(booking.startDatetime), day)
                       ) && (
                         <div className="w-1 h-1 rounded-full bg-sky-500"></div>
                       )}
@@ -198,12 +257,12 @@ export default function UserSchedule() {
                 </time>
               </h2>
               <ol className="mt-4 space-y-1 text-sm leading-6 text-gray-500">
-                {selectedDayMeetings.length > 0 ? (
-                  selectedDayMeetings.map((meeting) => (
-                    <Meeting meeting={meeting} key={meeting.id} />
+                {selectedDayBookings.length > 0 ? (
+                  selectedDayBookings.map((booking) => (
+                    <Meeting meeting={booking} key={booking.id} />
                   ))
                 ) : (
-                  <p>No cleaning scheduled for today.</p>
+                  <p>No service scheduled for today.</p>
                 )}
               </ol>
             </section>
@@ -215,25 +274,27 @@ export default function UserSchedule() {
 }
 
 function Meeting({ meeting }) {
-  let startDateTime = parseISO(meeting.startDatetime);
-  let endDateTime = parseISO(meeting.endDatetime);
+  console.log('Rendering meeting:');
+  let startDatetime = parseISO(meeting.startDatetime);
+  let endDatetime = parseISO(meeting.startDatetime);
 
   return (
     <li className="flex items-center px-4 py-2 space-x-4 group rounded-xl focus-within:bg-gray-100 hover:bg-gray-100">
       <img
-        src={meeting.imageUrl}
-        alt=""
+        src= "/user-profile-img/profile.jpg"
+        alt="couldn't load image"
         className="flex-none w-10 h-10 rounded-full"
       />
-      <div className="flex-auto">
+      <div className="flex-1 min-w-0">
         <p className="text-gray-900">{meeting.name}</p>
-        <p className="mt-0.5">
+        <p className="text-xs text-gray-500">{meeting.service}</p>
+        <p className="mt-0.5 text-gray-500 text-sm truncate">
           <time dateTime={meeting.startDatetime}>
-            {format(startDateTime, 'h:mm a')}
+            {format(startDatetime, 'h:mm a')}
           </time>{' '}
           -{' '}
           <time dateTime={meeting.endDatetime}>
-            {format(endDateTime, 'h:mm a')}
+            {format(endDatetime, 'h:mm a')}
           </time>
         </p>
       </div>

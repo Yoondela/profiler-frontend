@@ -31,9 +31,10 @@ export default function ProviderDashboard() {
   const handleUpdateStatus = async (bookingId, newStatus) => {
     try {
       const token = await getAccessTokenSilently();
+      const providerId = await getUserID(getAccessTokenSilently, user.email);
       await api.patch(
-        `/bookings/${bookingId}`,
-        { status: newStatus },
+        `/bookings/status/${bookingId}`,
+        { status: newStatus, providerId: providerId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setRequests((prev) => prev.filter((r) => r._id !== bookingId));
