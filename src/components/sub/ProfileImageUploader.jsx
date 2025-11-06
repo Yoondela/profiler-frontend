@@ -26,7 +26,7 @@ export default function ProfilePictureUpload({ onUploadSuccess }) {
       formData.append('image', file);
 
       const response = await axios.post(
-        'http://localhost:3000/api/upload',
+        `${import.meta.env.VITE_API_URL}/upload`,
         formData,
         {
           headers: { 'Content-Type': 'multipart/form-data' },
