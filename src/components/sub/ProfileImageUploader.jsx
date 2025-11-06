@@ -1,11 +1,16 @@
 import { useState, useRef } from 'react';
 import { User } from 'lucide-react';
 import axios from 'axios';
+import { useUserContext } from '@/api/context/userContext.jsx';
+
+import { updateProfile } from '../../api/sync/SyncProfile.jsx';
 
 export default function ProfilePictureUpload({ onUploadSuccess }) {
   const [selectedImage, setSelectedImage] = useState(null);
   //   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef(null);
+
+  const { avatarUrlCtx, setAvatarUrlCtx, profileCtx } = useUserContext();
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
@@ -47,9 +52,9 @@ export default function ProfilePictureUpload({ onUploadSuccess }) {
         onClick={handleClick}
         className="relative h-16 w-16 rounded-full overflow-hidden bg-gray-200 hover:cursor-pointer hover:ring-2 hover:ring-primary transition"
       >
-        {selectedImage ? (
+        {avatarUrlCtx || selectedImage ? (
           <img
-            src={selectedImage}
+            src={avatarUrlCtx || selectedImage}
             alt="Profile"
             className="w-full h-full object-cover"
           />

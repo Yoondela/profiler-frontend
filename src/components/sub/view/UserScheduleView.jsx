@@ -95,22 +95,25 @@ export default function UserSchedule() {
     if (!backendUserId) return;
     async function fetchBookings() {
       try {
-        const res = await api.get(`/bookings/client/${backendUserId}?status=accepted`);
+        const res = await api.get(
+          `/bookings/client/${backendUserId}?status=accepted`
+        );
         console.log('res.data:', res.data);
-        const mapped = res.data.map(b => {
-          const dateString = b.forDate?.substring(0,10);
-          const timeString = b.forTime || "09:00";
-        
+        const mapped = res.data.map((b) => {
+          const dateString = b.forDate?.substring(0, 10);
+          const timeString = b.forTime || '09:00';
+
           const start = new Date(`${dateString} ${timeString}`);
           const end = new Date(start.getTime() + 60 * 60 * 1000);
-        
+
           return {
             id: b._id,
-            name: b.provider?.name || "Unknown",
+            name: b.provider?.name || 'Unknown',
             service: b.serviceType,
+            imageUrl: b.provider?.profile?.avatarUrl || '',
             startDatetime: start.toISOString(),
             endDatetime: end.toISOString(),
-          }
+          };
         });
 
         console.log('mapped bookings:', mapped);
@@ -121,15 +124,13 @@ export default function UserSchedule() {
       }
     }
     fetchBookings();
-  },  [backendUserId, api]);
+  }, [backendUserId, api]);
 
   const selectedDayBookings = bookings.filter((b) =>
     isSameDay(parseISO(b.startDatetime), selectedDay)
   );
 
   console.log('selectedDayBookings:', selectedDayBookings);
-
-
 
   let days = eachDayOfInterval({
     start: firstDayCurrentMonth,
@@ -152,8 +153,7 @@ export default function UserSchedule() {
 
   return (
     <div className="user-schedule-wrapper">
-      {/* Profile header now sits outside the red section */}
-      <ProfileHeader userName="John Doe" />
+      {/* <ProfileHeader userName="John Doe" /> */}
 
       <div className="profile-page__divider" />
 
@@ -281,7 +281,7 @@ function Meeting({ meeting }) {
   return (
     <li className="flex items-center px-4 py-2 space-x-4 group rounded-xl focus-within:bg-gray-100 hover:bg-gray-100">
       <img
-        src= "/user-profile-img/profile.jpg"
+        src={meeting.imageUrl || '/user-profile-img/profile.jpg'}
         alt="couldn't load image"
         className="flex-none w-10 h-10 rounded-full"
       />

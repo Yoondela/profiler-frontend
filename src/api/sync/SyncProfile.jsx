@@ -60,3 +60,14 @@ export const updateProfile = async (userEmail, changes) => {
   );
   return res.data;
 };
+
+/** Update user profile */
+export const updateProfileById = async (userId, changes) => {
+  console.log('Updating profile for userId:', userId);
+  if (!userId) throw new Error('No user email provided');
+  const res = await axios.patch(
+    `${import.meta.env.VITE_API_URL}/profiles/${userId}`,
+    changes
+  );
+  return res.data;
+};

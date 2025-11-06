@@ -9,6 +9,9 @@ export default function Auth0ProviderWithRedirect({ children }) {
   const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
   const audience = import.meta.env.VITE_AUTH0_AUDIENCE;
 
+  console.log('AUTH0 DOMAIN:', import.meta.env.VITE_AUTH0_DOMAIN);
+  console.log('AUTH0 CALLBACK:', import.meta.env.VITE_AUTH0_CALLBACK_URL);
+
   // When Auth0 redirects back after login:
   const onRedirectCallback = (appState) => {
     navigate(appState?.returnTo || '/', { replace: true });

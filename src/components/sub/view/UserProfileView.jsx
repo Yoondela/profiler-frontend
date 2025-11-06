@@ -4,6 +4,7 @@ import { Pencil } from 'lucide-react';
 import toast from 'react-hot-toast';
 import ProfileHeader from '../ProfileHeader';
 import Spinner from '../LoadingSpinner';
+import { useUserContext } from '@/api/context/userContext';
 import {
   diffShallow,
   diffPreferences,
@@ -13,9 +14,11 @@ import {
 
 export default function UserProfileView() {
   const { user, isAuthenticated, isLoading } = useAuth0();
+  const { userAccountCtx, setUserAccountCtx, setAvatarUrlCtx } =
+    useUserContext();
 
   // Remote data
-  const [userAccount, setUserAccount] = useState(null);
+  let userAccount = userAccountCtx || null;
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -49,11 +52,22 @@ export default function UserProfileView() {
 
   // -------------------- Fetch profile -------------------- //
   const loadUserProfile = async () => {
+    // already cached
+    if (userAccountCtx) {
+      console.log('profile already in ctx. skip fetch');
+      setUserId(userAccountCtx.user._id);
+      setLoading(false);
+      return;
+    }
+
+    // nothing cached → fetch it
+    if (!user?.email) return;
+
     try {
-      if (!user?.email) return;
+      setLoading(true);
       const account = await fetchProfile(user.email);
-      setUserAccount(account);
-      console.log('Loaded user profile:', account);
+      setUserAccountCtx(account);
+      setAvatarUrlCtx(account.profile?.avatarUrl || null);
       setUserId(account.user._id);
     } catch (err) {
       console.error('Failed to fetch profile:', err);
