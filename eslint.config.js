@@ -33,7 +33,7 @@ export default [
       'react/jsx-uses-react': 'warn',
       'react/jsx-uses-vars': 'warn',
       'prettier/prettier': 'error',
-      'no-unused-vars': 'warn',
+      'no-unused-vars': 'off',
       'no-undef': 'error',
 
       // ✅ Hooks plugin rules

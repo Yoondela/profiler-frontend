@@ -1,39 +1,47 @@
 import { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import { User, Calendar, Clock, LogOut } from 'lucide-react';
+import {
+  User,
+  Calendar,
+  Clock,
+  LogOut,
+  Building2,
+  HelpCircle,
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function UserAvatar() {
   const { user, logout } = useAuth0();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isProviderCtx, setIsProviderCtx] = useState(true);
 
   // Avatar color map
   const avatarColors = {
-    A: '#F44336',
-    B: '#E91E63',
-    C: '#9C27B0',
-    D: '#673AB7',
-    E: '#3F51B5',
-    F: '#2196F3',
-    G: '#03A9F4',
-    H: '#00BCD4',
-    I: '#009688',
-    J: '#4CAF50',
-    K: '#8BC34A',
-    L: '#CDDC39',
-    M: '#FFEB3B',
-    N: '#FFC107',
-    O: '#FF9800',
-    P: '#FF5722',
-    Q: '#795548',
-    R: '#9E9E9E',
-    S: '#607D8B',
-    T: '#F44336',
-    U: '#E91E63',
-    V: '#9C27B0',
-    W: '#3F51B5',
+    A: '#fb7185',
+    B: '#f472b6',
+    C: '#d946ef',
+    D: '#a855f7',
+    E: '#6d28d9',
+    F: '#6366f1',
+    G: '#60a5fa',
+    H: '#0284c7',
+    I: '#0e7490',
+    J: '#67e8f9',
+    K: '#0f766e',
+    L: '#34d399',
+    M: '#4ade80',
+    N: '#bef264',
+    O: '#a3e635',
+    P: '#facc15',
+    Q: '#fbbf24',
+    R: '#9ca3af',
+    S: '#374151',
+    T: '#fdba74',
+    U: '#fb923c',
+    V: '#f87171',
+    W: '#cbd5e1',
     X: '#2196F3',
-    Y: '#009688',
+    Y: '#8b5cf6',
     Z: '#4CAF50',
   };
 
@@ -65,8 +73,15 @@ export default function UserAvatar() {
               {user?.email}
             </Link>
 
+            {isProviderCtx && (
+              <Link to="/provider-page" onClick={() => setMenuOpen(false)}>
+                <Building2 size={16} style={{ marginRight: '8px' }} />
+                Company name
+              </Link>
+            )}
+
             <Link to="/help" onClick={() => setMenuOpen(false)}>
-              <Clock size={16} style={{ marginRight: '8px' }} />
+              <HelpCircle size={16} style={{ marginRight: '8px' }} />
               Help
             </Link>
           </div>

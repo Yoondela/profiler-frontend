@@ -14,8 +14,12 @@ import {
 
 export default function UserProfileView() {
   const { user, isAuthenticated, isLoading } = useAuth0();
-  const { userAccountCtx, setUserAccountCtx, setAvatarUrlCtx } =
-    useUserContext();
+  const {
+    userAccountCtx,
+    setUserAccountCtx,
+    setAvatarUrlCtx,
+    setIsProviderCtx,
+  } = useUserContext();
 
   // Remote data
   let userAccount = userAccountCtx || null;
@@ -54,7 +58,7 @@ export default function UserProfileView() {
   const loadUserProfile = async () => {
     // already cached
     if (userAccountCtx) {
-      console.log('profile already in ctx. skip fetch');
+      console.log('profile already in ctx. skip fetch', userAccountCtx);
       setUserId(userAccountCtx.user._id);
       setLoading(false);
       return;
@@ -68,6 +72,7 @@ export default function UserProfileView() {
       const account = await fetchProfile(user.email);
       setUserAccountCtx(account);
       setAvatarUrlCtx(account.profile?.avatarUrl || null);
+      setIsProviderCtx(account.user.roles.includes('provider'));
       setUserId(account.user._id);
     } catch (err) {
       console.error('Failed to fetch profile:', err);
@@ -230,7 +235,7 @@ export default function UserProfileView() {
   return (
     <div className="profile-page">
       <ProfileHeader userName={userData.name} userId={userId} />
-      <div className="profile-page__divider" />
+      {/* <div className="profile-page__divider" /> */}
 
       <div className="profile-page__user-info-container">
         {/* BASIC INFO */}

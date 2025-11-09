@@ -8,7 +8,13 @@ export const UserProvider = ({ children }) => {
   const [userCtx, setUserCtx] = useState(null);
   const [profileCtx, setProfileCtx] = useState(null);
   const [userAccountCtx, setUserAccountCtx] = useState(null);
+  const [isProviderCtx, setIsProviderCtx] = useState(false);
+  const [logoUrlCtx, setLogoUrlCtx] = useState(null);
 
+  if (userCtx?.roles) {
+    setIsProviderCtx(userAccountCtx.user.roles.includes('provider'));
+    console.log('This user is a provider =>', isProviderCtx);
+  }
   return (
     <UserContext.Provider
       value={{
@@ -22,6 +28,10 @@ export const UserProvider = ({ children }) => {
         setUserCtx,
         profileCtx,
         setProfileCtx,
+        isProviderCtx,
+        setIsProviderCtx,
+        logoUrlCtx,
+        setLogoUrlCtx,
       }}
     >
       {children}

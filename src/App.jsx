@@ -13,7 +13,7 @@ import 'swiper/css/effect-fade';
 import './assets/css/animate.css';
 
 function App() {
-  const { isLoading, isAuthenticated, loginWithRedirect } = useAuth0();
+  const { isLoading, isAuthenticated } = useAuth0();
 
   return (
     <div>

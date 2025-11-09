@@ -5,6 +5,7 @@ import UserProfile from '../components/sub/view/UserProfileView';
 import UserSchedule from '../components/sub/view/UserScheduleView';
 import SidebarLayout from '../layouts/SidebarLayout';
 import ProviderDashboard from '@/components/sub/view/dashboard/ProviderDashboard';
+import PortfolioLayout from '@/components/sub/view/portfolio/ProviderLayout';
 
 function AppRoutes() {
   return (
@@ -17,9 +18,9 @@ function AppRoutes() {
       <Route element={<SidebarLayout />}>
         <Route path="/provider-dashboard" element={<ProviderDashboard />} />
         <Route path="/user-profile" element={<UserProfile />} />
+        <Route path="/provider-page" element={<PortfolioLayout />} />
         <Route path="/user-schedule" element={<UserSchedule />} />
       </Route>
-
       {/* Catch-all redirect */}
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>

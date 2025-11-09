@@ -1,17 +1,17 @@
 import { useState, useRef } from 'react';
-import { User } from 'lucide-react';
+import { Building2 } from 'lucide-react';
 import { Switch } from '@headlessui/react';
 import axios from 'axios';
 import { useUserContext } from '@/api/context/userContext.jsx';
 
-import { updateProfile } from '../../api/sync/SyncProfile.jsx';
+// import { updateProfile } from '../../api/sync/SyncProfile.jsx';
 
-export default function ProfilePictureUpload({ onUploadSuccess }) {
+export default function LogoUpload({ logoUrl, onUploadSuccess }) {
   const [selectedImage, setSelectedImage] = useState(null);
   //   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef(null);
 
-  const { avatarUrlCtx, setAvatarUrlCtx, profileCtx } = useUserContext();
+  const { logoUrlCtx } = useUserContext();
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
@@ -51,17 +51,17 @@ export default function ProfilePictureUpload({ onUploadSuccess }) {
     <div className="flex flex-col items-center">
       <div
         onClick={handleClick}
-        className="relative flex flex-col items-center justify-center h-20 w-20 rounded-full overflow-hidden bg-pink-100 hover:cursor-pointer hover:ring-2 hover:ring-primary transition"
+        className="relative flex flex-col items-center justify-center h-30 w-30 rounded-full overflow-hidden bg-pink-100 hover:cursor-pointer hover:ring-2 hover:ring-primary transition"
       >
-        {avatarUrlCtx || selectedImage ? (
+        {logoUrl || selectedImage ? (
           <img
-            src={avatarUrlCtx || selectedImage}
+            src={logoUrlCtx || selectedImage}
             alt="Profile"
             className="w-full h-full object-cover"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-gray-500">
-            <User className="w-7 h-7 text-gray-400" />
+            <Building2 className="w-15 h-15 text-gray-400" />
           </div>
         )}
       </div>
@@ -75,7 +75,7 @@ export default function ProfilePictureUpload({ onUploadSuccess }) {
         onChange={handleImageChange}
       />
 
-      <p className="mt-2 text-xs text-gray-600">Click to upload</p>
+      {/* <p className="mt-2 text-xs text-gray-600">Click to upload</p> */}
     </div>
   );
 }

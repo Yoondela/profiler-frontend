@@ -1,13 +1,16 @@
 .profile-page {
   &__head {
-    position: sticky;
-    top: -25px;
+    // position: sticky;
+    // top: -25px;
     display: flex;
     align-items: center;
     gap: 1rem;
-    width: 100%;
+    width: 95%;
     padding: 1rem;
+    // margin: 1rem;
     background: #f4f4f4;
+    border: #999 solid 1px;
+    border-radius: 10px;
     z-index: 50;
 
     img {
@@ -34,11 +37,15 @@
 
   &__user-info-container {
     justify-content: space-around;
-    padding: 0 2rem;
+    padding: 2rem 2rem;
     overflow-y: auto;
 
     @media (min-width: 1020px) {
       display: flex;
+      gap: 11px;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 0rem;
     }
 
     .user-basic-info,
@@ -49,9 +56,12 @@
       align-items: flex-start;
       
       @media (min-width: 1020px) {
-        width: 40%;
+        width: 45%;
         height: 40rem;
         max-height: 40rem;
+        padding: 1rem 2rem;
+        border: #999 solid 1px;
+        border-radius: 10px;
       }
 
       &__content {

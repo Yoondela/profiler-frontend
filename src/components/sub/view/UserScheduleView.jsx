@@ -20,51 +20,6 @@ import {
   startOfToday,
 } from 'date-fns';
 
-// Sample meetings data
-const meetings = [
-  {
-    id: 1,
-    name: 'Leslie Alexander',
-    imageUrl:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    startDatetime: '2025-08-20T13:00',
-    endDatetime: '2025-08-20T14:30',
-  },
-  {
-    id: 2,
-    name: 'Michael Foster',
-    imageUrl:
-      'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    startDatetime: '2025-08-20T09:00',
-    endDatetime: '2025-05-20T11:30',
-  },
-  {
-    id: 3,
-    name: 'Dries Vincent',
-    imageUrl:
-      'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    startDatetime: '2025-08-20T17:00',
-    endDatetime: '2025-08-20T18:30',
-  },
-
-  {
-    id: 4,
-    name: 'Leslie Alexander',
-    imageUrl:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    startDatetime: '2025-08-09T13:00',
-    endDatetime: '2025-08-09T14:30',
-  },
-  {
-    id: 5,
-    name: 'Michael Foster',
-    imageUrl:
-      'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    startDatetime: '2025-08-13T14:00',
-    endDatetime: '2022-08-13T14:30',
-  },
-];
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
@@ -100,6 +55,7 @@ export default function UserSchedule() {
         );
         console.log('res.data:', res.data);
         const mapped = res.data.map((b) => {
+          console.log(b);
           const dateString = b.forDate?.substring(0, 10);
           const timeString = b.forTime || '09:00';
 
@@ -146,10 +102,6 @@ export default function UserSchedule() {
     let firstDayNextMonth = add(firstDayCurrentMonth, { months: 1 });
     setCurrentMonth(format(firstDayNextMonth, 'MMM-yyyy'));
   }
-
-  let selectedDayMeetings = meetings.filter((meeting) =>
-    isSameDay(parseISO(meeting.startDatetime), selectedDay)
-  );
 
   return (
     <div className="user-schedule-wrapper">
@@ -283,7 +235,7 @@ function Meeting({ meeting }) {
       <img
         src={meeting.imageUrl || '/user-profile-img/profile.jpg'}
         alt="couldn't load image"
-        className="flex-none w-10 h-10 rounded-full"
+        className="flex-none w-15 h-15 rounded-full"
       />
       <div className="flex-1 min-w-0">
         <p className="text-gray-900">{meeting.name}</p>

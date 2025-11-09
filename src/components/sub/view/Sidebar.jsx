@@ -91,9 +91,9 @@ export default function Sidebar({ children }) {
           </NavLink>
         </nav>
         <div className="sidebar-avatar">
-          <UserAvatar />
+          <UserAvatar className="avatar" />
           {user ? <p className="username">{user.name}</p> : <p>User</p>}
-          <p></p>
+          {/* <p></p> */}
         </div>
       </aside>
       <main className="content">{children}</main>
