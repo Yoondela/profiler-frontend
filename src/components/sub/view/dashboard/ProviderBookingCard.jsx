@@ -1,6 +1,12 @@
-"use client";
+'use client';
 
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from '@/components/ui/card';
 
 export default function ProviderBookingCard({ booking, actions }) {
   return (
@@ -12,12 +18,21 @@ export default function ProviderBookingCard({ booking, actions }) {
       </CardHeader>
 
       <CardContent className="text-sm space-y-1">
-        <p><strong>Client:</strong> {booking.client?.name || "Unknown"}</p>
-        <p><strong>Description:</strong> {booking.description}</p>
-        <p><strong>Date:</strong> {new Date(booking.requestedAt).toLocaleString()}</p>
+        <p>
+          <strong>Client:</strong> {booking.client?.name || 'Unknown'}
+        </p>
+        <p>
+          <strong>Description:</strong> {booking.description}
+        </p>
+        <p>
+          <strong>Date:</strong>{' '}
+          {new Date(booking.requestedAt).toLocaleString()}
+        </p>
       </CardContent>
 
-      {actions && <CardFooter className="flex justify-end gap-2">{actions}</CardFooter>}
+      {actions && (
+        <CardFooter className="flex justify-end gap-2">{actions}</CardFooter>
+      )}
     </Card>
   );
 }

@@ -43,7 +43,7 @@ export default function ProfileHeader({ userName, userAuth0Id }) {
   };
 
   return (
-    <div className='flex items-center justify-center mt-9'>
+    <div className="flex items-center justify-center">
       <div className="profile-page__head bg-gray-700">
         <ProfilePictureUpload onUploadSuccess={onUploadSuccess} />
         <strong>{userName}</strong>

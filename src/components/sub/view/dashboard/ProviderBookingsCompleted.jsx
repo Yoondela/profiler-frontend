@@ -7,7 +7,7 @@ import { getUserID } from '@/api/sync/SyncUser';
 
 import ProviderBookingCard from './ProviderBookingCard';
 
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
 export default function ProviderBookingsCompleted() {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
@@ -22,9 +22,12 @@ export default function ProviderBookingsCompleted() {
       const providerId = await getUserID(getAccessTokenSilently, user.email);
       const token = await getAccessTokenSilently();
 
-      const res = await api.get(`/bookings/provider/${providerId}?status=completed`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await api.get(
+        `/bookings/provider/${providerId}?status=completed`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       setRequests(res.data);
     } catch (err) {
@@ -39,15 +42,13 @@ export default function ProviderBookingsCompleted() {
   }, [isAuthenticated, user]);
 
   if (loading) return <p className="p-4">Loading completed bookings...</p>;
-  if (!requests.length) return <p className="p-4">No completed bookings yet.</p>;
+  if (!requests.length)
+    return <p className="p-4">No completed bookings yet.</p>;
 
   return (
     <div className="space-y-4 mt-4">
       {requests.map((req) => (
-        <ProviderBookingCard
-          key={req._id}
-          booking={req}
-        />
+        <ProviderBookingCard key={req._id} booking={req} />
       ))}
     </div>
   );

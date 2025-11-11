@@ -6,8 +6,14 @@ import { useApiClient } from '@/api/useApiClient';
 import { getUserID } from '@/api/sync/SyncUser';
 import ProviderBookingCard from './ProviderBookingCard';
 
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 export default function ProviderBookingsAll() {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
@@ -22,9 +28,12 @@ export default function ProviderBookingsAll() {
       const providerId = await getUserID(getAccessTokenSilently, user.email);
       const token = await getAccessTokenSilently();
 
-      const res = await api.get(`/bookings/provider/${providerId}?status=accepted`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await api.get(
+        `/bookings/provider/${providerId}?status=accepted`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       setRequests(res.data);
     } catch (err) {
@@ -57,15 +66,18 @@ export default function ProviderBookingsAll() {
   }, [isAuthenticated, user]);
 
   if (loading) return <p className="p-4">Loading bookings...</p>;
-  if (!requests.length) return <p className="p-4">No active bookings right now.</p>;
+  if (!requests.length)
+    return <p className="p-4">No active bookings right now.</p>;
 
   return (
-    <div className="mt-4 grid gap-4 
+    <div
+      className="mt-4 grid gap-4 
                 sm:grid-cols-1
                 md:grid-cols-2
                 lg:grid-cols-3
                 xl:grid-cols-3
-                2xl:grid-cols-5">
+                2xl:grid-cols-5"
+    >
       {requests.map((req) => (
         <ProviderBookingCard
           key={req._id}
@@ -77,8 +89,7 @@ export default function ProviderBookingsAll() {
               </Button>
             </>
           }
-        >
-        </ProviderBookingCard>
+        ></ProviderBookingCard>
       ))}
     </div>
   );

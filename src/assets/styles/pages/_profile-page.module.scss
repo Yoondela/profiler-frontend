@@ -6,19 +6,20 @@
     align-items: center;
     gap: 1rem;
     width: 95%;
-    padding: 1rem;
+    margin-top: 1rem;
+    padding: 2rem;
     // margin: 1rem;
     background: #f4f4f4;
     border: #999 solid 1px;
     border-radius: 10px;
     z-index: 50;
 
-    img {
-      border-radius: 100%;
-      width: 80px;
-      height: 80px;
-      object-fit: cover;
-    }
+    // img {
+    //   border-radius: 100%;
+    //   width: 80px;
+    //   height: 80px;
+    //   object-fit: cover;
+    // }
   }
 
   &__save-edit {

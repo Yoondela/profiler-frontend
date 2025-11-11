@@ -1,12 +1,11 @@
 'use client';
 
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import ProviderBookingsPending from "./ProviderBookingsPending"
-import ProviderBookingsAll from "./ProviderBookingsAll"
-import ProviderBookingsCompleted from "./ProviderBookingsCompleted"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import ProviderBookingsPending from './ProviderBookingsPending';
+import ProviderBookingsAll from './ProviderBookingsAll';
+import ProviderBookingsCompleted from './ProviderBookingsCompleted';
 
 export default function ProviderDashboard() {
-
   return (
     <div className="p-4">
       {/* <h1 className="text-xl font-semibold mb-4">Provider Dashboard</h1> */}
@@ -35,5 +34,5 @@ export default function ProviderDashboard() {
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }

@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { User } from 'lucide-react';
 import { Switch } from '@headlessui/react';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import axios from 'axios';
 import { useUserContext } from '@/api/context/userContext.jsx';
 
@@ -12,6 +13,7 @@ export default function ProfilePictureUpload({ onUploadSuccess }) {
   const fileInputRef = useRef(null);
 
   const { avatarUrlCtx, setAvatarUrlCtx, profileCtx } = useUserContext();
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
@@ -21,7 +23,7 @@ export default function ProfilePictureUpload({ onUploadSuccess }) {
     setSelectedImage(imageUrl);
 
     try {
-      //   setLoading(true);
+      setIsUploading(true);
 
       const formData = new FormData();
       formData.append('image', file);
@@ -35,11 +37,11 @@ export default function ProfilePictureUpload({ onUploadSuccess }) {
       );
 
       const newImgUrl = response.data.url;
-      //   setLoading(false);
+      setIsUploading(false);
       onUploadSuccess(newImgUrl);
     } catch (err) {
       console.error('Upload failed', err);
-      //   setLoading(false);
+      setIsUploading(false);
     }
   };
 
@@ -53,17 +55,18 @@ export default function ProfilePictureUpload({ onUploadSuccess }) {
         onClick={handleClick}
         className="relative flex flex-col items-center justify-center h-20 w-20 rounded-full overflow-hidden bg-pink-100 hover:cursor-pointer hover:ring-2 hover:ring-primary transition"
       >
-        {avatarUrlCtx || selectedImage ? (
-          <img
-            src={avatarUrlCtx || selectedImage}
-            alt="Profile"
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-500">
-            <User className="w-7 h-7 text-gray-400" />
-          </div>
-        )}
+        <Avatar className={'w-full h-full'}>
+          <AvatarImage src={selectedImage || avatarUrlCtx}></AvatarImage>
+          <AvatarFallback>
+            <User />
+          </AvatarFallback>
+          {/* Uploading Overlay */}
+          {isUploading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-b-md">
+              <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            </div>
+          )}
+        </Avatar>
       </div>
 
       {/* Hidden File Input */}

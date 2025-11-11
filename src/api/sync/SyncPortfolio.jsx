@@ -2,12 +2,13 @@
 import axios from 'axios';
 
 /** Fetch the user profile using email */
-export const fetchPortfolio = async (userEmail) => {
-  if (!userEmail) return null;
+export const fetchPortfolio = async (providerId) => {
+  if (!providerId) return null;
   const res = await axios.get(
-    `${import.meta.env.VITE_API_URL}/profiles/me/mail/${userEmail}`
+    `${import.meta.env.VITE_API_URL}/portfolios/${providerId}`
   );
-  return res.data.userAccount;
+  console.log('fetched portfolio:', res.data);
+  return res.data;
 };
 
 /** Update user profile */

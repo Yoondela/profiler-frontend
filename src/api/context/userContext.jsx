@@ -10,6 +10,7 @@ export const UserProvider = ({ children }) => {
   const [userAccountCtx, setUserAccountCtx] = useState(null);
   const [isProviderCtx, setIsProviderCtx] = useState(false);
   const [logoUrlCtx, setLogoUrlCtx] = useState(null);
+  const [bannerUrlCtx, setBannerUrlCtx] = useState(null);
 
   if (userCtx?.roles) {
     setIsProviderCtx(userAccountCtx.user.roles.includes('provider'));
@@ -32,6 +33,8 @@ export const UserProvider = ({ children }) => {
         setIsProviderCtx,
         logoUrlCtx,
         setLogoUrlCtx,
+        bannerUrlCtx,
+        setBannerUrlCtx,
       }}
     >
       {children}
