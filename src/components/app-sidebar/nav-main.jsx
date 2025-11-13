@@ -6,28 +6,50 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar"
+import { useSidebar } from "@/components/ui/sidebar" 
 
 export function NavMain({ menuItems }) {
+  const { state } = useSidebar();
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Menu</SidebarGroupLabel>
+      <SidebarGroupLabel className="text-[var(--sidebar-foreground)]/70">
+        Menu
+      </SidebarGroupLabel>
+
       <SidebarMenu>
         {menuItems.map(({ to, icon: Icon, label }) => (
           <SidebarMenuItem key={to}>
-            <SidebarMenuButton asChild>
-              <NavLink
-                to={to}
-                className={({ isActive }) =>
-                  `global-child flex items-center gap-2 px-2 py-2 rounded-md transition ${
-                    isActive ? "bg-muted text-primary" : ""
-                  }`
+            <NavLink to={to}
+              className={({ isActive }) =>
+                ` w-full
+                flex items-center gap-2 rounded-lg 
+                transition-all duration-200! 
+                text-[var(--sidebar-foreground)]! 
+                hover:bg-[var(--sidebar-accent)]! 
+                hover:text-[var(--sidebar-accent-foreground)]!
+                ${state == "expanded"? "py-2":""}
+                ${
+                isActive
+                    ? "bg-[var(--sidebar-accent)]! text-[var(--sidebar-primary-foreground)]"
+                    : ""
                 }
-              >
-                {Icon && <Icon className="w-4 h-4" />}
-                <span>{label}</span>
-              </NavLink>
-            </SidebarMenuButton>
+                `
+              }
+            >
+              
+                <SidebarMenuButton
+                  asChild
+                  
+                >
+                  <div className="flex items-center gap-2">
+                    {Icon && <Icon className="w-4 h-4" />}
+                    <span>{label}</span>
+                  </div>
+                </SidebarMenuButton>
+              
+            </NavLink>
           </SidebarMenuItem>
+
         ))}
       </SidebarMenu>
     </SidebarGroup>

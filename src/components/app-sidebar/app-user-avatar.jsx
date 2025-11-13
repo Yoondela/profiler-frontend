@@ -19,8 +19,10 @@ export function AppUserAvatar() {
           <AvatarFallback className="rounded-lg"><UserAvatar menu="false" /></AvatarFallback>
         </Avatar>
         <div className="grid flex-1 text-left text-sm leading-tight">
-          <span className="truncate font-medium">{user?.name}</span>
-          <span className="truncate text-xs">{user?.email}</span>
+          <span className="truncate font-medium 
+            text-[var(--sidebar-primary)]! ">{user?.name}</span>
+          <span className="truncate text-xs
+            text-[var(--sidebar-foreground)]! ">{user?.email}</span>
         </div>
       </div>
 
