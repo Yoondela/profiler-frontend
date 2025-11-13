@@ -1,7 +1,9 @@
+// "use client"
+
 import { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Pencil } from 'lucide-react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import ProfileHeader from '../ProfileHeader';
 import Spinner from '../LoadingSpinner';
 import { useUserContext } from '@/api/context/userContext';

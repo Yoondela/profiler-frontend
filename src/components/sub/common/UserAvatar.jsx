@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-export default function UserAvatar() {
+export default function UserAvatar({menu}) {
   const { user, logout } = useAuth0();
   const [menuOpen, setMenuOpen] = useState(false);
   const [isProviderCtx, setIsProviderCtx] = useState(true);
@@ -48,7 +48,10 @@ export default function UserAvatar() {
   const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : 'U';
   const avatarColor = avatarColors[userInitial] || '#888';
 
-  const toggleMenu = () => setMenuOpen((prev) => !prev);
+  const toggleMenu = () => {
+    if(menu !== "false")
+      setMenuOpen((prev) => !prev);
+  }
 
   const handleLogout = () => {
     setMenuOpen(false);

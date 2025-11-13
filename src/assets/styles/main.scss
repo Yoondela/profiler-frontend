@@ -39,7 +39,30 @@ body {
     overflow: hidden;
     margin: 30px auto;
     // background-color: yellow;
+}
+
+
+.global-child {
+  color: orange
+}
+
+.trythis{
+  margin-top: 60px; /* Height of your navbar */
+  height: calc(100vh - 60px); /* Full height minus navbar */
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: aqua;
+
+  &:nth-child(1) {
+    // background-color: red;
   }
+}
+
+.anotheer{
+  background-color: orange;
+}
+
 
 .with-sidebar {
   // margin-left: 250px; // match sidebar width

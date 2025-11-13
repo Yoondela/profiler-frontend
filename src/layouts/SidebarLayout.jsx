@@ -1,16 +1,22 @@
-import { Outlet } from 'react-router-dom';
-import Sidebar from '../components/sub/view/Sidebar';
+import { Outlet } from "react-router-dom";
+import { SidebarProvider} from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar/app-sidebar";
 
 export default function SidebarLayout() {
   return (
-    <div className="flex rem">
-      <div className="sidebar-side">
-        <Sidebar />
-      </div>
+    // SidebarProvider must wrap ONLY the parts that use the ShadCN sidebar
+    <SidebarProvider>
+      <div className="flex min-h-screen w-full">
+        {/* Sidebar stays fixed width */}
+        <AppSidebar />
 
-      <div className="content-side flex-1">
-        <Outlet />
+        {/* Main content fills the rest */}
+        <div className="flex-1 flex flex-col">
+          <main className="flex-1 pt-12">
+            <Outlet />
+          </main>
+        </div>
       </div>
-    </div>
+    </SidebarProvider>
   );
 }
