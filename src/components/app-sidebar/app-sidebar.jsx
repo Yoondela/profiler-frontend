@@ -4,31 +4,26 @@ import {
   SidebarHeader,
   SidebarFooter,
   SidebarTrigger,
-} from "@/components/ui/sidebar";
+} from '@/components/ui/sidebar';
 
-import { NavMain } from "./nav-main";
-import {
-  LayoutDashboard,
-  Calendar,
-  History,
-  Clock,
-} from "lucide-react";
-import { useAuth0 } from "@auth0/auth0-react";
-import UserAvatar from "../sub/common/UserAvatar";
-import { AppUserAvatar } from "./app-user-avatar";
-import { CompanyAvatar } from "./company-avatar";
-import { useSidebar } from "@/components/ui/sidebar";
-import { useState } from "react";
+import { NavMain } from './nav-main';
+import { LayoutDashboard, Calendar, History, Clock } from 'lucide-react';
+import { useAuth0 } from '@auth0/auth0-react';
+import UserAvatar from '../sub/common/UserAvatar';
+import { AppUserAvatar } from './app-user-avatar';
+import { CompanyAvatar } from './company-avatar';
+import { useSidebar } from '@/components/ui/sidebar';
+import { useState } from 'react';
 
 export function AppSidebar() {
   const { user } = useAuth0();
   const { state } = useSidebar();
 
   const menuItems = [
-    { to: "/provider-dashboard", icon: LayoutDashboard, label: "Dashboard" },
-    { to: "/history", icon: History, label: "History" },
-    { to: "/user-schedule", icon: Calendar, label: "Calendar" },
-    { to: "/upcoming", icon: Clock, label: "Upcoming" },
+    { to: '/provider-dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+    { to: '/history', icon: History, label: 'History' },
+    { to: '/user-schedule', icon: Calendar, label: 'Calendar' },
+    { to: '/upcoming', icon: Clock, label: 'Upcoming' },
   ];
 
   return (
@@ -36,17 +31,18 @@ export function AppSidebar() {
       collapsible="icon"
       className="top-(--header-height) h-[calc(100svh-var(--header-height))]!
         bg-[var(--sidebar)] text-[var(--sidebar-foreground)] border-r border-[var(--sidebar-border)]"
+    >
+      <div
+        className={`flex justify-center transition-all duration-900 w-full p-1 ${state == 'expanded' ? 'justify-end' : ''}`}
       >
-      <div 
-        className={`flex justify-center transition-all duration-900 w-full p-1 ${state == "expanded"? "justify-end":""}`}> 
         <SidebarTrigger className="cursor-pointer" />
       </div>
-      <SidebarHeader className="p-1" >
+      <SidebarHeader className="p-1">
         <CompanyAvatar />
       </SidebarHeader>
 
       <SidebarContent>
-        <NavMain menuItems={menuItems}/>
+        <NavMain menuItems={menuItems} />
       </SidebarContent>
 
       <SidebarFooter className="p-1">

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Star, HeartIcon, BookmarkIcon,BadgeCheck} from 'lucide-react';
+import { Star, HeartIcon, BookmarkIcon, BadgeCheck } from 'lucide-react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import LogoUpload from './LogoUploader';
 import BannerUpload from './BannerUpload';
@@ -90,11 +90,11 @@ export default function PortfolioHeader({
               value="like"
               aria-label="Like"
               className="data-[state=on]:bg-transparent data-[state=on]:*:[svg]:fill-red-500 data-[state=on]:*:[svg]:stroke-red-500 cursor-pointer"
-              >
+            >
               <HeartIcon className="w-10 h-10" />
             </ToggleGroupItem>
-            <ToggleGroupItem 
-              value="save" 
+            <ToggleGroupItem
+              value="save"
               aria-label="Save"
               className="data-[state=on]:bg-transparent data-[state=on]:*:[svg]:fill-blue-500 data-[state=on]:*:[svg]:stroke-blue-500 cursor-pointer"
             >

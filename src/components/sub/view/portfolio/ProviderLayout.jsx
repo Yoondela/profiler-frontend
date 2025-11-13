@@ -7,12 +7,13 @@ import PortfolioDetailsContainer from '@/containers/portfolio-details';
 import useProviderPortfolio from '@/hooks/useProviderPortfolio';
 
 const PortfolioLayout = () => {
-  
   const { portfolio, loading, error, refetch } = useProviderPortfolio();
 
   if (loading) return <div className="p-4">Loading portfolio...</div>;
-  if (error) return <div className="p-4 text-red-500">Error loading portfolio.</div>;
-  if (!portfolio) return <div className="p-4 text-muted-foreground">No portfolio found.</div>;
+  if (error)
+    return <div className="p-4 text-red-500">Error loading portfolio.</div>;
+  if (!portfolio)
+    return <div className="p-4 text-muted-foreground">No portfolio found.</div>;
 
   return (
     <div className="provider-page">
@@ -27,7 +28,6 @@ const PortfolioLayout = () => {
       <main className="provider-page__content">
         <PortfolioDetailsContainer data={portfolio} />
       </main>
-
     </div>
   );
 };

@@ -3,9 +3,6 @@ import { Badge } from '@/components/ui/badge';
 import { Image } from 'lucide-react';
 
 const PortfolioDetailsContainer = ({ provider }) => {
-  
-  
-  
   return (
     <div className="provider-overview-card">
       <div className="card-header">
@@ -15,7 +12,7 @@ const PortfolioDetailsContainer = ({ provider }) => {
       <div className="card-body">
         {/* Bio */}
         <div className="section bio">
-          <p>{provider?.bio || "This provider hasn’t added a bio yet."}</p>
+          <p>{provider?.bio || 'This provider hasn’t added a bio yet.'}</p>
         </div>
 
         {/* Skills */}
