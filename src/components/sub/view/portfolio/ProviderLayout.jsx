@@ -26,7 +26,7 @@ const PortfolioLayout = () => {
       />
 
       <main className="provider-page__content">
-        <PortfolioDetailsContainer data={portfolio} />
+        <PortfolioDetailsContainer provider={portfolio} />
       </main>
     </div>
   );

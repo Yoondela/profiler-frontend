@@ -16,6 +16,8 @@
 @use './components/exalt/request/req-review.module';
 @use './components/provider-dash.module';
 @use './components/exalt/user-avater.module';
+@use './pages/portfolio-page.module.scss';
+@use './components/exalt/portfolio-gallery.module';
 
 /* Global styles */
 body {
@@ -27,6 +29,16 @@ body {
   line-height: 1.7;
   word-wrap: break-word;
   // overflow: hidden;
+}
+
+h4 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666666;
+  font-size: large;
+  font-weight: 500;
+  width: 100%;
 }
 
 .container {

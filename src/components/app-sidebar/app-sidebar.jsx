@@ -13,11 +13,13 @@ import UserAvatar from '../sub/common/UserAvatar';
 import { AppUserAvatar } from './app-user-avatar';
 import { CompanyAvatar } from './company-avatar';
 import { useSidebar } from '@/components/ui/sidebar';
+import useProviderPortfolio from '@/hooks/useProviderPortfolio';
 import { useState } from 'react';
 
 export function AppSidebar() {
   const { user } = useAuth0();
   const { state } = useSidebar();
+  const { portfolio, loading, error } = useProviderPortfolio();
 
   const menuItems = [
     { to: '/provider-dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -37,9 +39,11 @@ export function AppSidebar() {
       >
         <SidebarTrigger className="cursor-pointer" />
       </div>
-      <SidebarHeader className="p-1">
-        <CompanyAvatar />
-      </SidebarHeader>
+      {portfolio && !error && (
+        <SidebarHeader className="p-1">
+          <CompanyAvatar />
+        </SidebarHeader>
+      )}
 
       <SidebarContent>
         <NavMain menuItems={menuItems} />

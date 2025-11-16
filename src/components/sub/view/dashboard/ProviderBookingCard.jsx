@@ -10,7 +10,7 @@ import {
 
 export default function ProviderBookingCard({ booking, actions }) {
   return (
-    <Card className="border rounded-xl shadow-sm bg-zinc-400">
+    <Card className="border rounded-xl shadow-sm bg-blue-100">
       <CardHeader>
         <CardTitle className="text-lg font-semibold capitalize">
           {booking.serviceType}

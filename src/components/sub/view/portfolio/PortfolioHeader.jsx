@@ -59,7 +59,7 @@ export default function PortfolioHeader({
       />
 
       {/* Avatar + Info Section */}
-      <div className="relative flex items-end gap-4 px-4 md:px-8 -mt-10">
+      <div className="relative flex md:items-end flex-col sm:flex-row  gap-4 px-4 md:px-8 -mt-10">
         {/* Avatar */}
         <div className="relative w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-4 border-white shadow-lg bg-gray-100">
           <LogoUpload logoUrl={logoUrl} onUploadSuccess={onLogoUploadSuccess} />
@@ -75,7 +75,7 @@ export default function PortfolioHeader({
           </div>
 
           {averageRating && (
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+            <div className="flex hidden md:flex items-center gap-1 text-sm text-muted-foreground">
               <Star className="w-4 h-4 fill-current text-gray-400" />
               <span>{averageRating.toFixed(1)}</span>
               {reviewCount && <span>({reviewCount})</span>}
