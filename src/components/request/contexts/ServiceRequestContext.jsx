@@ -7,6 +7,7 @@ export const ServiceRequestProvider = ({ children }) => {
   const [userLocation, setUserLocation] = useState(null);
   const [subjectSize, setSubjectSize] = useState('');
   const [serviceTasks, setServiceTasks] = useState(null);
+  const [note, setNote] = useState(null);
 
   let job = {};
   if (typeof serviceTasks === 'string' && serviceTasks.trim() !== '') {
@@ -39,6 +40,8 @@ export const ServiceRequestProvider = ({ children }) => {
         serviceTasks,
         setServiceTasks,
         requestData,
+        setNote,
+        note,
       }}
     >
       {children}

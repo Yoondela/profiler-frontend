@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import useProviderPortfolio from '@/hooks/useProviderPortfolio';
 import {
   User,
   Calendar,
@@ -14,6 +15,7 @@ export default function UserAvatar({ menu }) {
   const { user, logout } = useAuth0();
   const [menuOpen, setMenuOpen] = useState(false);
   const [isProviderCtx, setIsProviderCtx] = useState(true);
+  const { portfolio, loading, error, refetch } = useProviderPortfolio();
 
   // Avatar color map
   const avatarColors = {
@@ -78,7 +80,7 @@ export default function UserAvatar({ menu }) {
             {isProviderCtx && (
               <Link to="/provider-page" onClick={() => setMenuOpen(false)}>
                 <Building2 size={16} style={{ marginRight: '8px' }} />
-                Company name
+                {portfolio.company}
               </Link>
             )}
 

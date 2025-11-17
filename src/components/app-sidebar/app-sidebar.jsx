@@ -7,7 +7,13 @@ import {
 } from '@/components/ui/sidebar';
 
 import { NavMain } from './nav-main';
-import { LayoutDashboard, Calendar, History, Clock } from 'lucide-react';
+import {
+  LayoutDashboard,
+  Calendar,
+  History,
+  Clock,
+  BookmarkIcon,
+} from 'lucide-react';
 import { useAuth0 } from '@auth0/auth0-react';
 import UserAvatar from '../sub/common/UserAvatar';
 import { AppUserAvatar } from './app-user-avatar';
@@ -26,6 +32,7 @@ export function AppSidebar() {
     { to: '/history', icon: History, label: 'History' },
     { to: '/user-schedule', icon: Calendar, label: 'Calendar' },
     { to: '/upcoming', icon: Clock, label: 'Upcoming' },
+    { to: '/marked-providers', icon: BookmarkIcon, label: 'Bookmarked' },
   ];
 
   return (

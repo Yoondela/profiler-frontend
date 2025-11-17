@@ -11,6 +11,7 @@ import GardenSmallIcon from '../../../assets/icons/subject-size/field/numeric-1.
 import GardenMediumIcon from '../../../assets/icons/subject-size/field/numeric-2.svg?react';
 import GardenLargeIcon from '../../../assets/icons/subject-size/field/numeric-3.svg?react';
 import { useServiceBooking } from '../contexts/ServiceBookingContext';
+import { useServiceRequest } from '../contexts/ServiceRequestContext';
 
 const sizeOptions = {
   'Car Wash': ['SM', 'L', 'XL'],
@@ -24,8 +25,13 @@ const serviceIcons = {
   Gardening: [GardenSmallIcon, GardenMediumIcon, GardenLargeIcon],
 };
 
-export default function SelectSizePopup({ onConfirm, onCancel }) {
-  const { userService, subjectSize, setSubjectSize } = useServiceBooking();
+export default function SelectSizePopup({ mode, onConfirm, onCancel }) {
+  const bookingState = useServiceBooking();
+  const requestState = useServiceRequest();
+
+  const { userService, subjectSize, setSubjectSize } =
+    mode === 'booking' ? bookingState : requestState;
+
   const options = sizeOptions[userService] || [];
   const icons = serviceIcons[userService] || [];
 

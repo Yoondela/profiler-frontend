@@ -93,9 +93,7 @@ export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
 
       {showSizePopup && (
         <SelectSizePopup
-          service={userService}
-          selectedSize={subjectSize}
-          setSelectedSize={setSubjectSize}
+          mode="booking"
           onConfirm={goToTasks}
           onCancel={() => setShowSizePopup(false)}
         />
