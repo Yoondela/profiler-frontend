@@ -1,5 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import PortfolioEditDialog from '@/components/sub/view/portfolio/PortfolioEditPopover';
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from '@/components/ui/popover';
 import {
   Map,
   BriefcaseBusiness,
@@ -9,7 +15,7 @@ import {
   Pencil,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Image } from 'lucide-react';
+import { CloudUpload } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import PortfolioGallery from '@/components/sub/view/portfolio/PortfolioGallery';
@@ -73,24 +79,31 @@ const PortfolioDetailsContainer = ({ provider }) => {
       <div className="info">
         <div className="card-header">
           <h2>About</h2>
-          <div className="edit-portfolio">
-            <Pencil size={17} />
-          </div>
+          <PortfolioEditDialog provider={provider} className="">
+            <div className="edit-portfolio">
+              <Pencil size={17} className="cursor-pointer" />
+            </div>
+          </PortfolioEditDialog>
         </div>
 
         <div className="card-body">
           {/* About */}
           <div className="section bio">
-            <p>{provider?.bio || 'This provider hasn’t added a bio yet.'}</p>
+            <p>{provider?.bio || 'About section is empty.'}</p>
           </div>
 
           {/* Skills */}
           <div className="section skills">
-            <h3>Skills & Services</h3>
+            <h3>Other Skills</h3>
             <div className="skill-list">
-              {provider?.skills?.length ? (
-                provider.skills.map((skill, i) => (
-                  <Badge key={i} variant="secondary" className="skill-badge">
+              {provider?.otherSkills?.length ? (
+                provider.otherSkills.map((skill, i) => (
+                  <Badge
+                    key={i}
+                    size={22}
+                    variant="secondary"
+                    className="skill-badge"
+                  >
                     {skill}
                   </Badge>
                 ))
