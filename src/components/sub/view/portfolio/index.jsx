@@ -19,6 +19,8 @@ import { CloudUpload } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import PortfolioGallery from '@/components/sub/view/portfolio/PortfolioGallery';
+import GalleryDialog from './gallery-manager/GalleryDialog';
+
 const PortfolioDetailsContainer = ({ provider }) => {
   const [isEditing, setIsEditing] = useState(false);
   return (
@@ -117,7 +119,15 @@ const PortfolioDetailsContainer = ({ provider }) => {
       {/* Featured Work */}
       <div className="section featured-work max-w-[100%]">
         <h4>Featured Work</h4>
-        <h4>Background of the gallery</h4>
+        <div className="flex justify-end w-full">
+          <GalleryDialog
+            trigger={
+              <p className="text-sm italic cursor-pointer hover:underline">
+                Manage gallery
+              </p>
+            }
+          />
+        </div>
         {provider?.galleryPhotosUrls?.length ? (
           <div className="work-gallery">
             <PortfolioGallery imageUrls={provider.galleryPhotosUrls} />

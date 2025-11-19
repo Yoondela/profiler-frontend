@@ -31,6 +31,7 @@ export default function UserSchedule() {
   let firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date());
 
   const [bookings, setBookings] = useState([]);
+  const [todayIsBooked, setTodayIsBooked] = useState(false);
   // const [selectedDayBooking, setSelectedDayBooking] = new Date();
 
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
@@ -59,6 +60,14 @@ export default function UserSchedule() {
           const dateString = b.forDate?.substring(0, 10);
           const timeString = b.forTime || '09:00';
 
+          const today = new Date().toISOString().substring(0, 10);
+
+          if (dateString === today) {
+            console.log("we're here");
+            setTodayIsBooked(true);
+          }
+
+          console.log('this is today is booked', todayIsBooked);
           const start = new Date(`${dateString} ${timeString}`);
           const end = new Date(start.getTime() + 60 * 60 * 1000);
 
@@ -105,9 +114,11 @@ export default function UserSchedule() {
 
   return (
     <div className="user-schedule-wrapper">
-      {/* <ProfileHeader userName="John Doe" /> */}
-
-      <div className="profile-page__divider" />
+      {todayIsBooked && (
+        <div className="bg-purple-300 hidden md:flex w-full fixed top-[3rem]">
+          <p className="mx-30 text-sm">There's something scheduled for today</p>
+        </div>
+      )}
 
       <p className="mt-16 mb-6 space-y-1 text-center text-l leading-6 text-gray-500">
         Your past and upcoming services

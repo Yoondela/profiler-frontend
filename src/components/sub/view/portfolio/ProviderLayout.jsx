@@ -3,7 +3,7 @@ import PortfolioHeader from './PortfolioHeader';
 import { getUserID } from '@/api/sync/SyncUser';
 import { fetchPortfolio } from '@/api/sync/SyncPortfolio';
 import { useAuth0 } from '@auth0/auth0-react';
-import PortfolioDetailsContainer from '@/containers/portfolio-details';
+import PortfolioDetailsContainer from '@/components/sub/view/portfolio';
 import useProviderPortfolio from '@/hooks/useProviderPortfolio';
 
 const PortfolioLayout = () => {
