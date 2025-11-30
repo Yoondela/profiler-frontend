@@ -77,10 +77,10 @@ export default function UserAvatar({ menu }) {
               {user?.email}
             </Link>
 
-            {isProviderCtx && (
+            {isProviderCtx && portfolio && (
               <Link to="/provider-page" onClick={() => setMenuOpen(false)}>
                 <Building2 size={16} style={{ marginRight: '8px' }} />
-                {portfolio.company}
+                {portfolio?.company}
               </Link>
             )}
 

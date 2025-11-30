@@ -16,11 +16,22 @@ export const sendGalleryUrlsToApp = async (userId, urls) => {
   return res.data; // updated list
 };
 
-// GALLERY — delete
-export const deleteGalleryPhoto = async (userId, index) => {
+export const fetchGalleryImages = async (userId, urls) => {
   if (!userId) throw new Error('No user ID provided');
 
-  const res = await axios.delete(`/portfolios/${userId}/gallery/${index}`);
+  const res = await axios.get(
+    `${import.meta.env.VITE_API_URL}/portfolios/${userId}/gallery`
+  );
+
+  console.log('fetched gallery photos:', res.data);
+  return res.data;
+};
+
+// GALLERY — delete
+export const deleteGalleryImage = async (userId, img_id) => {
+  if (!userId) throw new Error('No user ID provided');
+
+  const res = await axios.delete(`/portfolios/${userId}/gallery/${img_id}`);
   return res.data;
 };
 

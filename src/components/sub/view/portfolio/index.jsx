@@ -2,11 +2,6 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import PortfolioEditDialog from '@/components/sub/view/portfolio/PortfolioEditPopover';
 import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from '@/components/ui/popover';
-import {
   Map,
   BriefcaseBusiness,
   CircleCheckBig,
@@ -19,7 +14,6 @@ import { CloudUpload } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import PortfolioGallery from '@/components/sub/view/portfolio/PortfolioGallery';
-import GalleryDialog from './gallery-manager/GalleryDialog';
 
 const PortfolioDetailsContainer = ({ provider }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -119,18 +113,11 @@ const PortfolioDetailsContainer = ({ provider }) => {
       {/* Featured Work */}
       <div className="section featured-work max-w-[100%]">
         <h4>Featured Work</h4>
-        <div className="flex justify-end w-full">
-          <GalleryDialog
-            trigger={
-              <p className="text-sm italic cursor-pointer hover:underline">
-                Manage gallery
-              </p>
-            }
-          />
-        </div>
         {provider?.galleryPhotosUrls?.length ? (
           <div className="work-gallery">
-            <PortfolioGallery imageUrls={provider.galleryPhotosUrls} />
+            <PortfolioGallery
+              imageUrls={provider.galleryPhotos.map((img) => img.url)}
+            />
           </div>
         ) : (
           <div className="placeholder">

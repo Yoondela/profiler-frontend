@@ -6,6 +6,7 @@ import UserSchedule from '../components/sub/view/UserScheduleView';
 import SidebarLayout from '../layouts/SidebarLayout';
 import ProviderDashboard from '@/components/sub/view/dashboard/ProviderDashboard';
 import PortfolioLayout from '@/components/sub/view/portfolio/ProviderLayout';
+import GalleryManager from '@/components/sub/view/gallery-manager/GalleryManager';
 
 function AppRoutes() {
   return (
@@ -20,6 +21,7 @@ function AppRoutes() {
         <Route path="/user-profile" element={<UserProfile />} />
         <Route path="/provider-page" element={<PortfolioLayout />} />
         <Route path="/user-schedule" element={<UserSchedule />} />
+        <Route path="/user-gallery" element={<GalleryManager />} />
       </Route>
       {/* Catch-all redirect */}
       <Route path="*" element={<Navigate to="/" />} />

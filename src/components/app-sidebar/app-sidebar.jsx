@@ -13,6 +13,7 @@ import {
   History,
   Clock,
   BookmarkIcon,
+  GalleryVertical,
 } from 'lucide-react';
 import { useAuth0 } from '@auth0/auth0-react';
 import UserAvatar from '../sub/common/UserAvatar';
@@ -32,6 +33,7 @@ export function AppSidebar() {
     { to: '/history', icon: History, label: 'History' },
     { to: '/user-schedule', icon: Calendar, label: 'Calendar' },
     { to: '/upcoming', icon: Clock, label: 'Upcoming' },
+    { to: '/user-gallery', icon: GalleryVertical, label: 'Gallery' },
     { to: '/marked-providers', icon: BookmarkIcon, label: 'Bookmarked' },
   ];
 
