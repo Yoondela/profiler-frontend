@@ -18,7 +18,7 @@ import { GalleryGrid } from './GalleryGrid';
 const GalleryManager = () => {
   const [userId, setUserId] = useState(null);
   const [initialGalleryLoaded, setInitialGalleryLoaded] = useState(false);
-  const [initialImages, setInitialImages] = useState([]);
+  const [galleryImages, setGalleryImages] = useState([]);
 
   const { user, getAccessTokenSilently } = useAuth0();
 
@@ -49,7 +49,7 @@ const GalleryManager = () => {
       try {
         const existingImages = await fetchGalleryImages(userId);
         console.log('Existing gallery URLs:', existingImages);
-        setInitialImages(existingImages.galleryPhotos);
+        setGalleryImages(existingImages.galleryPhotos);
         setInitialGalleryLoaded(true);
       } catch (error) {
         console.error('Failed to fetch gallery URLs', error);
@@ -65,10 +65,11 @@ const GalleryManager = () => {
 
     const syncUrls = async () => {
       try {
-        await sendGalleryUrlsToApp({
-          userId,
-          urls: uploadedUrls,
-        });
+        const saved = await sendGalleryUrlsToApp(userId, uploadedUrls);
+
+        if (saved?.galleryPhotos) {
+          setGalleryImages(saved.galleryPhotos);
+        }
 
         console.log('URLs sent to backend:', uploadedUrls);
       } catch (error) {
@@ -83,13 +84,13 @@ const GalleryManager = () => {
     if (!userId) return;
 
     try {
+      // 1. Delete from backend (Mongo / API)
       await deleteGalleryImage(userId, img_id);
-      // Update local state
-      setInitialImages((prevImages) => {
-        const newImages = [...prevImages];
-        newImages.splice(1);
-        return newImages;
-      });
+
+      // 2. Delete from local state (React)
+      setGalleryImages((prevImages) =>
+        prevImages.filter((img) => img._id !== img_id)
+      );
     } catch (error) {
       console.error('Failed to delete gallery image', error);
     }
@@ -103,9 +104,9 @@ const GalleryManager = () => {
           <DropzoneContent />
         </Dropzone>
       </div>
-      {initialImages && (
+      {galleryImages && (
         <div className="px-10">
-          <GalleryGrid images={initialImages} onDelete={deleteImage} />
+          <GalleryGrid images={galleryImages} onDelete={deleteImage} />
         </div>
       )}
     </div>

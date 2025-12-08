@@ -3,6 +3,7 @@ import axios from 'axios';
 export const sendGalleryUrlsToApp = async (userId, urls) => {
   console.log('sending');
   console.log(userId);
+  console.log('urls:');
   console.log(urls);
   if (!userId) throw new Error('No user ID provided');
 
