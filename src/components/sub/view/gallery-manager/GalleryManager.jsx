@@ -113,8 +113,12 @@ const GalleryManager = () => {
         </Dropzone>
       </div>
       {galleryImages && (
-        <div className="px-10">
-          <GalleryGrid images={galleryImages} onDelete={deleteImage} />
+        <div className="px-10 mb-10">
+          <GalleryGrid
+            images={galleryImages}
+            setImages={setGalleryImages}
+            onDelete={deleteImage}
+          />
         </div>
       )}
     </div>
