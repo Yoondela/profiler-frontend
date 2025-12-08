@@ -16,7 +16,7 @@ export const GalleryGrid = ({ images, onDelete }) => {
 
           {/* Delete button - appears on hover */}
           <button
-            onClick={() => onDelete(img._id)}
+            onClick={() => onDelete(img)}
             className="absolute top-2 right-2 bg-black/70 text-white text-sm px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition"
           >
             Delete

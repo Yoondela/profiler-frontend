@@ -30,9 +30,12 @@ export const fetchGalleryImages = async (userId, urls) => {
 
 // GALLERY — delete
 export const deleteGalleryImage = async (userId, img_id) => {
+  console.log('Deleting image ID from API:', img_id);
   if (!userId) throw new Error('No user ID provided');
 
-  const res = await axios.delete(`/portfolios/${userId}/gallery/${img_id}`);
+  const res = await axios.delete(
+    `${import.meta.env.VITE_API_URL}/portfolios/${userId}/gallery/${img_id}`
+  );
   return res.data;
 };
 

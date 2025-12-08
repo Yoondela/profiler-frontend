@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { deleteAtGallery } from './helper/supabase-helper';
 import {
   Dropzone,
   DropzoneContent,
@@ -80,16 +81,23 @@ const GalleryManager = () => {
     syncUrls();
   }, [uploadedUrls, userId]);
 
-  const deleteImage = async (img_id) => {
+  const deleteImage = async (image) => {
+    console.log('Deleting image:', image);
     if (!userId) return;
 
     try {
-      // 1. Delete from backend (Mongo / API)
-      await deleteGalleryImage(userId, img_id);
+      // 1. Delete at Supabase Storage
+      await deleteAtGallery(image.url);
 
-      // 2. Delete from local state (React)
+      console.log('Deleted from Supabase Storage:', image.url);
+
+      // 2. Delete from backend (Mongo / API)
+      await deleteGalleryImage(userId, image._id);
+
+      console.log('Deleted from backend API:', image._id);
+      // 3. Delete from local state (React)
       setGalleryImages((prevImages) =>
-        prevImages.filter((img) => img._id !== img_id)
+        prevImages.filter((img) => img._id !== image._id)
       );
     } catch (error) {
       console.error('Failed to delete gallery image', error);
