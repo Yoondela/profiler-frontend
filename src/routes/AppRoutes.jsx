@@ -7,12 +7,15 @@ import SidebarLayout from '../layouts/SidebarLayout';
 import ProviderDashboard from '@/components/sub/view/dashboard/ProviderDashboard';
 import PortfolioLayout from '@/components/sub/view/portfolio/ProviderLayout';
 import GalleryManager from '@/components/sub/view/gallery-manager/GalleryManager';
+import ProviderPublicPage from '@/components/public-profile/PublickPage';
 
 function AppRoutes() {
   return (
     <Routes>
       {/* Home */}
       <Route path="/" element={<HomePage />} />
+      <Route path="/public-page" element={<ProviderPublicPage />} />
+
       <Route path="/callback" element={<AuthCallback />} />
 
       {/* All routes that use Sidebar */}

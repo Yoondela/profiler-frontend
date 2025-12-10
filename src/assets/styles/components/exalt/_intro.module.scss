@@ -13,6 +13,79 @@
   }
 }
 
+.search-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 1.25rem;
+  width: 100%;
+  max-width: 480px;
+
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.search-container {
+  width: 100%;
+
+  .title {
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+
+  .paragraph {
+    margin-bottom: 1rem;
+    color: #555;
+  }
+
+  .search-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background: #fff;
+    transition: box-shadow 0.25s ease;
+  }
+
+  .search-input-container:focus-within {
+    box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+  }
+
+  .search-icon {
+    opacity: 0.6;
+  }
+
+  .search-input {
+    margin-left: .6rem;
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+  }
+
+  .search-btn button {
+    width: 100%;
+    padding: 0.85rem;
+    border-radius: 10px;
+    background: variables.$black-0e;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.25s ease;
+
+    &:hover {
+      background: variables.$theme-color;
+    }
+  }
+}
+
 .intro-section {
   position: relative;
   z-index: 9;

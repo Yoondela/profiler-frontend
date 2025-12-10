@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import SearchProvider from './search';
 
 const PUBLIC_URL = import.meta.env.VITE_PUBLIC_URL || ''; // Default to empty if not defined
 
@@ -13,28 +13,23 @@ const Intro = ({ data }) => {
         backgroundSize: 'cover',
       }}
     >
-      <div className="container">
-        <div className="row row-cols-lg-1 row-cols-1">
-          <div className="align-self-center">
-            <div className="intro-content">
-              {/* inspire 2026 */}
-              <span className="sub-title text-3xl weight-300 text-white">
-                {data.subTitle}
-              </span>
-              {/* what we do */}
-              <h2 className="title text-3xl weight-300 text-[var(--theme-color)]">
-                {data.title}
-              </h2>
-              {/* smaller text */}
-              <div className="desc text-2xl text-white">
-                <p>{data.desc}</p>
-              </div>
-              {/* book/explore button */}
-              <Link to={PUBLIC_URL + '/'} className="intro-btn">
-                {data.buttonText}
-              </Link>
-            </div>
+      <div className="intro-content-wrapper w-full hidden md:flex flex-row-reverse justify-around items-center gap-6">
+        <div className="intro-content">
+          {/* inspire 2026 */}
+          <span className="sub-title text-lg weight-300 text-white">
+            {data.subTitle}
+          </span>
+          {/* what we do */}
+          <h2 className="title !text-lg weight-300 !text-gray-900">
+            {data.title}
+          </h2>
+          {/* smaller text */}
+          <div className="desc text-lg text-white">
+            <p>{data.desc}</p>
           </div>
+        </div>
+        <div className="relative">
+          <SearchProvider />
         </div>
       </div>
     </div>

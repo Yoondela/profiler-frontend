@@ -7,6 +7,7 @@ import IntroContainer from '../containers/home/intro/intro-container.jsx';
 import { ServiceRequestProvider } from '../components/request/contexts/ServiceRequestContext.jsx';
 import SumedBenefits from '../components/sumed-benefits/benefits.jsx';
 import { ServiceBookingProvider } from '@/components/request/contexts/ServiceBookingContext.jsx';
+import { SearchContextProvider } from '@/components/intro/context/context';
 // import Booker from '../components/request/booker/Booker.jsx';
 import Requester from '../components/request/requester/Requester.jsx';
 import Booker from '../components/request/booker/Booker.jsx';
@@ -19,7 +20,9 @@ const HomePage = () => {
           <div className="header-intro-wrapper">
             {/* <Header /> */}
             <div className="relative">
-              <IntroContainer />
+              <SearchContextProvider>
+                <IntroContainer />
+              </SearchContextProvider>
             </div>
           </div>
           <ServiceRequestProvider>
