@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import SearchProvider from './search';
+import SearchProvider from './IntroSearch';
 
 const PUBLIC_URL = import.meta.env.VITE_PUBLIC_URL || ''; // Default to empty if not defined
 

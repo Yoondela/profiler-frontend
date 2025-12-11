@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Search } from 'lucide-react';
 import { useSearchContext } from './context/context';
-import SearchResults from './SearchResults';
 
 export default function SearchProvider() {
   const { searchfield, setSearchfield } = useSearchContext();
@@ -23,11 +22,8 @@ export default function SearchProvider() {
   };
 
   return (
-    <div className="search-wrapper">
-      <div className="search-container pt-7">
-        <h2 className="title">Find Your Service</h2>
-        <p className="paragraph">Search by user, provider, or service.</p>
-
+    <div className="search-app-wrapper">
+      <div className="search-container">
         <form onSubmit={handleSearch}>
           <div className="search-input-container relative">
             <Search width="20" height="20" className="search-icon" />
@@ -63,13 +59,8 @@ export default function SearchProvider() {
               )}
             </AnimatePresence>
           </div>
-
-          <div className="search-btn mt-3">
-            <button type="submit">Search</button>
-          </div>
         </form>
       </div>
-      <SearchResults />
     </div>
   );
 }

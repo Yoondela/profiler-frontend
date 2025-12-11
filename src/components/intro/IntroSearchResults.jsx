@@ -2,7 +2,7 @@ import { useSearchContext } from './context/context';
 import { useState, useEffect } from 'react';
 import { searchProviders } from '@/api/lookup/searchApi';
 
-export default function SearchResults() {
+export default function IntroSearchResults() {
   const { searchfield } = useSearchContext();
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);

@@ -18,10 +18,13 @@
 @use './components/exalt/user-avater.module';
 @use './pages/portfolio-page.module.scss';
 @use './components/exalt/portfolio-gallery.module';
+@use './components/search-app.module';
 
 /* Global styles */
 body {
   margin: 0;
+  margin-top: 2.6rem;
+  height: 100%;
   font-family: 'Poppins';
   background-color: $white;
   color: #666666;
