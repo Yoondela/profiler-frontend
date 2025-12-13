@@ -1,69 +1,58 @@
 'use client';
 
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { useParams } from 'react-router-dom';
+import { fetchPublicPage } from '@/api/lookup/publicPageApi';
+import { useEffect, useState } from 'react';
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from '@/components/ui/resizable';
+
+import PortfolioDetailsContainer from './PublicPortfolio';
+import PublicProfile from './PublicProfile';
+import PortfolioHeader from '../sub/view/portfolio/PortfolioHeader';
 
 export default function ProviderPublicPage() {
-  const provider = fakeProvider; // later: replace with API call
+  const { id } = useParams();
+  const [providerData, setProviderData] = useState(null);
+
+  useEffect(() => {
+    async function loadData() {
+      const data = await fetchPublicPage(id);
+      setProviderData(data);
+    }
+    loadData();
+  }, [id]);
+
+  if (!providerData) {
+    return <div className="p-4">Loading…</div>;
+  }
 
   return (
-    <div className="w-full max-w-6xl mx-auto p-4">
-      <div className="grid grid-cols-1 md:grid-cols-[3fr_1fr] gap-6">
-        {/* LEFT: GALLERY */}
-        <div className="space-y-4">
-          <h1 className="text-xl font-semibold">{provider.name} Portfolio</h1>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {provider.galleryPhotos.map((img, i) => (
-              <div
-                key={i}
-                className="relative w-full h-40 rounded-lg overflow-hidden bg-muted"
-              >
-                <img
-                  src={img}
-                  alt={`gallery ${i}`}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            ))}
+    <div>
+      <ResizablePanelGroup direction="horizontal" className="h-full w-full">
+        <ResizablePanel defaultSize={75} className="overflow-auto">
+          <PortfolioHeader
+            bannerUrl={providerData.portfolio.bannerUrl}
+            logoUrl={providerData.portfolio.logoUrl}
+            providerName={providerData.portfolio.company || 'Unknown Provider'}
+            averageRating={providerData.portfolio.rating}
+            reviewCount={providerData.portfolio.completedJobs}
+          />
+          <div className="h-full overflow-auto">
+            <PortfolioDetailsContainer portfolio={providerData.portfolio} />
           </div>
-        </div>
+        </ResizablePanel>
 
-        {/* RIGHT: STICKY PROFILE CARD */}
-        <Card className="h-fit md:sticky md:top-6">
-          <CardContent className="p-4 flex flex-col items-center text-center space-y-3">
-            <img
-              src={provider.photo}
-              alt={provider.name}
-              className="w-24 h-24 rounded-full object-cover"
-            />
+        <ResizableHandle withHandle className="bg-gray-400 w-px" />
 
-            <h2 className="text-lg font-semibold">{provider.name}</h2>
-
-            <p className="text-sm text-muted-foreground">{provider.location}</p>
-
-            <p className="text-sm leading-relaxed">{provider.bio}</p>
-
-            <Button className="w-full">Request Service</Button>
-          </CardContent>
-        </Card>
-      </div>
+        <ResizablePanel defaultSize={25}>
+          <div className="flex h-full items-start justify-center px-6 overflow-auto">
+            <PublicProfile provider={providerData} />
+          </div>
+        </ResizablePanel>
+      </ResizablePanelGroup>
     </div>
   );
 }
-
-// ---- FAKE DATA ----
-const fakeProvider = {
-  id: '12345',
-  name: 'Nomusa M.',
-  photo: 'https://via.placeholder.com/200',
-  location: 'Durban, South Africa',
-  bio: 'Experienced house cleaner with 3+ years in residential and Airbnb cleaning.',
-  galleryPhotos: [
-    'https://picsum.photos/400?random=1',
-    'https://picsum.photos/400?random=2',
-    'https://picsum.photos/400?random=3',
-    'https://picsum.photos/400?random=4',
-    'https://picsum.photos/400?random=5',
-  ],
-};

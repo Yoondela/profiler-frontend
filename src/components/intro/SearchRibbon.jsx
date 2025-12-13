@@ -6,6 +6,7 @@ import { useSearchContext } from './context/context';
 export default function SearchProvider() {
   const { searchfield, setSearchfield } = useSearchContext();
 
+  console.log('Search field value:', searchfield);
   // Local UI helpers
   const inputRef = useRef(null);
 

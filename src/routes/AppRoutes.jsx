@@ -15,7 +15,7 @@ function AppRoutes() {
     <Routes>
       {/* Home */}
       <Route path="/" element={<HomePage />} />
-      <Route path="/public-page" element={<ProviderPublicPage />} />
+      <Route path="/providers/:id/public" element={<ProviderPublicPage />} />
       <Route path="/search-app" element={<SearchPage />} />
 
       <Route path="/callback" element={<AuthCallback />} />

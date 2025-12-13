@@ -3,23 +3,23 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Search } from 'lucide-react';
 import { useSearchContext } from './context/context';
 import IntroSearchResults from './IntroSearchResults';
+import { useNavigate } from 'react-router-dom';
 
 export default function SearchProvider() {
   const { searchfield, setSearchfield } = useSearchContext();
-
-  // Local UI helpers
+  const navigate = useNavigate();
   const inputRef = useRef(null);
 
   useEffect(() => {
     if (inputRef.current) inputRef.current.focus();
   }, []);
 
-  // Search submit handler
   const handleSearch = (e) => {
     e.preventDefault();
     if (!searchfield.trim()) return;
-    // Lifted state goes to parent or triggers API call
     console.log('Searching for:', searchfield);
+
+    navigate('/search-app');
   };
 
   return (
@@ -46,7 +46,6 @@ export default function SearchProvider() {
               />
             </div>
 
-            {/* Clear Button (X) */}
             <AnimatePresence>
               {searchfield && (
                 <motion.button

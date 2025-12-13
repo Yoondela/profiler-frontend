@@ -4,12 +4,16 @@ import { useSearchContext } from './context/context';
 import { useState, useEffect } from 'react';
 import { searchProviders } from '@/api/lookup/searchApi';
 import SearchResultCard from './SearchResultsCard';
+import SearchResultSkeleton from './SearchResultSkeleton';
+import { fetchPublicPage } from '@/api/lookup/publicPageApi';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 export default function AppSearchResults() {
   const { searchfield } = useSearchContext();
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   function pickRelevantService(provider, query) {
     const q = query.toLowerCase();
@@ -17,6 +21,16 @@ export default function AppSearchResults() {
       s.toLowerCase().includes(q)
     );
     return match || provider.servicesOffered?.[0] || '';
+  }
+
+  async function getPublicPage(providerId) {
+    const providerInfo = await fetchPublicPage(providerId);
+
+    if (providerInfo) {
+      navigate(`/providers/${providerId}/public`);
+    }
+
+    console.log('This is provider info', providerInfo);
   }
 
   useEffect(() => {
@@ -40,19 +54,34 @@ export default function AppSearchResults() {
 
   return (
     <div className="h-full w-full overflow-y-auto p-2">
-      {loading && <p>Searching…</p>}
+      {/* Skeleton Loader */}
+      {loading && (
+        <div
+          className="
+            grid gap-3 
+            grid-cols-[repeat(auto-fill,minmax(180px,1fr))]
+          "
+        >
+          {Array.from({ length: 6 }).map((_, i) => (
+            <SearchResultSkeleton key={i} />
+          ))}
+        </div>
+      )}
+
+      {/* Empty state */}
       {!loading && results.length === 0 && searchfield && (
         <p>No results found.</p>
       )}
 
-      <div
-        className="
-        grid gap-3 
-        grid-cols-[repeat(auto-fill,minmax(180px,1fr))]
-      "
-      >
-        {!loading &&
-          results.map((provider) => {
+      {/* Results Grid */}
+      {!loading && (
+        <div
+          className="
+            grid gap-3 
+            grid-cols-[repeat(auto-fill,minmax(180px,1fr))]
+          "
+        >
+          {results.map((provider) => {
             const serviceLabel = pickRelevantService(provider, searchfield);
 
             return (
@@ -60,15 +89,21 @@ export default function AppSearchResults() {
                 key={provider._id}
                 provider={provider}
                 serviceLabel={serviceLabel}
+                onClick={() => getPublicPage(provider._id)}
                 actions={
-                  <Button variant="secondary" size="sm">
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => getPublicPage(provider._id)}
+                  >
                     View
                   </Button>
                 }
               />
             );
           })}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

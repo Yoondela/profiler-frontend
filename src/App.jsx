@@ -7,6 +7,7 @@ import { Toaster } from '@/components/ui/sonner';
 import AppRoutes from './routes/AppRoutes';
 import { UserProvider } from './api/context/userContext';
 import { AOS } from 'aos';
+import { SearchContextProvider } from './components/intro/context/context';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -29,10 +30,12 @@ function App() {
   return (
     <div>
       <UserProvider>
-        {isAuthenticated && !isLoading && <CreateUser />}
-        <Navbar />
-        <AppRoutes />
-        <Toaster />
+        <SearchContextProvider>
+          {isAuthenticated && !isLoading && <CreateUser />}
+          <Navbar />
+          <AppRoutes />
+          <Toaster />
+        </SearchContextProvider>
       </UserProvider>
     </div>
   );

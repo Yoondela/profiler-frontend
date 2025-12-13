@@ -10,7 +10,7 @@ import {
 
 export default function SearchResultCard({ provider, serviceLabel, actions }) {
   return (
-    <Card className="border-none shadow-none rounded-lg p-0 gap-0 cursor-pointer bg-white hover:bg-blue-100 transition">
+    <Card className="border-none shadow-none rounded-lg p-1 gap-0 cursor-pointer bg-white hover:bg-blue-100 transition">
       {/* IMAGE */}
       <div className="w-full h-32 rounded-lg bg-gray-100 overflow-hidden">
         <img
@@ -30,7 +30,7 @@ export default function SearchResultCard({ provider, serviceLabel, actions }) {
         <p className="text-xs text-gray-500 truncate">{serviceLabel}</p>
       </CardContent>
 
-      {actions && <CardFooter className="px-2 pt-0">{actions}</CardFooter>}
+      {actions && <CardFooter className="px-2 py-0">{actions}</CardFooter>}
     </Card>
   );
 }
