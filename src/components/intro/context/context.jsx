@@ -1,19 +1,33 @@
 import { createContext, useContext, useState } from 'react';
 
-const SearchContext = createContext({
-  searchfield: '',
-  setSearchfield: () => {
-    throw new Error('setSearchfield called outside SearchContextProvider');
-  },
-});
+const SearchContext = createContext(null);
 
 export const SearchContextProvider = ({ children }) => {
-  const [searchfield, setSearchfield] = useState('');
+  const [searchField, setSearchField] = useState('');
+  const [results, setResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [hoveredProviderId, setHoveredProviderId] = useState(null);
+
+  const value = {
+    searchField,
+    setSearchField,
+
+    results,
+    setResults,
+
+    isLoading,
+    setIsLoading,
+
+    error,
+    setError,
+
+    hoveredProviderId,
+    setHoveredProviderId,
+  };
 
   return (
-    <SearchContext.Provider value={{ searchfield, setSearchfield }}>
-      {children}
-    </SearchContext.Provider>
+    <SearchContext.Provider value={value}>{children}</SearchContext.Provider>
   );
 };
 

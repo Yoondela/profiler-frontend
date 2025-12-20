@@ -20,11 +20,11 @@ const PublicPortfolio = ({ portfolio }) => {
     <div className="provider-overview-card">
       <Card className="portfolio-intro border-none shadow-none">
         <div className="flex flex-col md:flex-row md:items-start md:gap-6">
-          <CardContent className="md:flex md:flex-wrap md:gap-3 md:max-w-[50%]">
-            <div className="bits w-full">
+          <CardContent className="md:flex md:flex-wrap md:gap-3 md:max-w-[100%]">
+            <div className="flex flex-col bits w-full">
               <div className="address flex items-center gap-2">
-                <Map size={20} />
-                <p>{portfolio.address}</p>
+                <Map min={20} />
+                <p>{portfolio.address.formatted}</p>
               </div>
 
               <div className="categories flex items-start gap-2">

@@ -6,6 +6,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { getUserID } from '@/api/sync/SyncUser';
 import { toast } from 'sonner';
 import { useUserContext } from '@/api/context/userContext.jsx';
+import BecomeProviderDialog from './view/BecomeProviderDialog';
 
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';

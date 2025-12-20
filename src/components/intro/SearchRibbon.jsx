@@ -4,9 +4,9 @@ import { X, Search } from 'lucide-react';
 import { useSearchContext } from './context/context';
 
 export default function SearchProvider() {
-  const { searchfield, setSearchfield } = useSearchContext();
+  const { searchField, setSearchField } = useSearchContext();
 
-  console.log('Search field value:', searchfield);
+  console.log('Search field value:', searchField);
   // Local UI helpers
   const inputRef = useRef(null);
 
@@ -17,9 +17,9 @@ export default function SearchProvider() {
   // Search submit handler
   const handleSearch = (e) => {
     e.preventDefault();
-    if (!searchfield.trim()) return;
+    if (!searchField.trim()) return;
     // Lifted state goes to parent or triggers API call
-    console.log('Searching for:', searchfield);
+    console.log('Searching for:', searchField);
   };
 
   return (
@@ -34,21 +34,21 @@ export default function SearchProvider() {
                 type="text"
                 placeholder="Search"
                 className="search-input pr-8"
-                value={searchfield}
-                onChange={(e) => setSearchfield(e.target.value)}
+                value={searchField}
+                onChange={(e) => setSearchField(e.target.value)}
                 ref={inputRef}
                 onKeyDown={(e) => {
-                  if (e.key === 'Escape') setSearchfield('');
+                  if (e.key === 'Escape') setSearchField('');
                 }}
               />
             </div>
 
             {/* Clear Button (X) */}
             <AnimatePresence>
-              {searchfield && (
+              {searchField && (
                 <motion.button
                   type="button"
-                  onClick={() => setSearchfield('')}
+                  onClick={() => setSearchField('')}
                   initial={{ opacity: 0, scale: 0.8, filter: 'blur(2px)' }}
                   animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
                   exit={{ opacity: 0, scale: 0.8, filter: 'blur(2px)' }}

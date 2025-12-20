@@ -6,7 +6,7 @@ import IntroSearchResults from './IntroSearchResults';
 import { useNavigate } from 'react-router-dom';
 
 export default function SearchProvider() {
-  const { searchfield, setSearchfield } = useSearchContext();
+  const { searchField, setSearchField } = useSearchContext();
   const navigate = useNavigate();
   const inputRef = useRef(null);
 
@@ -16,8 +16,8 @@ export default function SearchProvider() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if (!searchfield.trim()) return;
-    console.log('Searching for:', searchfield);
+    if (!searchField) return;
+    console.log('Searching for:', searchField);
 
     navigate('/search-app');
   };
@@ -37,20 +37,20 @@ export default function SearchProvider() {
                 type="text"
                 placeholder="Search"
                 className="search-input pr-8"
-                value={searchfield}
-                onChange={(e) => setSearchfield(e.target.value)}
+                value={searchField}
+                onChange={(e) => setSearchField(e.target.value)}
                 ref={inputRef}
                 onKeyDown={(e) => {
-                  if (e.key === 'Escape') setSearchfield('');
+                  if (e.key === 'Escape') setSearchField('');
                 }}
               />
             </div>
 
             <AnimatePresence>
-              {searchfield && (
+              {searchField && (
                 <motion.button
                   type="button"
-                  onClick={() => setSearchfield('')}
+                  onClick={() => setSearchField('')}
                   initial={{ opacity: 0, scale: 0.8, filter: 'blur(2px)' }}
                   animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
                   exit={{ opacity: 0, scale: 0.8, filter: 'blur(2px)' }}

@@ -30,29 +30,29 @@ export default function ProviderPublicPage() {
   }
 
   return (
-    <div>
-      <ResizablePanelGroup direction="horizontal" className="h-full w-full">
-        <ResizablePanel defaultSize={75} className="overflow-auto">
-          <PortfolioHeader
-            bannerUrl={providerData.portfolio.bannerUrl}
-            logoUrl={providerData.portfolio.logoUrl}
-            providerName={providerData.portfolio.company || 'Unknown Provider'}
-            averageRating={providerData.portfolio.rating}
-            reviewCount={providerData.portfolio.completedJobs}
-          />
-          <div className="h-full overflow-auto">
+    <div className="min-h-screen flex flex-col">
+      <PortfolioHeader
+        bannerUrl={providerData.portfolio.bannerUrl}
+        logoUrl={providerData.portfolio.logoUrl}
+        providerName={providerData.portfolio.company || 'Unknown Provider'}
+        averageRating={providerData.portfolio.rating}
+        reviewCount={providerData.portfolio.completedJobs}
+      />
+      <div className="flex items-start w-full">
+        <div className="w-3/4 space-x-6 p-6">
+          <div className="">
             <PortfolioDetailsContainer portfolio={providerData.portfolio} />
           </div>
-        </ResizablePanel>
+        </div>
 
-        <ResizableHandle withHandle className="bg-gray-400 w-px" />
+        {/* <ResizableHandle withHandle className="bg-gray-400 w-px" /> */}
 
-        <ResizablePanel defaultSize={25}>
-          <div className="flex h-full items-start justify-center px-6 overflow-auto">
-            <PublicProfile provider={providerData} />
+        <div className="w-1/4 border-s border-gray-200 p-6 sticky top-10">
+          <div>
+            <PublicProfile provider={providerData} className=" px-6" />
           </div>
-        </ResizablePanel>
-      </ResizablePanelGroup>
+        </div>
+      </div>
     </div>
   );
 }

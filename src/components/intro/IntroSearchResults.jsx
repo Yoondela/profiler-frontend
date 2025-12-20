@@ -9,7 +9,7 @@ export default function IntroSearchResults() {
 
   // Debounce timer
   useEffect(() => {
-    if (!searchfield.trim()) {
+    if (!searchfield) {
       setResults([]);
       return;
     }

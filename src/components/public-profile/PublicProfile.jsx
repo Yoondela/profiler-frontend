@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 
 const PublicProfile = ({ provider }) => {
   return (
-    <div className="flex flex-col justify-center provider-profile py-6 max-h-[600px] overflow-auto">
+    <div className="flex flex-col justify-center provider-profile py-6 max-h-[600px] sticky top-10">
       <div className="flex justify-center profile-photo border border-gray-200">
         <img
           src={provider.profile.avatarUrl}

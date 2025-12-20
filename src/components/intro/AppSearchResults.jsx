@@ -8,10 +8,17 @@ import SearchResultSkeleton from './SearchResultSkeleton';
 import { fetchPublicPage } from '@/api/lookup/publicPageApi';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { set } from 'date-fns';
 
 export default function AppSearchResults() {
-  const { searchfield } = useSearchContext();
-  const [results, setResults] = useState([]);
+  const {
+    searchField,
+    setResults,
+    results,
+    setIsLoading,
+    setError,
+    setHoveredProviderId,
+  } = useSearchContext();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -24,33 +31,39 @@ export default function AppSearchResults() {
   }
 
   async function getPublicPage(providerId) {
-    const providerInfo = await fetchPublicPage(providerId);
+    try {
+      const providerInfo = await fetchPublicPage(providerId);
 
-    if (providerInfo) {
-      navigate(`/providers/${providerId}/public`);
+      if (providerInfo) {
+        navigate(`/providers/${providerId}/public`);
+      }
+
+      console.log('Fetched public page:', providerInfo);
+    } catch (error) {
+      console.error('Error fetching public page:', error);
     }
-
-    console.log('This is provider info', providerInfo);
   }
 
   useEffect(() => {
-    if (!searchfield.trim()) {
+    if (!searchField) {
       setResults([]);
       return;
     }
 
     const delay = setTimeout(async () => {
       try {
+        setIsLoading(true);
         setLoading(true);
-        const data = await searchProviders(searchfield);
+        const data = await searchProviders(searchField);
         setResults(data || []);
       } finally {
+        setIsLoading(false);
         setLoading(false);
       }
     }, 350);
 
     return () => clearTimeout(delay);
-  }, [searchfield]);
+  }, [searchField]);
 
   return (
     <div className="h-full w-full overflow-y-auto p-2">
@@ -69,7 +82,7 @@ export default function AppSearchResults() {
       )}
 
       {/* Empty state */}
-      {!loading && results.length === 0 && searchfield && (
+      {!loading && results.length === 0 && searchField && (
         <p>No results found.</p>
       )}
 
@@ -82,13 +95,15 @@ export default function AppSearchResults() {
           "
         >
           {results.map((provider) => {
-            const serviceLabel = pickRelevantService(provider, searchfield);
+            const serviceLabel = pickRelevantService(provider, searchField);
 
             return (
               <SearchResultCard
                 key={provider._id}
                 provider={provider}
                 serviceLabel={serviceLabel}
+                onMouseEnter={() => setHoveredProviderId(provider._id)}
+                onMouseLeave={() => setHoveredProviderId(null)}
                 onClick={() => getPublicPage(provider._id)}
                 actions={
                   <Button

@@ -25,7 +25,7 @@ const PortfolioDetailsContainer = ({ provider }) => {
             <div className="bits w-full">
               <div className="address flex items-center gap-2">
                 <Map size={20} />
-                <p>{provider.address}</p>
+                <p>{provider.address.formatted}</p>
               </div>
 
               <div className="categories flex items-start gap-2">

@@ -8,6 +8,7 @@ import AppRoutes from './routes/AppRoutes';
 import { UserProvider } from './api/context/userContext';
 import { AOS } from 'aos';
 import { SearchContextProvider } from './components/intro/context/context';
+import GoogleMapsProvider from './components/app-providers/GoogleMapsProvider';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -30,12 +31,14 @@ function App() {
   return (
     <div>
       <UserProvider>
-        <SearchContextProvider>
-          {isAuthenticated && !isLoading && <CreateUser />}
-          <Navbar />
-          <AppRoutes />
-          <Toaster />
-        </SearchContextProvider>
+        <GoogleMapsProvider>
+          <SearchContextProvider>
+            {isAuthenticated && !isLoading && <CreateUser />}
+            <Navbar />
+            <AppRoutes />
+            <Toaster />
+          </SearchContextProvider>
+        </GoogleMapsProvider>
       </UserProvider>
     </div>
   );

@@ -8,9 +8,19 @@ import {
   CardFooter,
 } from '@/components/ui/card';
 
-export default function SearchResultCard({ provider, serviceLabel, actions }) {
+export default function SearchResultCard({
+  provider,
+  serviceLabel,
+  actions,
+  onMouseEnter,
+  onMouseLeave,
+}) {
   return (
-    <Card className="border-none shadow-none rounded-lg p-1 gap-0 cursor-pointer bg-white hover:bg-blue-100 transition">
+    <Card
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      className="border-none shadow-none rounded-lg p-1 gap-0 cursor-pointer bg-white hover:bg-blue-100 transition"
+    >
       {/* IMAGE */}
       <div className="w-full h-32 rounded-lg bg-gray-100 overflow-hidden">
         <img

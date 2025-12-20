@@ -2,17 +2,17 @@ import { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import toast from 'react-hot-toast';
 import { Switch } from '@headlessui/react';
+import BecomeProviderDialog from './view/BecomeProviderDialog';
 
 export default function BecomeProviderSwitch({ userId, onSuccess }) {
   const { getAccessTokenSilently } = useAuth0();
   const [loading, setLoading] = useState(false);
   const [isProvider, setIsProvider] = useState(false);
-  const [message, setMessage] = useState('');
+  const [showDialog, setShowDialog] = useState(false);
 
-  const handleUpgrade = async () => {
+  const handleUpgrade = async (payload) => {
     try {
       setLoading(true);
-      setMessage('');
 
       const token = await getAccessTokenSilently();
 
@@ -24,34 +24,45 @@ export default function BecomeProviderSwitch({ userId, onSuccess }) {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
+          body: JSON.stringify(payload),
         }
       );
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Failed to upgrade');
+      if (!res.ok) throw new Error(data.message);
+
+      console.log('Upgrade response:', data);
 
       setIsProvider(true);
-      setMessage('Pending..');
-      toast.success('Successfully upgraded to provider!');
-      if (onSuccess) onSuccess();
+      toast.success('You are now a provider');
+      onSuccess?.();
     } catch (err) {
-      console.error(err);
-      setMessage(err.message || 'Something went wrong');
+      toast.error(err.message || 'Upgrade failed');
     } finally {
       setLoading(false);
+      setShowDialog(false);
     }
   };
 
-  if (isProvider)
-    return <p className="text-green-600 font-medium">{message}</p>;
+  if (isProvider) {
+    return <p className="text-green-600 font-medium">Pending..</p>;
+  }
 
   return (
-    <Switch
-      onClick={handleUpgrade}
-      disabled={loading}
-      className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
-    >
-      {loading ? 'Processing...' : 'Become a Provider'}
-    </Switch>
+    <>
+      <button
+        disabled={loading}
+        onClick={() => setShowDialog(true)}
+        className="px-4 py-2 bg-green-600 text-white rounded-md"
+      >
+        Become a Provider
+      </button>
+
+      <BecomeProviderDialog
+        open={showDialog}
+        onOpenChange={setShowDialog}
+        onSubmit={handleUpgrade}
+      />
+    </>
   );
 }
