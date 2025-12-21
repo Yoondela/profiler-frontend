@@ -7,7 +7,7 @@ export default function MapResults() {
   console.log('Providers in MapResults:', results);
   console.log('Mock Providers in MapResults:', mockProviders);
   return (
-    <div className="h-[500px] w-full">
+    <div className="h-[500px] w-full z-0">
       <ServiceAreaMap
         providers={results}
         hoveredProviderId={hoveredProviderId}

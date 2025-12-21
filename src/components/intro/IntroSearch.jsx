@@ -24,12 +24,12 @@ export default function SearchProvider() {
 
   return (
     <div className="search-wrapper">
-      <div className="search-container pt-7">
+      <div className="intro-search-container pt-7">
         <h2 className="title">Find Your Service</h2>
         <p className="paragraph">Search by user, provider, or service.</p>
 
         <form onSubmit={handleSearch}>
-          <div className="search-input-container relative">
+          <div className="intro-search-input-container relative">
             <Search width="20" height="20" className="search-icon" />
 
             <div className="local-search w-full">

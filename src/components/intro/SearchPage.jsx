@@ -9,23 +9,27 @@ import {
 
 export default function SearchPage() {
   return (
-    <div>
+    <div className="h-[100dvh] flex flex-col">
+      {/* Header */}
       <SearchRibbon />
-      <hr className="text-gray-100" />
+      {/* Content area */}
+      <div className="flex-1 max-h-[calc(100dvh-9rem)] sticky top-[var(--header-two-height)]">
+        <ResizablePanelGroup direction="horizontal" className="h-full w-full">
+          <ResizablePanel defaultSize={45}>
+            <div className="h-full overflow-hidden p-6">
+              <MapResults />
+            </div>
+          </ResizablePanel>
 
-      <ResizablePanelGroup direction="horizontal" className="h-full w-full">
-        <ResizablePanel defaultSize={25}>
-          <div className="flex h-full items-center justify-center p-6">
-            <MapResults />
-          </div>
-        </ResizablePanel>
-        <ResizableHandle withHandle className="bg-gray-400 w-px" />
-        <ResizablePanel defaultSize={75}>
-          <div className="flex h-full items-start justify-start px-6">
-            <AppSearchResults />
-          </div>
-        </ResizablePanel>
-      </ResizablePanelGroup>
+          <ResizableHandle withHandle className="bg-gray-400 w-px" />
+
+          <ResizablePanel defaultSize={55}>
+            <div className="h-full overflow-y-auto px-6">
+              <AppSearchResults />
+            </div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </div>
     </div>
   );
 }

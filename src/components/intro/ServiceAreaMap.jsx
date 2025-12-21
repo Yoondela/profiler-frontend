@@ -16,7 +16,7 @@ export default function ServiceAreaMap({ providers, hoveredProviderId }) {
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={providers[0]?.location || defaultCenter}
-      zoom={12}
+      zoom={11}
       options={{
         disableDefaultUI: true,
         zoomControl: true,

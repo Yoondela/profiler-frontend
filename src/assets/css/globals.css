@@ -15,7 +15,9 @@
   }
 
   :root {
+    --navbar-h: 4rem;
     --header-height: 3rem;
+    --header-two-height: 6.6rem;
     --icon-right: 30px;
   }
 
