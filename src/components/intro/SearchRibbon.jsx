@@ -1,8 +1,23 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Search } from 'lucide-react';
+import { 
+  X,
+  Search,
+  Briefcase,
+  User,
+  Layers,
+  MapPin,
+  Building2,
+} from 'lucide-react';
 import { useSearchContext } from './context/context';
 import axios from 'axios';
+
+const typeIconMap = {
+  service: Briefcase,
+  provider: Building2,
+  category: Layers,
+  location: MapPin,
+};
 
 export default function SearchProvider() {
   const { searchField, setSearchField } = useSearchContext();
@@ -157,18 +172,30 @@ export default function SearchProvider() {
                 >
                   {suggestions.map((item, index) => (
                     <li
-                      key={`${item.type}-${item.label}`}
-                      onMouseDown={() => handleSelect(item.label)}
-                      className={`cursor-pointer px-4 py-2 text-sm flex items-center gap-2 rounded-md
-                        ${
-                          index === activeIndex
-                            ? 'bg-gray-100'
-                            : 'hover:bg-gray-50'
-                        }`}
-                    >
-                      <span className="text-xs text-gray-400">{item.type}</span>
-                      <span>{item.label}</span>
-                    </li>
+  key={`${item.type}-${item.label}`}
+  onMouseDown={() => handleSelect(item.label)}
+  className={`cursor-pointer px-4 py-2 text-sm flex items-center gap-3 rounded-md
+    ${
+      index === activeIndex
+        ? 'bg-gray-100'
+        : 'hover:bg-gray-50'
+    }`}
+>
+  {(() => {
+    const Icon = typeIconMap[item.type];
+    return Icon ? (
+      <Icon size={16} className="text-gray-500 shrink-0" />
+    ) : null;
+  })()}
+
+  <div className="flex flex-col">
+    <span className="text-sm">{item.label}</span>
+    <span className="text-xs text-gray-400 capitalize">
+      {item.type}
+    </span>
+  </div>
+</li>
+
                   ))}
                 </motion.ul>
               )}

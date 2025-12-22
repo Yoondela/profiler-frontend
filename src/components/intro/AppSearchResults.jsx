@@ -22,6 +22,10 @@ export default function AppSearchResults() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    setHoveredProviderId(null);
+  }, [results]);
+
   function pickRelevantService(provider, query) {
     const q = query.toLowerCase();
     const match = provider.servicesOffered.find((s) =>
@@ -49,21 +53,33 @@ export default function AppSearchResults() {
       setResults([]);
       return;
     }
-
+  
+    let cancelled = false;
+  
     const delay = setTimeout(async () => {
       try {
         setIsLoading(true);
         setLoading(true);
-        const data = await searchProviders(searchField);
-        setResults(data || []);
+      
+          const data = await searchProviders(searchField);
+      
+          if (!cancelled) {
+          setResults(Array.isArray(data) ? data : []);
+        }
       } finally {
-        setIsLoading(false);
-        setLoading(false);
+        if (!cancelled) {
+          setIsLoading(false);
+          setLoading(false);
+        }
       }
     }, 350);
-
-    return () => clearTimeout(delay);
+  
+    return () => {
+      cancelled = true;
+      clearTimeout(delay);
+    };
   }, [searchField]);
+
 
   return (
     <div className="h-full w-full overflow-y-auto p-2">
