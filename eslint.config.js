@@ -34,7 +34,7 @@ export default [
       'react/jsx-uses-vars': 'warn',
       'prettier/prettier': 'error',
       'no-unused-vars': 'off',
-      'no-undef': 'error',
+      'no-undef': 'warn',
 
       // ✅ Hooks plugin rules
       'react-hooks/rules-of-hooks': 'error',

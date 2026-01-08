@@ -8,27 +8,28 @@ import SearchResultSkeleton from './SearchResultSkeleton';
 import { fetchPublicPage } from '@/api/lookup/publicPageApi';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import { set } from 'date-fns';
+import ResultsEmpty from './ResultsEmpty';
+import SearchEmpty from './EmptySearch';
 
 export default function AppSearchResults() {
   const {
     searchField,
-    setResults,
     results,
+    setResults,
     setIsLoading,
-    setError,
     setHoveredProviderId,
   } = useSearchContext();
+
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     setHoveredProviderId(null);
-  }, [results]);
+  }, [results, setHoveredProviderId]);
 
   function pickRelevantService(provider, query) {
     const q = query.toLowerCase();
-    const match = provider.servicesOffered.find((s) =>
+    const match = provider.servicesOffered?.find((s) =>
       s.toLowerCase().includes(q)
     );
     return match || provider.servicesOffered?.[0] || '';
@@ -37,12 +38,9 @@ export default function AppSearchResults() {
   async function getPublicPage(providerId) {
     try {
       const providerInfo = await fetchPublicPage(providerId);
-
       if (providerInfo) {
         navigate(`/providers/${providerId}/public`);
       }
-
-      console.log('Fetched public page:', providerInfo);
     } catch (error) {
       console.error('Error fetching public page:', error);
     }
@@ -51,46 +49,43 @@ export default function AppSearchResults() {
   useEffect(() => {
     if (!searchField) {
       setResults([]);
+      setLoading(false);
+      setIsLoading(false);
       return;
     }
-  
+
     let cancelled = false;
-  
+
+    // 🔑 START LOADING IMMEDIATELY
+    setLoading(true);
+    setIsLoading(true);
+
     const delay = setTimeout(async () => {
       try {
-        setIsLoading(true);
-        setLoading(true);
-      
-          const data = await searchProviders(searchField);
-      
-          if (!cancelled) {
+        const data = await searchProviders(searchField);
+
+        if (!cancelled) {
           setResults(Array.isArray(data) ? data : []);
         }
       } finally {
         if (!cancelled) {
-          setIsLoading(false);
           setLoading(false);
+          setIsLoading(false);
         }
       }
     }, 350);
-  
+
     return () => {
       cancelled = true;
       clearTimeout(delay);
     };
-  }, [searchField]);
-
+  }, [searchField, setResults, setIsLoading]);
 
   return (
     <div className="h-full w-full overflow-y-auto p-2">
       {/* Skeleton Loader */}
       {loading && (
-        <div
-          className="
-            grid gap-3 
-            grid-cols-[repeat(auto-fill,minmax(180px,1fr))]
-          "
-        >
+        <div className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(180px,1fr))] h-full">
           {Array.from({ length: 6 }).map((_, i) => (
             <SearchResultSkeleton key={i} />
           ))}
@@ -99,17 +94,20 @@ export default function AppSearchResults() {
 
       {/* Empty state */}
       {!loading && results.length === 0 && searchField && (
-        <p>No results found.</p>
+        <div className="h-full flex justify-center">
+          <ResultsEmpty />
+        </div>
+      )}
+
+      {!searchField && (
+        <div className="h-full flex justify-center">
+          <SearchEmpty />
+        </div>
       )}
 
       {/* Results Grid */}
-      {!loading && (
-        <div
-          className="
-            grid gap-3 
-            grid-cols-[repeat(auto-fill,minmax(180px,1fr))]
-          "
-        >
+      {!loading && results.length > 0 && (
+        <div className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(180px,1fr))] h-full">
           {results.map((provider) => {
             const serviceLabel = pickRelevantService(provider, searchField);
 

@@ -67,9 +67,6 @@ const PublicPortfolio = ({ portfolio }) => {
       <div className="info">
         <div className="card-header">
           <h2>About</h2>
-          <PortfolioEditDialog provider={portfolio} className="">
-            <div className="edit-portfolio"></div>
-          </PortfolioEditDialog>
         </div>
 
         <div className="card-body">
