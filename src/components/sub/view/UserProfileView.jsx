@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import ProfileHeader from '../ProfileHeader';
 import Spinner from '../LoadingSpinner';
 import { useUserContext } from '@/api/context/userContext';
+import { PageLoadingSpinner } from '@/components/loader/page-loader';
 import {
   diffShallow,
   diffPreferences,
@@ -112,7 +113,7 @@ export default function UserProfileView() {
     });
   }, [userAccount]);
 
-  if (loading) return <p>Loading profile...</p>;
+  if (loading) return <PageLoadingSpinner />;
   if (!userAccount) return <p>No profile found.</p>;
 
   const { user: userData, profile } = userAccount;

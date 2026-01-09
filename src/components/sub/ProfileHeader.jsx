@@ -45,7 +45,7 @@ export default function ProfileHeader({ userName, userAuth0Id }) {
 
   return (
     <div className="flex items-center justify-center">
-      <div className="profile-page__head bg-gray-700">
+      <div className="profile-page__head">
         <ProfilePictureUpload onUploadSuccess={onUploadSuccess} />
         <strong>{userName}</strong>
         {isProviderCtx ? (

@@ -12,7 +12,7 @@ export default function SidebarLayout() {
 
         {/* Main content fills the rest */}
         <div className="flex-1 flex flex-col">
-          <main className="flex-1 pt-12">
+          <main className="flex-1">
             <Outlet />
           </main>
         </div>

@@ -1,4 +1,5 @@
 .profile-page {
+  margin-top: 22px;
   &__head {
     // position: sticky;
     // top: -25px;
@@ -6,10 +7,8 @@
     align-items: center;
     gap: 1rem;
     width: 95%;
-    margin-top: 1rem;
     padding: 2rem;
     // margin: 1rem;
-    background: #f4f4f4;
     border: #999 solid 1px;
     border-radius: 10px;
     z-index: 50;

@@ -8,6 +8,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useUserContext } from '@/api/context/userContext';
 import { getUserID } from '@/api/sync/SyncUser';
 import { toast } from 'sonner';
+import StarDisplay from '@/components/common/StartDisplay';
 
 export default function PortfolioHeader({
   bannerUrl,
@@ -76,9 +77,10 @@ export default function PortfolioHeader({
 
           {averageRating && (
             <div className="flex hidden md:flex items-center gap-1 text-sm text-muted-foreground">
-              <Star className="w-4 h-4 fill-current text-gray-400" />
-              <span>{averageRating.toFixed(1)}</span>
-              {reviewCount && <span>({reviewCount})</span>}
+              <StarDisplay rating={averageRating} />
+              <span className="text-xs text-gray-500">
+                {averageRating.toFixed(1)}
+              </span>
             </div>
           )}
         </div>

@@ -5,18 +5,19 @@ import { fetchPortfolio } from '@/api/sync/SyncPortfolio';
 import { useAuth0 } from '@auth0/auth0-react';
 import PortfolioDetailsContainer from '@/components/sub/view/portfolio';
 import useProviderPortfolio from '@/hooks/useProviderPortfolio';
+import { PageLoadingSpinner } from '@/components/loader/page-loader';
 
 const PortfolioLayout = () => {
   const { portfolio, loading, error, refetch } = useProviderPortfolio();
 
-  if (loading) return <div className="p-4">Loading portfolio...</div>;
+  if (loading) return <PageLoadingSpinner />;
   if (error)
     return <div className="p-4 text-red-500">Error loading portfolio.</div>;
   if (!portfolio)
     return <div className="p-4 text-muted-foreground">No portfolio found.</div>;
 
   return (
-    <div className="provider-page">
+    <div className="provider-page pt-1">
       <PortfolioHeader
         bannerUrl={portfolio.bannerUrl}
         logoUrl={portfolio.logoUrl}

@@ -1,51 +1,76 @@
 import { useSearchContext } from './context/context';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { searchProviders } from '@/api/lookup/searchApi';
 
 export default function IntroSearchResults() {
-  const { searchfield } = useSearchContext();
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const {
+    searchField,
+    results,
+    setResults,
+    page,
+    setPage,
+    totalPages,
+    setTotalPages,
+    isLoading,
+    setIsLoading,
+  } = useSearchContext();
 
-  // Debounce timer
   useEffect(() => {
-    if (!searchfield) {
+    if (!searchField) {
       setResults([]);
+      setTotalPages(0);
       return;
     }
 
     const delay = setTimeout(async () => {
       try {
-        setLoading(true);
-        const data = await searchProviders(searchfield);
-        console.log('in the component data : ', data);
+        setIsLoading(true);
 
-        setResults(data || []);
+        const res = await searchProviders(searchField, page);
+
+        setResults(res.data);
+        setTotalPages(res.totalPages);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     }, 350);
 
     return () => clearTimeout(delay);
-  }, [searchfield]);
+  }, [searchField, page]);
 
-  console.log('in the component: ', results);
+  if (isLoading) return <p>Searching…</p>;
+
+  if (!isLoading && results.length === 0 && searchField) {
+    return <p>No results found.</p>;
+  }
 
   return (
-    <div className="search-results mt-4">
-      {loading && <p>Searching…</p>}
+    <>
+      {results.map((item) => (
+        <div key={item._id}>
+          <p>{item.name}</p>
+        </div>
+      ))}
 
-      {!loading && results.length === 0 && searchfield && (
-        <p>No results found.</p>
+      {/* Pagination controls */}
+      {totalPages > 1 && (
+        <div className="mt-4 flex gap-2">
+          <button disabled={page === 1} onClick={() => setPage((p) => p - 1)}>
+            Prev
+          </button>
+
+          <span>
+            Page {page} of {totalPages}
+          </span>
+
+          <button
+            disabled={page === totalPages}
+            onClick={() => setPage((p) => p + 1)}
+          >
+            Next
+          </button>
+        </div>
       )}
-
-      {!loading &&
-        results.map((item) => (
-          <div key={item._id} className="result-item">
-            <p>{item.name}</p>
-            <span className="label">{item.serviceType}</span>
-          </div>
-        ))}
-    </div>
+    </>
   );
 }

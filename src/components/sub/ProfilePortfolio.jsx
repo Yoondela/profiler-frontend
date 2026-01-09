@@ -4,6 +4,7 @@ import { useUserContext } from '@/api/context/userContext';
 import useProviderPortfolio from '@/hooks/useProviderPortfolio';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { NavLink } from 'react-router-dom';
+import { PageLoadingSpinner } from '../loader/page-loader';
 
 export default function ProfilePortfolio() {
   const { user, isAuthenticated } = useAuth0();
@@ -49,7 +50,7 @@ export default function ProfilePortfolio() {
       )}
 
       {/* Company portfolio card */}
-      {portfolioLoading && <div className="p-4">Loading portfolio...</div>}
+      {portfolioLoading && <PageLoadingSpinner />}
       {error && (
         <div className="p-4 text-red-500">Error loading portfolio.</div>
       )}

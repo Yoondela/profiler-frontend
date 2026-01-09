@@ -1,4 +1,6 @@
 import { useJsApiLoader } from '@react-google-maps/api';
+import { AppLoadingSpinner } from '../loader/app-spinner';
+import Spinner from '../sub/LoadingSpinner';
 
 const libraries = ['places'];
 
@@ -10,7 +12,11 @@ export default function GoogleMapsProvider({ children }) {
   });
 
   if (!isLoaded) {
-    return <div>Loading maps…</div>;
+    return (
+      <div className="">
+        <AppLoadingSpinner />
+      </div>
+    );
   }
 
   return children;

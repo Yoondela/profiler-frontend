@@ -3,6 +3,7 @@
 import { useParams } from 'react-router-dom';
 import { fetchPublicPage } from '@/api/lookup/publicPageApi';
 import { useEffect, useState } from 'react';
+import { PageLoadingSpinner } from '../loader/page-loader';
 import {
   ResizableHandle,
   ResizablePanel,
@@ -26,7 +27,7 @@ export default function ProviderPublicPage() {
   }, [id]);
 
   if (!providerData) {
-    return <div className="p-4">Loading…</div>;
+    return <PageLoadingSpinner />;
   }
 
   return (

@@ -5,6 +5,8 @@ const SearchContext = createContext(null);
 export const SearchContextProvider = ({ children }) => {
   const [searchField, setSearchField] = useState('');
   const [results, setResults] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [hoveredProviderId, setHoveredProviderId] = useState(null);
@@ -15,6 +17,12 @@ export const SearchContextProvider = ({ children }) => {
 
     results,
     setResults,
+
+    page,
+    setPage,
+
+    totalPages,
+    setTotalPages,
 
     isLoading,
     setIsLoading,

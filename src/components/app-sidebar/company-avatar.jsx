@@ -2,11 +2,18 @@ import useProviderPortfolio from '@/hooks/useProviderPortfolio';
 import StarDisplay from '../common/StartDisplay';
 import { NavLink } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import CompanyRating from './company-rating';
+import Spinner from '../sub/LoadingSpinner';
 
 export function CompanyAvatar() {
   const { portfolio, loading, error, refetch } = useProviderPortfolio();
 
-  if (loading) return <div className="p-4">Loading portfolio...</div>;
+  if (loading)
+    return (
+      <div className="p-4">
+        <Spinner />
+      </div>
+    );
   if (error)
     return <div className="p-4 text-red-500">Error loading portfolio.</div>;
   if (!portfolio)
@@ -22,10 +29,10 @@ export function CompanyAvatar() {
         <div className="grid flex-1 text-left text-sm leading-tight">
           <span className="truncate font-medium">{portfolio.company}</span>
           <div className=" truncate flex items-center gap-1">
-            <StarDisplay rating={portfolio.rating} />
-            <span className="text-xs text-gray-500">
-              {portfolio.rating.toFixed(1)}
-            </span>
+            <CompanyRating
+              averageRating={portfolio.rating}
+              reviewCount={portfolio.completedJobs}
+            />
           </div>
         </div>
       </div>
