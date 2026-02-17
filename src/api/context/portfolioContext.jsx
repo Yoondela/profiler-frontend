@@ -5,11 +5,24 @@ const PortfolioContext = createContext();
 export const PortfolioProvider = ({ children }) => {
   const [portfolioDataCtx, setPortfolioDataCtx] = useState(null);
 
+  console.log('Portfolio Context Data:', portfolioDataCtx);
+
+  function hasCompany() {
+    console.log('This is portfolioDataCtx in hasCompany:', portfolioDataCtx);
+    return Boolean(portfolioDataCtx?.company);
+  }
+
+  const companyId = hasCompany() ? portfolioDataCtx.company._id : null;
+
+  console.log('Company ID in Portfolio Context:', companyId);
+
   return (
     <PortfolioContext.Provider
       value={{
         portfolioDataCtx,
         setPortfolioDataCtx,
+        hasCompany,
+        companyId,
       }}
     >
       {children}

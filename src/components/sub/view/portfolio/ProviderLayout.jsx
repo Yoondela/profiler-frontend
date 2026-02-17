@@ -9,6 +9,8 @@ import { PageLoadingSpinner } from '@/components/loader/page-loader';
 
 const PortfolioLayout = () => {
   const { portfolio, loading, error, refetch } = useProviderPortfolio();
+  const companyName =
+    portfolio?.company?.name || portfolio?.user?.name || 'Unknown Provider';
 
   if (loading) return <PageLoadingSpinner />;
   if (error)
@@ -21,7 +23,7 @@ const PortfolioLayout = () => {
       <PortfolioHeader
         bannerUrl={portfolio.bannerUrl}
         logoUrl={portfolio.logoUrl}
-        providerName={portfolio.company || 'Unknown Provider'}
+        providerName={companyName}
         averageRating={portfolio.rating}
         reviewCount={portfolio.completedJobs}
       />

@@ -9,6 +9,7 @@ import { UserProvider } from './api/context/userContext';
 import { AOS } from 'aos';
 import { SearchContextProvider } from './components/intro/context/context';
 import GoogleMapsProvider from './components/app-providers/GoogleMapsProvider';
+import { PortfolioProvider } from './api/context/portfolioContext';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -31,14 +32,16 @@ function App() {
   return (
     <div>
       <UserProvider>
-        <GoogleMapsProvider>
-          <SearchContextProvider>
-            {isAuthenticated && !isLoading && <CreateUser />}
-            <Navbar />
-            <AppRoutes />
-            <Toaster />
-          </SearchContextProvider>
-        </GoogleMapsProvider>
+        <PortfolioProvider>
+          <GoogleMapsProvider>
+            <SearchContextProvider>
+              {isAuthenticated && !isLoading && <CreateUser />}
+              <Navbar />
+              <AppRoutes />
+              <Toaster />
+            </SearchContextProvider>
+          </GoogleMapsProvider>
+        </PortfolioProvider>
       </UserProvider>
     </div>
   );

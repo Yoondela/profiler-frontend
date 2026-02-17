@@ -27,7 +27,7 @@ export function CompanyAvatar() {
           <AvatarFallback className="rounded-lg">Ex</AvatarFallback>
         </Avatar>
         <div className="grid flex-1 text-left text-sm leading-tight">
-          <span className="truncate font-medium">{portfolio.company}</span>
+          <span className="truncate font-medium">{portfolio.company.name}</span>
           <div className=" truncate flex items-center gap-1">
             <CompanyRating
               averageRating={portfolio.rating}

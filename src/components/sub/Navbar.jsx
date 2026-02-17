@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { MoreHorizontal } from 'lucide-react';
 import { useAuth0 } from '@auth0/auth0-react';
 import UserAvatar from './common/UserAvatar';
+import CompanyMenu from './common/companyMenu';
 
 export default function Navbar() {
   const [pageMenuOpen, setPageMenuOpen] = useState(false);
@@ -42,8 +43,13 @@ export default function Navbar() {
 
         {/* If authenticated, show avatar + optional logout */}
         {isAuthenticated && (
-          <div className="flex items-center gap-3">
-            <UserAvatar user={user} />
+          <div className="flex flex-row items-center justify-between gap-3">
+            <div className="flex items-center mt-[1px]">
+              <CompanyMenu />
+            </div>
+            <div className="flex items-center">
+              <UserAvatar user={user} />
+            </div>
           </div>
         )}
       </div>

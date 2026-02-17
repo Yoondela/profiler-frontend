@@ -125,11 +125,6 @@ const PortfolioDetailsContainer = ({ provider }) => {
           </div>
         )}
       </div>
-      <div className="cta-section">
-        <div className="border-t border-gray-300 w-[90%] mt-12 mb-11"></div>
-        <p>is Available</p>
-        <Button variant="outline">Book</Button>
-      </div>
     </div>
   );
 };

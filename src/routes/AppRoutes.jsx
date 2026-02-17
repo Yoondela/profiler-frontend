@@ -9,6 +9,7 @@ import PortfolioLayout from '@/components/sub/view/portfolio/ProviderLayout';
 import GalleryManager from '@/components/sub/view/gallery-manager/GalleryManager';
 import ProviderPublicPage from '@/components/public-profile/PublickPage';
 import SearchPage from '@/components/intro/SearchPage';
+import CompanyConfigurations from '@/components/company-configuration/CompanyConfigurations';
 
 function AppRoutes() {
   return (
@@ -17,7 +18,7 @@ function AppRoutes() {
       <Route path="/" element={<HomePage />} />
       <Route path="/providers/:id/public" element={<ProviderPublicPage />} />
       <Route path="/search-app" element={<SearchPage />} />
-
+      <Route path="/concern-config" element={<CompanyConfigurations />} />
       <Route path="/callback" element={<AuthCallback />} />
 
       {/* All routes that use Sidebar */}

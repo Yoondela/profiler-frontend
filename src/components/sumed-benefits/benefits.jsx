@@ -1,4 +1,5 @@
 import React from 'react';
+import CompanyMenu from '../sub/common/companyMenu';
 
 const SumedBenefits = () => {
   return (
@@ -32,6 +33,7 @@ const SumedBenefits = () => {
               </p>
             </div>
           </div>
+          <CompanyMenu />
           <div className="benefit">
             <div className="number">
               <strong>3</strong>

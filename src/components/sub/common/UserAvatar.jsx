@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import useProviderPortfolio from '@/hooks/useProviderPortfolio';
+import AvatarColors from '@/data/avatar-colors.json';
 import {
   User,
   Calendar,
@@ -14,41 +15,13 @@ import { Link } from 'react-router-dom';
 export default function UserAvatar({ menu }) {
   const { user, logout } = useAuth0();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isProviderCtx, setIsProviderCtx] = useState(true);
+  const [isProviderCtx] = useState(true);
   const { portfolio, loading, error, refetch } = useProviderPortfolio();
 
-  // Avatar color map
-  const avatarColors = {
-    A: '#fb7185',
-    B: '#f472b6',
-    C: '#d946ef',
-    D: '#a855f7',
-    E: '#6d28d9',
-    F: '#6366f1',
-    G: '#60a5fa',
-    H: '#0284c7',
-    I: '#0e7490',
-    J: '#67e8f9',
-    K: '#0f766e',
-    L: '#34d399',
-    M: '#4ade80',
-    N: '#bef264',
-    O: '#a3e635',
-    P: '#facc15',
-    Q: '#fbbf24',
-    R: '#9ca3af',
-    S: '#374151',
-    T: '#fdba74',
-    U: '#fb923c',
-    V: '#f87171',
-    W: '#cbd5e1',
-    X: '#2196F3',
-    Y: '#8b5cf6',
-    Z: '#4CAF50',
-  };
+  console.log('UserAvatar: portfolio', portfolio);
 
   const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : 'U';
-  const avatarColor = avatarColors[userInitial] || '#888';
+  const avatarColor = AvatarColors[userInitial] || '#888';
 
   const toggleMenu = () => {
     if (menu !== 'false') setMenuOpen((prev) => !prev);
@@ -77,10 +50,14 @@ export default function UserAvatar({ menu }) {
               {user?.email}
             </Link>
 
-            {isProviderCtx && portfolio && (
-              <Link to="/provider-page" onClick={() => setMenuOpen(false)}>
+            {portfolio && (
+              <Link
+                to="/provider-page"
+                onClick={() => setMenuOpen(false)}
+                className="user-menu-company"
+              >
                 <Building2 size={16} style={{ marginRight: '8px' }} />
-                {portfolio?.company}
+                {portfolio?.company?.name}
               </Link>
             )}
 
