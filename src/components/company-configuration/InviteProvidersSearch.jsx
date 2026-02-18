@@ -22,10 +22,9 @@ export default function InviteProvidersSearch() {
     const searchProviders = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(
-          `/api/invites/${companyId}/search`,
-          { params: { q: query } }
-        );
+        const res = await axios.get(`/api/invites/${companyId}/search`, {
+          params: { q: query },
+        });
 
         console.log('Search results:', res.data);
 
@@ -62,14 +61,10 @@ export default function InviteProvidersSearch() {
 
       {/* Results */}
       <div className="mt-4 space-y-2">
-        {loading && (
-          <p className="text-sm text-gray-500">Searching…</p>
-        )}
+        {loading && <p className="text-sm text-gray-500">Searching…</p>}
 
         {!loading && results.length === 0 && query.length >= 2 && (
-          <p className="text-sm text-gray-500">
-            No providers found.
-          </p>
+          <p className="text-sm text-gray-500">No providers found.</p>
         )}
 
         {results.map((user) => (
@@ -81,7 +76,11 @@ export default function InviteProvidersSearch() {
               {user.name}
             </span>
 
-            <InviteAction status={user.inviteStatus} />
+            <InviteAction
+              status={user.inviteStatus}
+              providerId={user.portfolioId}
+              companyId={companyId}
+            />
           </div>
         ))}
       </div>

@@ -22,6 +22,8 @@ export default function UserAvatar({ menu }) {
 
   const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : 'U';
   const avatarColor = AvatarColors[userInitial] || '#888';
+  const companyName =
+    portfolio?.company?.name || user?.name || 'Service Provider';
 
   const toggleMenu = () => {
     if (menu !== 'false') setMenuOpen((prev) => !prev);
@@ -57,7 +59,7 @@ export default function UserAvatar({ menu }) {
                 className="user-menu-company"
               >
                 <Building2 size={16} style={{ marginRight: '8px' }} />
-                {portfolio?.company?.name}
+                {companyName}
               </Link>
             )}
 

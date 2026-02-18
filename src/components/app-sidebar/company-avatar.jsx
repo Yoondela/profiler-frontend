@@ -4,9 +4,13 @@ import { NavLink } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import CompanyRating from './company-rating';
 import Spinner from '../sub/LoadingSpinner';
+import { useAuth0 } from '@auth0/auth0-react';
 
 export function CompanyAvatar() {
   const { portfolio, loading, error, refetch } = useProviderPortfolio();
+  const { user } = useAuth0();
+  const companyName =
+    portfolio?.company?.name || user.name || 'Unknown Provider';
 
   if (loading)
     return (
@@ -27,7 +31,7 @@ export function CompanyAvatar() {
           <AvatarFallback className="rounded-lg">Ex</AvatarFallback>
         </Avatar>
         <div className="grid flex-1 text-left text-sm leading-tight">
-          <span className="truncate font-medium">{portfolio.company.name}</span>
+          <span className="truncate font-medium">{companyName}</span>
           <div className=" truncate flex items-center gap-1">
             <CompanyRating
               averageRating={portfolio.rating}

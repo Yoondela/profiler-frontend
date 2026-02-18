@@ -1,13 +1,13 @@
 import { usePortfolioContext } from '@/api/context/portfolioContext';
-import ListCompanySection from "./ListCompanySection";
-import MembersSection from "./MembersSection";
+import ListCompanySection from './ListCompanySection';
+import MembersSection from './MembersSection';
 
 export default function CompanyConfigurations() {
-  const { hasCompany } = usePortfolioContext();  
+  const { hasCompany } = usePortfolioContext();
   return (
     <div>
       <ListCompanySection />
-      {hasCompany() && <MembersSection /> }
+      {hasCompany() && <MembersSection />}
     </div>
   );
 }
