@@ -4,6 +4,7 @@ import { MoreHorizontal } from 'lucide-react';
 import { useAuth0 } from '@auth0/auth0-react';
 import UserAvatar from './common/UserAvatar';
 import CompanyMenu from './common/companyMenu';
+import NotificationContainer from '../notifications/notificationContainer';
 
 export default function Navbar() {
   const [pageMenuOpen, setPageMenuOpen] = useState(false);
@@ -44,11 +45,16 @@ export default function Navbar() {
         {/* If authenticated, show avatar + optional logout */}
         {isAuthenticated && (
           <div className="flex flex-row items-center justify-between gap-3">
-            <div className="flex items-center mt-[1px]">
-              <CompanyMenu />
+            <div className="px-3 mx-2">
+              <NotificationContainer />
             </div>
-            <div className="flex items-center">
-              <UserAvatar user={user} />
+            <div className="flex flex-row items-center justify-between gap-3">
+              <div className="flex items-center mt-[1px]">
+                <CompanyMenu />
+              </div>
+              <div className="flex items-center">
+                <UserAvatar user={user} />
+              </div>
             </div>
           </div>
         )}

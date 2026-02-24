@@ -10,6 +10,8 @@ import { AOS } from 'aos';
 import { SearchContextProvider } from './components/intro/context/context';
 import GoogleMapsProvider from './components/app-providers/GoogleMapsProvider';
 import { PortfolioProvider } from './api/context/portfolioContext';
+import { SocketProvider } from './api/context/socketContext';
+import { NotificationProvider } from './api/context/notificationContext';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -32,16 +34,20 @@ function App() {
   return (
     <div>
       <UserProvider>
-        <PortfolioProvider>
-          <GoogleMapsProvider>
-            <SearchContextProvider>
-              {isAuthenticated && !isLoading && <CreateUser />}
-              <Navbar />
-              <AppRoutes />
-              <Toaster />
-            </SearchContextProvider>
-          </GoogleMapsProvider>
-        </PortfolioProvider>
+        <SocketProvider>
+          <NotificationProvider>
+            <PortfolioProvider>
+              <GoogleMapsProvider>
+                <SearchContextProvider>
+                  {isAuthenticated && !isLoading && <CreateUser />}
+                  <Navbar />
+                  <AppRoutes />
+                  <Toaster />
+                </SearchContextProvider>
+              </GoogleMapsProvider>
+            </PortfolioProvider>
+          </NotificationProvider>
+        </SocketProvider>
       </UserProvider>
     </div>
   );

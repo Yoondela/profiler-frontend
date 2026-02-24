@@ -1,4 +1,6 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+import axios from 'axios';
 
 const UserContext = createContext();
 
@@ -12,10 +14,38 @@ export const UserProvider = ({ children }) => {
   const [logoUrlCtx, setLogoUrlCtx] = useState(null);
   const [bannerUrlCtx, setBannerUrlCtx] = useState(null);
 
-  if (userCtx?.roles) {
-    setIsProviderCtx(userAccountCtx.user.roles.includes('provider'));
-    console.log('This user is a provider =>', isProviderCtx);
-  }
+  const { isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (!isAuthenticated || isLoading) return;
+
+      try {
+        const token = await getAccessTokenSilently();
+
+        const res = await axios.get(`http://localhost:3000/api/users/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setUserCtx(res.data);
+      } catch (err) {
+        console.error('Failed to fetch user', err);
+      }
+    };
+
+    fetchUser();
+  }, [isAuthenticated, isLoading, getAccessTokenSilently]);
+
+  console.log('User Context Data__________________:', userCtx);
+
+  useEffect(() => {
+    if (userCtx?.roles) {
+      setIsProviderCtx(userCtx.roles.includes('provider'));
+    }
+  }, [userCtx]);
+
   return (
     <UserContext.Provider
       value={{
@@ -25,7 +55,7 @@ export const UserProvider = ({ children }) => {
         setAppUser_ID,
         avatarUrlCtx,
         setAvatarUrlCtx,
-        userCtx,
+        user: userCtx,
         setUserCtx,
         profileCtx,
         setProfileCtx,

@@ -2,6 +2,14 @@
   --color-mint-500: oklch(0.72 0.11 178);
 }
 
+/* html {
+  scrollbar-gutter: stable;
+} */
+
+body {
+  overflow-y: scroll;
+}
+
 @layer base {
   :root {
     --sidebar: oklch(82.846% 0.0382 196.575);
