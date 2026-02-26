@@ -51,8 +51,10 @@ export function NotificationProvider({ children }) {
 
   // Add notification (exposed function)
   const addNotification = useCallback((notification) => {
+    console.log('Adding notification:', notification);
+    console.log('Id being used:', notification.id);
     setNotifications((prev) => {
-      const exists = prev.some((n) => n._id === notification._id);
+      const exists = prev.some((n) => n.id === notification.id);
       if (exists) return prev;
       return [notification, ...prev];
     });
@@ -76,6 +78,7 @@ export function NotificationProvider({ children }) {
   // Mark as read (FIXED token issue)
   const markAsRead = useCallback(
     async (id) => {
+      console.log('Marking as read:', id);
       try {
         const token = await getAccessTokenSilently();
 
@@ -90,7 +93,7 @@ export function NotificationProvider({ children }) {
         );
 
         setNotifications((prev) =>
-          prev.map((n) => (n._id === id ? { ...n, status: 'read' } : n))
+          prev.map((n) => (n.id === id ? { ...n, status: 'read' } : n))
         );
       } catch (err) {
         console.error('Failed to mark as read', err);

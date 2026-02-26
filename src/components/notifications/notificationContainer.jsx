@@ -18,6 +18,7 @@ export default function NotificationContainer() {
   return (
     <div>
       <Sheet
+        modal={false}
         onOpenChange={(open) => {
           if (!open) {
             clearNewFlag();
@@ -32,14 +33,14 @@ export default function NotificationContainer() {
         </SheetTrigger>
         <SheetContent
           side="right"
-          className="border-none w-[400px] sm:w-[500px] bg-[white] pt-[50px]"
+          className="border-none w-[400px] sm:w-[500px] h-[93%] bg-[white] my-[50px] gap-0"
         >
-          <SheetHeader className="py-0 my-0 border-b border-gray-200">
+          <SheetHeader className="mt-7 px-2 py-0">
             <SheetTitle className="text-xl text-green-200">
               Notifications
             </SheetTitle>
           </SheetHeader>
-          <div className="m-0">
+          <div className="overflow-y-auto m-0 p-0">
             <NotificationList />
           </div>
         </SheetContent>
