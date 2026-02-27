@@ -1,6 +1,7 @@
 import { usePortfolioContext } from '@/api/context/portfolioContext';
 import ListCompanySection from './ListCompanySection';
 import MembersSection from './MembersSection';
+import WorkingHoursSection from './WorkingHoursSection';
 
 export default function CompanyConfigurations() {
   const { hasCompany } = usePortfolioContext();
@@ -8,6 +9,7 @@ export default function CompanyConfigurations() {
     <div>
       <ListCompanySection />
       {hasCompany() && <MembersSection />}
+      <WorkingHoursSection />
     </div>
   );
 }
