@@ -15,3 +15,15 @@ export const sendInvite = async (
   );
   return res.data;
 };
+
+export const respondToInvite = async (inviteId, action) => {
+  if (!inviteId || !action) throw new Error('Information is missing');
+  const res = await axios.patch(
+    `${import.meta.env.VITE_API_URL}/invites/${inviteId}/respond`,
+    {
+      action: action,
+    }
+  );
+  console.log('Responded to invite:', res.data);
+  return res.data;
+};
