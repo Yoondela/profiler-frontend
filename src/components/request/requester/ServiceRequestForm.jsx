@@ -193,7 +193,11 @@ export default function ServiceRequestForm({ onEdit, setGoToReview }) {
           setSelectedTasks={setServiceTasks}
         />
       )}
-      <RequestDrawer open={showDrawer} onOpenChange={setShowDrawer} />
+      <RequestDrawer
+        mode="request"
+        open={showDrawer}
+        onOpenChange={setShowDrawer}
+      />
     </div>
   );
 }

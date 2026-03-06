@@ -37,7 +37,7 @@ const BookingReview = ({ onBack }) => {
     try {
       const bookingPayload = {
         client: await getClient(),
-        serviceType: userService,
+        service: userService,
         description: JSON.stringify(serviceTasks || {}),
         forDate: userDate,
         forTime: userTime,

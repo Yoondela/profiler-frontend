@@ -12,6 +12,7 @@ import GoogleMapsProvider from './components/app-providers/GoogleMapsProvider';
 import { PortfolioProvider } from './api/context/portfolioContext';
 import { SocketProvider } from './api/context/socketContext';
 import { NotificationProvider } from './api/context/notificationContext';
+import { ServiceRequestWSProvider } from './api/context/ServiceRequestSocketContext';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -41,7 +42,9 @@ function App() {
                 <SearchContextProvider>
                   {isAuthenticated && !isLoading && <CreateUser />}
                   <Navbar />
-                  <AppRoutes />
+                  <ServiceRequestWSProvider>
+                    <AppRoutes />
+                  </ServiceRequestWSProvider>
                   <Toaster />
                 </SearchContextProvider>
               </GoogleMapsProvider>

@@ -23,26 +23,15 @@ const timeSlots = [
   '2:30 PM',
 ];
 
-export default function TimeAndDate({
-  onNext,
-  // userTime,
-  // setUserTime,
-  // userDate,
-  // setUserDate,
-}) {
+export default function TimeAndDate({ onNext }) {
   const { userDate, userTime, setUserDate, setUserTime } = useServiceBooking();
-
-  const [selectedDate, setSelectedDate] = useState(userDate || null);
-  const [selectedTime, setSelectedTime] = useState(userTime || '');
 
   const handleTimeChange = (e) => {
     const value = e.target.value;
-    setSelectedTime(value);
     setUserTime(value);
   };
 
   const handleDateChange = (date) => {
-    setSelectedDate(date);
     setUserDate(date);
   };
 
@@ -57,7 +46,7 @@ export default function TimeAndDate({
         <div className="input-container">
           <CalendarIcon width="20" height="20" className="calendar-icon" />
           <DatePicker
-            selected={selectedDate}
+            selected={userDate}
             onChange={handleDateChange}
             className="date-picker"
             placeholderText="Select a date"
@@ -70,7 +59,7 @@ export default function TimeAndDate({
           <select
             className="time-picker"
             onChange={handleTimeChange}
-            value={selectedTime}
+            value={userTime}
           >
             <option value="" disabled>
               Select a time
@@ -87,7 +76,7 @@ export default function TimeAndDate({
         <button
           className="request-button"
           onClick={onNext}
-          disabled={!selectedDate || !selectedTime}
+          disabled={!userDate || !userTime}
         >
           Next
         </button>

@@ -1,31 +1,44 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+import { getUserID } from '@/api/sync/SyncUser';
 
 const ServiceRequestContext = createContext();
 
 export const ServiceRequestProvider = ({ children }) => {
+  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
+
+  const [userId, setUserId] = useState(null);
+
   const [userService, setUserService] = useState('');
   const [userLocation, setUserLocation] = useState(null);
   const [subjectSize, setSubjectSize] = useState('');
   const [serviceTasks, setServiceTasks] = useState(null);
-  const [note, setNote] = useState(null);
+  const [userNote, setUserNote] = useState(null);
 
-  let job = {};
-  if (typeof serviceTasks === 'string' && serviceTasks.trim() !== '') {
-    try {
-      job = JSON.parse(serviceTasks);
-    } catch (error) {
-      console.error('Invalid JSON format in serviceTasks:', error);
-    }
-  } else if (typeof serviceTasks === 'object' && serviceTasks !== null) {
-    job = serviceTasks;
-  }
+  useEffect(() => {
+    const getClient = async () => {
+      if (!isAuthenticated || !user) return;
+
+      const clientId = await getUserID(getAccessTokenSilently, user.email);
+
+      console.log('Client ID:', clientId);
+
+      setUserId(clientId);
+    };
+
+    getClient();
+  }, [user, isAuthenticated]);
+
+  let job = JSON.stringify(serviceTasks || {});
 
   console.log('@Context', job);
-  const requestData = {
+  const requestPayload = {
+    client: userId,
     service: userService,
-    location: userLocation,
+    description: JSON.stringify(serviceTasks || {}),
+    forAddress: userLocation,
+    note: userNote || '',
     selectedSize: subjectSize,
-    todo: job,
   };
 
   return (
@@ -39,9 +52,9 @@ export const ServiceRequestProvider = ({ children }) => {
         setSubjectSize,
         serviceTasks,
         setServiceTasks,
-        requestData,
-        setNote,
-        note,
+        requestPayload,
+        setNote: setUserNote,
+        note: userNote,
       }}
     >
       {children}

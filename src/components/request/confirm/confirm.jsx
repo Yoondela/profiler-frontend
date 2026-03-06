@@ -11,6 +11,9 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useServiceRequest } from '../contexts/ServiceRequestContext';
 import { useServiceBooking } from '../contexts/ServiceBookingContext';
+import { useApiClient } from '@/api/useApiClient';
+import { createBooking } from '@/api/sync/SyncBooking';
+import { createRequest } from '@/api/sync/SyncRequest';
 import { ArrowUp } from 'lucide-react';
 
 export function RequestDrawer({ mode, open, onOpenChange }) {
@@ -18,6 +21,7 @@ export function RequestDrawer({ mode, open, onOpenChange }) {
   const requestState = useServiceRequest();
   const [sending, setSending] = useState(false);
   const [localNote, setLocalNote] = useState(null);
+  const api = useApiClient();
 
   // Shared state depending on mode
   const {
@@ -27,17 +31,44 @@ export function RequestDrawer({ mode, open, onOpenChange }) {
     serviceTasks,
     setNote,
     note,
+    bookingPayload,
+    requestPayload,
   } = mode === 'booking' ? bookingState : requestState;
 
   const handleConfirm = () => {
-    const payload = {
-      userService,
-      userLocation,
-      subjectSize,
-      note, // <-- note now included
-    };
-
-    alert(JSON.stringify(payload, null, 2));
+    try {
+      if (mode === 'booking') {
+        // Call createBooking API
+        createBooking(api, bookingPayload)
+          .then((data) => {
+            console.log('✅ Booking created:', data);
+            alert('Booking successfully created!');
+          })
+          .catch((err) => {
+            console.error('❌ createBooking failed', err);
+            const message =
+              err?.data?.message || err?.message || 'Something went wrong';
+            alert(`Booking failed: ${message}`);
+          });
+      } else {
+        // Call createBooking API
+        createRequest(api, requestPayload)
+          .then((data) => {
+            console.log('✅ Request created:', data);
+            alert('Request successfully created!');
+          })
+          .catch((err) => {
+            console.error('❌ createRequest failed', err);
+            const message =
+              err?.data?.message || err?.message || 'Something went wrong';
+            console.log(`Request failed: ${message}`);
+            alert(`Request failed: ${message}`);
+          });
+      }
+    } catch (err) {
+      console.error('Error during confirmation:', err);
+      alert('An error occurred. Please try again.');
+    }
   };
 
   const handleNotechange = (e) => {

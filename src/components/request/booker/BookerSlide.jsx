@@ -9,27 +9,9 @@ import CancelIcon from '../../../assets/icons/booker-icons/cancel.svg?react';
 import BellIcon from '../../../assets/icons/booker-icons/bell.svg?react';
 import CalendarIcon from '../../../assets/icons/booker-icons/calendar.svg?react';
 
-const BookerSlide = ({
-  requestData,
-  parentTime,
-  parentDate,
-  setParentTime,
-  setParentDate,
-  handleEdit,
-  setDefaultService,
-  setPanelClose,
-  panelClose,
-  defaultService,
-  setDefaultLocation,
-  defaultLocation,
-}) => {
+const BookerSlide = ({ handleEdit, setPanelClose, panelClose }) => {
   const [showSecond, setShowSecond] = useState(false);
   const [showReview, setShowReview] = useState(false);
-
-  const [userTime, setUserTime] = useState(parentTime || '');
-  const [userDate, setUserDate] = useState(parentDate || null);
-  const [userService, setUserService] = useState(defaultService || '');
-  const [userLocation, setUserLocation] = useState(defaultLocation || '');
 
   const handleNext = () => setShowSecond(true);
   const handleBack = () => {
@@ -37,43 +19,15 @@ const BookerSlide = ({
     if (panelClose) setPanelClose(false);
   };
 
-  const handleToReview = () => setShowReview(true);
+  const handleToReview = () => setShowReview(false);
   const handleFromReview = () => setShowReview(false);
-
-  useEffect(() => {
-    setDefaultService(userService);
-    setDefaultLocation(userLocation);
-    setParentDate(userDate);
-    setParentTime(userTime);
-  }, [userService, userLocation, userDate, userTime]);
-
-  const serviceDetails = [
-    userDate ? format(userDate, 'EEE MMM dd yyyy') : 'No date selected',
-    userTime,
-    userService,
-    userLocation,
-  ];
 
   return (
     <div className="booker-child-container">
       <div className="booker">
         <div className="booker-left">
           <AnimatePresence mode="wait">
-            {showReview ? (
-              <motion.div
-                key="review"
-                initial={{ x: 50, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: -50, opacity: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <BookingReview
-                  serviceDetails={serviceDetails}
-                  onBack={handleFromReview}
-                  requestData={requestData}
-                />
-              </motion.div>
-            ) : showSecond || panelClose ? (
+            {showSecond || panelClose ? (
               <motion.div
                 key="second"
                 initial={{ x: 50, opacity: 0 }}
@@ -85,10 +39,6 @@ const BookerSlide = ({
                   onNext={handleToReview}
                   onBack={handleBack}
                   onEdit={handleEdit}
-                  setUserService={setUserService}
-                  userService={userService}
-                  setUserLocation={setUserLocation}
-                  userLocation={userLocation}
                 />
               </motion.div>
             ) : (
@@ -99,13 +49,7 @@ const BookerSlide = ({
                 exit={{ x: 50, opacity: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <TimeAndDate
-                  onNext={handleNext}
-                  setUserTime={setUserTime}
-                  userTime={userTime}
-                  setUserDate={setUserDate}
-                  userDate={userDate}
-                />
+                <TimeAndDate onNext={handleNext} />
               </motion.div>
             )}
           </AnimatePresence>

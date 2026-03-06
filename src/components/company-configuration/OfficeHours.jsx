@@ -20,8 +20,9 @@ const createInitialState = () =>
     return acc;
   }, {});
 
-export default function OfficeOursSection() {
+export default function OfficeHoursSection() {
   const [hours, setHours] = useState(createInitialState());
+  const [applySettings, setApplySettings] = useState(false);
 
   // --- Helpers ---
 
@@ -29,6 +30,25 @@ export default function OfficeOursSection() {
     if (!time) return 0;
     const [h, m] = time.split(':').map(Number);
     return h * 60 + m;
+  };
+
+  const calculateWeeklyTotal = () => {
+    let totalMinutes = 0;
+
+    Object.values(hours).forEach((day) => {
+      if (!day.enabled) return;
+
+      day.shifts.forEach((shift) => {
+        const start = minutesFromTime(shift.start);
+        const end = minutesFromTime(shift.end);
+
+        if (end > start) {
+          totalMinutes += end - start;
+        }
+      });
+    });
+
+    return (totalMinutes / 60).toFixed(1);
   };
 
   // --- Handlers ---
@@ -90,15 +110,32 @@ export default function OfficeOursSection() {
         Set the days and times you're available to work.
       </p>
 
-      <div className="mt-4 flex items-center gap-3">
-        <ClockArrowDown className="h-5 w-5 text-gray-700" />
+      <div className="flex items-center justify-between bg-blue-50 rounded-xl border border-blue-200 p-4 mt-6">
+        <div className="flex items-center gap-3">
+          <ClockArrowDown className="h-5 w-5 text-gray-700" />
 
-        <button
-          onClick={repeatMondayToWeekdays}
-          className="text-sm font-medium text-gray-900 hover:underline hover:cursor-pointer"
-        >
-          <strong>Click</strong> here to repeat Monday for weekdays
-        </button>
+          <button
+            onClick={repeatMondayToWeekdays}
+            className="text-sm font-medium text-gray-900 hover:underline hover:cursor-pointer"
+          >
+            <strong>Repeat</strong> Monday
+          </button>
+        </div>
+        <div className="flex items-center">
+          <p className="mr-1">Apply</p>
+          <button
+            onClick={() => setApplySettings((prev) => !prev)}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 ${
+              applySettings ? 'bg-blue-200' : 'bg-gray-200'
+            }`}
+          >
+            <span
+              className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
+                applySettings ? 'translate-x-5' : 'translate-x-1'
+              }`}
+            />
+          </button>
+        </div>
       </div>
       <div className="mt-6 rounded-xl border border-gray-200 bg-white p-5 space-y-5">
         {days.map((day) => {
@@ -161,6 +198,12 @@ export default function OfficeOursSection() {
             </div>
           );
         })}
+      </div>
+      <div className="mt-6 text-sm text-gray-600">
+        Total weekly hours:{' '}
+        <span className="font-medium text-gray-900">
+          {calculateWeeklyTotal()} hrs
+        </span>
       </div>
     </div>
   );

@@ -122,94 +122,12 @@ export default function SearchProvider() {
       ref={containerRef}
       className="search-app-wrapper border-b border-gray-200"
     >
-      <div className="search-container">
-        <form onSubmit={handleSearch}>
-          <div className="search-input-container relative">
-            <Search width="20" height="20" className="search-icon" />
-
-            <div className="local-search w-full">
-              <input
-                ref={inputRef}
-                type="text"
-                placeholder="Search"
-                className="search-input pr-8"
-                value={searchField}
-                onChange={(e) => setSearchField(e.target.value)}
-                onKeyDown={handleKeyDown}
-                autoComplete="off"
-              />
-            </div>
-
-            {/* Clear Button */}
-            <AnimatePresence>
-              {searchField && (
-                <motion.button
-                  type="button"
-                  onClick={() => {
-                    setSearchField('');
-                    setSuggestions([]);
-                    setOpen(false);
-                  }}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.15 }}
-                  className="absolute right-2 top-1/2 -translate-y-1/2"
-                >
-                  <X size={18} />
-                </motion.button>
-              )}
-            </AnimatePresence>
-
-            {/* Autocomplete Dropdown */}
-            <AnimatePresence>
-              {open && suggestions.length > 0 && (
-                <motion.ul
-                  initial={{ opacity: 0, y: -4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -4 }}
-                  transition={{ duration: 0.15 }}
-                  className="absolute top-[2rem] left-[1rem] mt-2 w-[440px] rounded-md border bg-white shadow-md"
-                >
-                  {suggestions.map((item, index) => (
-                    <li
-                      key={`${item.type}-${item.label}`}
-                      onMouseDown={() => handleSelect(item.label)}
-                      className={`cursor-pointer px-4 py-2 text-sm flex items-center gap-3 rounded-md
-                        ${
-                          index === activeIndex
-                            ? 'bg-gray-100'
-                            : 'hover:bg-gray-50'
-                        }`}
-                    >
-                      {(() => {
-                        const Icon = typeIconMap[item.type];
-                        return Icon ? (
-                          <Icon size={16} className="text-gray-500 shrink-0" />
-                        ) : null;
-                      })()}
-
-                      <div className="flex flex-col">
-                        <span className="text-sm">{item.label}</span>
-                        <span className="text-xs text-gray-400 capitalize">
-                          {item.type}
-                        </span>
-                      </div>
-                    </li>
-                  ))}
-                </motion.ul>
-              )}
-            </AnimatePresence>
-          </div>
-        </form>
-      </div>
-
       {/* Existing quick keys (unchanged) */}
-      <div className="search-keys">
+      {/* <div className="search-keys">
         <div className="key">Current location</div>
         <div className="key">3 or more stars</div>
         <div className="key">Cleaners</div>
-      </div>
+      </div> */}
     </div>
   );
 }

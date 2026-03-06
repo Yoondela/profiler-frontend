@@ -2,44 +2,18 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import BookerSlide from './BookerSlide';
 import TaskPanel from '../task-panel';
+import { useServiceBooking } from '../contexts/ServiceBookingContext';
 
 const Booker = () => {
-  const [showSecond, setShowSecond] = useState(false);
-  const [defaultDate, setDefaultDate] = useState(null);
-  const [defaultTime, setDefaultTime] = useState(null);
-  const [defaultService, setDefaultService] = useState(null);
-  const [defaultLocation, setDefaultLocation] = useState(null);
   const [showEdit, setShowEdit] = useState(false);
   const [closingPanel, setClosingPanel] = useState(false);
 
   const [tasksToDo, setTasksToDo] = useState('');
 
-  const parsedTasks =
-    typeof tasksToDo === 'string' && tasksToDo.trim() !== ''
-      ? (() => {
-          try {
-            return JSON.parse(tasksToDo);
-          } catch (error) {
-            console.error('Invalid JSON format in tasksToDo:', error);
-            return {};
-          }
-        })()
-      : typeof tasksToDo === 'object' && tasksToDo !== null
-        ? tasksToDo
-        : {};
-
   const handleEdit = () => setShowEdit(true);
   const handleClosePanel = () => {
     setShowEdit(false);
     setClosingPanel(true);
-  };
-
-  const requestData = {
-    date: defaultDate,
-    time: defaultTime,
-    service: defaultService,
-    location: defaultLocation,
-    todoTasks: parsedTasks,
   };
 
   return (
@@ -72,18 +46,9 @@ const Booker = () => {
               transition={{ duration: 0.3 }}
             >
               <BookerSlide
-                requestData={requestData}
                 handleEdit={handleEdit}
-                setDefaultService={setDefaultService}
                 setPanelClose={setClosingPanel}
                 panelClose={closingPanel}
-                defaultService={defaultService}
-                setDefaultLocation={setDefaultLocation}
-                defaultLocation={defaultLocation}
-                setParentDate={setDefaultDate}
-                setParentTime={setDefaultTime}
-                parentDate={defaultDate}
-                parentTime={defaultTime}
               />
             </motion.div>
           )}

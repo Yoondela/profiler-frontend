@@ -15,7 +15,7 @@ const NotificationContext = createContext(null);
 export function NotificationProvider({ children }) {
   const { user } = useUserContext();
   const { getAccessTokenSilently } = useAuth0();
-  const socket = useSocket();
+  const { socket, subscribe } = useSocket();
 
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -67,13 +67,14 @@ export function NotificationProvider({ children }) {
 
   // Listen to socket
   useEffect(() => {
-    if (!socket) return;
+    if (!subscribe) return;
 
-    socket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      addNotification(data);
-    };
-  }, [socket, addNotification]);
+    const unsubscribe = subscribe('new_notification', (notification) => {
+      addNotification(notification);
+    });
+
+    return unsubscribe;
+  }, [subscribe, addNotification]);
 
   // Mark as read (FIXED token issue)
   const markAsRead = useCallback(

@@ -5,18 +5,17 @@ import { useAuth0 } from '@auth0/auth0-react';
 import UserAvatar from './common/UserAvatar';
 import CompanyMenu from './common/companyMenu';
 import NotificationContainer from '../notifications/notificationContainer';
+import SearchBar from '../intro/SearchBar';
 
 export default function Navbar() {
   const [pageMenuOpen, setPageMenuOpen] = useState(false);
   const { loginWithRedirect, logout, isAuthenticated, isLoading, user } =
     useAuth0();
 
-  const togglePageMenu = () => setPageMenuOpen((prev) => !prev);
-
   return (
-    <nav className="navbar flex items-center justify-between px-6 py-3 bg-gray-300 shadow-md">
+    <nav className="navbar flex items-center justify-between !px-6 bg-gray-300 shadow-md">
       {/* Left Section */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-[3.5rem]">
         <Link
           to="/"
           className="font-bold tracking-wide hover:text-gray-600 transition"
@@ -24,10 +23,7 @@ export default function Navbar() {
           EXALT
         </Link>
 
-        <MoreHorizontal
-          className="w-6 h-6 text-gray-600 cursor-pointer hover:text-gray-800 transition"
-          onClick={togglePageMenu}
-        />
+        <SearchBar />
       </div>
 
       {/* Right Section */}

@@ -40,7 +40,7 @@ export default function HideServiceSection() {
             <div className="flex items-center gap-3">
               <CalendarX className="h-5 w-5 text-gray-700" />
               <p className="text-sm font-medium text-gray-900">
-                Block specific dates
+                Hide service visibility
               </p>
             </div>
 
@@ -54,7 +54,7 @@ export default function HideServiceSection() {
           <button
             onClick={() => setHideNow((prev) => !prev)}
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 ${
-              hideNow ? 'bg-red-200' : 'bg-gray-200'
+              hideNow ? 'bg-blue-200' : 'bg-gray-200'
             }`}
           >
             <span

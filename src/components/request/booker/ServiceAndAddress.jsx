@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { FaChevronDown } from 'react-icons/fa';
-import { motion } from 'framer-motion';
-import { X, Briefcase } from 'lucide-react';
 import BriefcaseIcon from '../../../assets/icons/other/briefcase.svg?react';
 import LocationIcon from '../../../assets/icons/other/location.svg?react';
 import SelectSizePopup from '../modals/GetSizePopup';
 import SelectTasksPopup from '../modals/SelectTasksPopup';
 import { useServiceBooking } from '../contexts/ServiceBookingContext';
+import { RequestDrawer } from '../confirm/confirm';
+import { useJsApiLoader, StandaloneSearchBox } from '@react-google-maps/api';
 
 export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
   const {
@@ -14,23 +14,72 @@ export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
     setUserService,
     userLocation,
     setUserLocation,
-    subjectSize,
-    setSubjectSize,
-    serviceTasks,
     setServiceTasks,
   } = useServiceBooking();
 
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [showSizePopup, setShowSizePopup] = useState(false);
   const [showTasksPopup, setShowTasksPopup] = useState(false);
+  const [showDrawer, setShowDrawer] = useState(false);
 
-  const handleServiceChange = (e) => setUserService(e.target.value);
-  const handleLocationChange = (e) => setUserLocation(e.target.value);
+  const searchBoxRef = useRef(null);
+
+  // ---------------------------
+  // GOOGLE MAPS LOADER
+  // ---------------------------
+
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+    libraries: ['places'],
+  });
+
+  // ---------------------------
+  // LOCATION HANDLER
+  // ---------------------------
+
+  const handleLocationChange = () => {
+    if (!searchBoxRef.current) return;
+
+    const places = searchBoxRef.current.getPlaces();
+
+    if (!places || places.length === 0) return;
+
+    const place = places[0];
+
+    if (!place.geometry) return;
+
+    setUserLocation({
+      address: place.formatted_address || '',
+    });
+  };
+
+  // ---------------------------
+  // SERVICE HANDLER
+  // ---------------------------
+
+  const handleServiceChange = (e) => {
+    setUserService(e.target.value);
+  };
+
+  // ---------------------------
+  // FLOW CONTROL
+  // ---------------------------
 
   const goToTasks = () => {
     setShowSizePopup(false);
     setShowTasksPopup(true);
   };
+
+  const handleConfirm = () => {
+    setShowTasksPopup(false);
+    setShowDrawer(true);
+  };
+
+  // ---------------------------
+  // VALIDATION
+  // ---------------------------
+
+  const isNextDisabled = !userService || !userLocation || !userLocation.address;
 
   return (
     <div className="booker-form-container">
@@ -38,8 +87,11 @@ export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
         <h2 className="title">Service And Address</h2>
         <p className="paragraph">What service do you require?</p>
 
+        {/* SERVICE DROPDOWN */}
+
         <div className="dropdown-container">
           <BriefcaseIcon width="20" height="20" className="briefcase-icon" />
+
           <select
             className="dropdown"
             value={userService}
@@ -48,34 +100,53 @@ export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
             <option value="" disabled>
               Select a service
             </option>
+
             <option value="Cleaning">Cleaning</option>
             <option value="Car Wash">Car Wash</option>
             <option value="Gardening">Gardening</option>
           </select>
+
           <FaChevronDown className="dropdown-icon" />
         </div>
 
+        {/* LOCATION INPUT */}
+
         <div className="input-container">
           <LocationIcon width="20" height="20" className="location-icon" />
-          <input
-            type="text"
-            placeholder="Location"
-            className="location-input"
-            value={userLocation || ''}
-            onChange={handleLocationChange}
-          />
+
+          {isLoaded && (
+            <StandaloneSearchBox
+              onLoad={(ref) => (searchBoxRef.current = ref)}
+              onPlacesChanged={handleLocationChange}
+            >
+              <input
+                type="text"
+                placeholder="Location"
+                className="location-input"
+                value={userLocation?.address || ''}
+                onChange={(e) =>
+                  setUserLocation({
+                    address: e.target.value,
+                  })
+                }
+              />
+            </StandaloneSearchBox>
+          )}
         </div>
+
+        {/* BUTTONS */}
 
         <div className="slider-btns">
           <div className="left-btn">
             <button
               className="request-button"
               onClick={() => setShowSizePopup(true)}
-              disabled={!userService || !userLocation}
+              disabled={isNextDisabled}
             >
               Next
             </button>
           </div>
+
           <div className="right-btn">
             <button
               className="pref-button small-btn"
@@ -84,12 +155,15 @@ export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
             >
               Edit
             </button>
+
             <button className="back-button small-btn" onClick={onBack}>
               Back
             </button>
           </div>
         </div>
       </div>
+
+      {/* SIZE POPUP */}
 
       {showSizePopup && (
         <SelectSizePopup
@@ -99,15 +173,28 @@ export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
         />
       )}
 
+      {/* TASK POPUP */}
+
       {showTasksPopup && (
         <SelectTasksPopup
           service={userService}
+          setSelectedTasks={setServiceTasks}
           onCancel={() => setShowTasksPopup(false)}
           onConfirm={() => {
             setShowTasksPopup(false);
+            handleConfirm();
             onNext();
           }}
-          setSelectedTasks={setServiceTasks}
+        />
+      )}
+
+      {/* CONFIRM DRAWER */}
+
+      {showDrawer && (
+        <RequestDrawer
+          mode="booking"
+          open={showDrawer}
+          onOpenChange={setShowDrawer}
         />
       )}
     </div>

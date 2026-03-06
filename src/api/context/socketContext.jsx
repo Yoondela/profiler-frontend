@@ -1,23 +1,22 @@
 import { createContext, useContext, useEffect, useRef } from 'react';
 import { useUserContext } from './userContext';
-import { toast } from 'sonner';
 
 const SocketContext = createContext(null);
 
 export function SocketProvider({ children }) {
   const { user } = useUserContext();
   const socketRef = useRef(null);
-  console.log('SocketProvider mounted');
+  const listenersRef = useRef({});
 
-  console.log('Establishing socket connection for user:', user);
+  // Important: build event queuing system.
+  // Make event constants to avoid typos.
+  // Guard against unknown events.
+  // Prevents errors if no one is listening.
 
   useEffect(() => {
     if (!user?._id) return;
 
-    if (socketRef.current) return; // prevent duplicate in strict mode
-
     const ws = new WebSocket(`ws://localhost:4001/ws/${user._id}`);
-
     socketRef.current = ws;
 
     ws.onopen = () => {
@@ -28,13 +27,60 @@ export function SocketProvider({ children }) {
       console.log('Socket disconnected');
     };
 
-    return () => {
-      ws.close();
+    ws.onmessage = (event) => {
+      console.log('New message', event.data);
+      console.log(typeof event.data);
+
+      let data;
+
+      try {
+        data = JSON.parse(event.data);
+      } catch (err) {
+        console.error('JSON parse failed:', err);
+        console.log('Raw socket message:', event.data);
+        return;
+      }
+
+      const eventType = data.eventType || data.event;
+      console.log('done 1');
+
+      const payload = data.payload;
+
+      console.log('done 2');
+
+      const listeners = listenersRef.current[eventType];
+
+      console.log('____________', listeners);
+
+      if (!listeners) return;
+
+      listeners.forEach((cb) => cb(payload));
     };
+
+    return () => ws.close();
   }, [user]);
 
+  const subscribe = (event, callback) => {
+    if (!listenersRef.current[event]) {
+      listenersRef.current[event] = [];
+    }
+
+    listenersRef.current[event].push(callback);
+
+    return () => {
+      listenersRef.current[event] = listenersRef.current[event].filter(
+        (cb) => cb !== callback
+      );
+    };
+  };
+
   return (
-    <SocketContext.Provider value={socketRef.current}>
+    <SocketContext.Provider
+      value={{
+        socket: socketRef.current,
+        subscribe,
+      }}
+    >
       {children}
     </SocketContext.Provider>
   );

@@ -1,4 +1,4 @@
-import { Bell } from 'lucide-react';
+import { Bell, BellRing } from 'lucide-react';
 import NotificationList from './notificationList';
 import { useNotifications } from '@/api/context/notificationContext';
 import {
@@ -25,8 +25,9 @@ export default function NotificationContainer() {
           }
         }}
       >
-        <SheetTrigger className="relative flex items-center">
-          <Bell />
+        <SheetTrigger className="group relative flex items-center justify-center h-7 w-7 transition cursor-pointer">
+          <Bell size={19} className="group-hover:hidden mt-[4px]" />
+          <BellRing size={19} className="mt-[2px] hidden group-hover:block" />
           {hasNew && (
             <span className="absolute top-0 right-0 block h-[10px] w-[10px] rounded-full bg-red-600" />
           )}

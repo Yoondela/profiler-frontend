@@ -10,28 +10,36 @@ import GalleryManager from '@/components/sub/view/gallery-manager/GalleryManager
 import ProviderPublicPage from '@/components/public-profile/PublickPage';
 import SearchPage from '@/components/intro/SearchPage';
 import CompanyConfigurations from '@/components/company-configuration/CompanyConfigurations';
+import { useServiceWSRequest } from '@/api/context/ServiceRequestSocketContext';
+import ModalLayer from '@/components/app-modals/ModalLayer';
 
 function AppRoutes() {
+  // AppRouter should only route
+  // Place Context, Routes, ModalLayer, etc in root
   return (
-    <Routes>
-      {/* Home */}
-      <Route path="/" element={<HomePage />} />
-      <Route path="/providers/:id/public" element={<ProviderPublicPage />} />
-      <Route path="/search-app" element={<SearchPage />} />
-      <Route path="/concern-config" element={<CompanyConfigurations />} />
-      <Route path="/callback" element={<AuthCallback />} />
+    <>
+      <Routes>
+        {/* Home */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/providers/:id/public" element={<ProviderPublicPage />} />
+        <Route path="/search-app" element={<SearchPage />} />
+        <Route path="/concern-config" element={<CompanyConfigurations />} />
+        <Route path="/callback" element={<AuthCallback />} />
 
-      {/* All routes that use Sidebar */}
-      <Route element={<SidebarLayout />}>
-        <Route path="/provider-dashboard" element={<ProviderDashboard />} />
-        <Route path="/user-profile" element={<UserProfile />} />
-        <Route path="/provider-page" element={<PortfolioLayout />} />
-        <Route path="/user-schedule" element={<UserSchedule />} />
-        <Route path="/user-gallery" element={<GalleryManager />} />
-      </Route>
-      {/* Catch-all redirect */}
-      <Route path="*" element={<Navigate to="/" />} />
-    </Routes>
+        {/* All routes that use Sidebar */}
+        <Route element={<SidebarLayout />}>
+          <Route path="/provider-dashboard" element={<ProviderDashboard />} />
+          <Route path="/user-profile" element={<UserProfile />} />
+          <Route path="/provider-page" element={<PortfolioLayout />} />
+          <Route path="/user-schedule" element={<UserSchedule />} />
+          <Route path="/user-gallery" element={<GalleryManager />} />
+        </Route>
+        {/* Catch-all redirect */}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+
+      <ModalLayer />
+    </>
   );
 }
 
