@@ -49,11 +49,12 @@ export default function RequestModal({
   onOpenChange,
   requestData,
   actions = {},
-  // timeoutSeconds = 120, // how long provider has to respond
 }) {
   const [progress, setProgress] = useState(100);
+  const [closingCountdown, setClosingCountdown] = useState(null);
 
-  const { requestTaken } = useServiceWSRequest();
+  const { requestAccepted, requestTaken, requestAwarded } =
+    useServiceWSRequest();
 
   const clientName = requestData?.client?.name || 'Unknown user';
   const serviceName = requestData?.service?.name || 'Unknown service';
@@ -61,12 +62,15 @@ export default function RequestModal({
 
   const acceptAction = actions.accept || {};
   const ignoreAction = actions.ignore || {};
+  const ignoreOnClick = ignoreAction.onClick;
   const timeoutSeconds = requestData?.pingTimeInSeconds || 30;
 
+  // Request response timer
   useEffect(() => {
-    if (!open || requestTaken) return;
+    if (!open || requestTaken || requestAwarded || requestAccepted) return;
 
     setProgress(100);
+    setClosingCountdown(null);
 
     const totalTime = timeoutSeconds * 1000;
     const start = Date.now();
@@ -79,22 +83,68 @@ export default function RequestModal({
 
       if (percentage <= 0) {
         clearInterval(interval);
-        ignoreAction.onClick?.();
+        ignoreOnClick?.();
         onOpenChange(false);
       }
     }, 50);
 
     return () => clearInterval(interval);
-  }, [open, requestTaken]);
+  }, [
+    open,
+    requestTaken,
+    requestAwarded,
+    requestAccepted,
+    timeoutSeconds,
+    ignoreOnClick,
+    onOpenChange,
+  ]);
+
+  // Closing countdown when request taken
+  useEffect(() => {
+    if (!requestTaken || !open) return;
+
+    setClosingCountdown(6);
+
+    const interval = setInterval(() => {
+      setClosingCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          onOpenChange(false);
+          return null;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [requestTaken, open, onOpenChange]);
+
+  // Closing countdown when request awarded
+  useEffect(() => {
+    if (!requestAwarded || !open) return;
+
+    setClosingCountdown(3);
+
+    const interval = setInterval(() => {
+      setClosingCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          onOpenChange(false);
+          return null;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [requestAwarded, open, onOpenChange]);
 
   const handleAccept = () => {
     acceptAction.onClick?.();
-    onOpenChange(false);
   };
 
   const handleIgnore = () => {
     ignoreAction.onClick?.();
-    open(false);
     onOpenChange(false);
   };
 
@@ -103,44 +153,73 @@ export default function RequestModal({
       <AlertDialogContent className="bg-white">
         <AlertDialogHeader className="items-center text-center">
           <AlertDialogTitle className="flex w-full justify-center">
-            {requestTaken ? 'Request taken' : 'New request'}
+            {requestAwarded
+              ? 'Request awarded'
+              : requestAccepted
+                ? 'Request Accepted'
+                : requestTaken
+                  ? ''
+                  : 'New request'}
           </AlertDialogTitle>
 
-          <AlertDialogDescription className="space-y-2 text-sm text-foreground">
-            {requestTaken ? (
-              <p className="flex items-center jusctify-center w-full text-center">
-                Another provider has already accepted this request.
-              </p>
-            ) : (
-              <>
-                <p>
-                  <span className="font-medium">User:</span> {clientName}
-                </p>
-                <p>
-                  <span className="font-medium">Service:</span> {serviceName}
-                </p>
-                <p>
-                  <span className="font-medium">Address:</span> {address}
-                </p>
-              </>
-            )}
+          <AlertDialogDescription asChild>
+            <div className="space-y-2 text-sm text-foreground w-full">
+              {requestAwarded ? (
+                <div className="text-center space-y-2">
+                  <div className="text-green-600 font-medium">
+                    ✓ You got this request
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    Preparing job details...
+                  </div>
+                </div>
+              ) : requestAccepted ? (
+                <div className="text-center space-y-2">
+                  <div className="text-green-600 font-medium">
+                    ✓ "-Provider-" accepted this request
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    Preparing details...
+                  </div>
+                </div>
+              ) : requestTaken ? (
+                <div className="flex items-center justify-center w-full">
+                  <div className="text-xl font-bold text-gray-600">
+                    Request Taken
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-1">
+                  <div>
+                    <span className="font-medium">User:</span> {clientName}
+                  </div>
+                  <div>
+                    <span className="font-medium">Service:</span> {serviceName}
+                  </div>
+                  <div>
+                    <span className="font-medium">Address:</span> {address}
+                  </div>
+                </div>
+              )}
+            </div>
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <p className="text-xs text-muted-foreground text-center">
-          {Math.ceil((progress / 100) * timeoutSeconds)}s remaining
-        </p>
-        {/* Countdown Progress */}
-        <Progress
-          value={progress}
-          className="w-full h-1 [&>[data-slot=progress-indicator]]:bg-blue-400 bg-blue-100"
-        />
+
+        {!requestTaken && !requestAwarded && !requestAccepted && (
+          <>
+            <p className="text-xs text-muted-foreground text-center">
+              {Math.ceil((progress / 100) * timeoutSeconds)}s remaining
+            </p>
+
+            <Progress
+              value={progress}
+              className="w-full h-1 [&>[data-slot=progress-indicator]]:bg-blue-400 bg-blue-100"
+            />
+          </>
+        )}
 
         <AlertDialogFooter className="justify-center sm:justify-center">
-          {requestTaken ? (
-            <AlertDialogAction onClick={() => onOpenChange(false)}>
-              Close
-            </AlertDialogAction>
-          ) : (
+          {!requestTaken && !requestAwarded && !requestAccepted && (
             <>
               <AlertDialogCancel
                 onClick={handleIgnore}

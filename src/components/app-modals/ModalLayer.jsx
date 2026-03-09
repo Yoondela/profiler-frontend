@@ -2,14 +2,20 @@ import RequestModal from './RequestModal';
 import { useServiceWSRequest } from '@/api/context/ServiceRequestSocketContext';
 
 export default function ModalLayer() {
-  const { activeRequest, clearRequest, acceptRequest, ignoreRequest } =
-    useServiceWSRequest();
+  const {
+    activeRequest,
+    requestTaken,
+    requestAwarded,
+    clearRequest,
+    acceptRequest,
+    ignoreRequest,
+  } = useServiceWSRequest();
 
-  if (!activeRequest) return null;
+  if (!activeRequest && !requestTaken && !requestAwarded) return null;
 
   return (
     <RequestModal
-      open={!!activeRequest}
+      open={!!activeRequest || requestTaken || requestAwarded}
       requestData={activeRequest}
       onOpenChange={clearRequest}
       actions={{
