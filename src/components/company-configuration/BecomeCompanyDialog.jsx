@@ -44,6 +44,11 @@ export default function BecomeCompanyDialog({ open, onClose, onSubmit }) {
       return;
     }
 
+    console.log('Submitting company:', {
+      name: company.trim(),
+      address,
+    });
+
     try {
       setIsSubmitting(true);
       await onSubmit({

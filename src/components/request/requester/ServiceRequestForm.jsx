@@ -9,6 +9,7 @@ import SelectSizePopup from '../modals/GetSizePopup';
 import SelectTasksPopup from '../modals/SelectTasksPopup';
 import BriefcaseIcon from '../../../assets/icons/other/briefcase.svg?react';
 import LocationIcon from '../../../assets/icons/other/location.svg?react';
+import ServiceField from '../formField/ServiceField';
 
 import { RequestDrawer } from '../confirm/confirm';
 
@@ -88,24 +89,8 @@ export default function ServiceRequestForm({ onEdit, setGoToReview }) {
         </p>
 
         {/* SERVICE SELECT */}
-        <div className="dropdown-container">
-          <BriefcaseIcon width="20" height="20" className="briefcase-icon" />
 
-          <select
-            className="dropdown"
-            value={userService || ''}
-            onChange={handleServiceChange}
-          >
-            <option value="" disabled>
-              Select a service
-            </option>
-            <option value="Car Wash">Car Wash</option>
-            <option value="Cleaning">Cleaning</option>
-            <option value="Gardening">Gardening</option>
-          </select>
-
-          <FaChevronDown className="dropdown-icon" />
-        </div>
+        <ServiceField handleServiceChange={handleServiceChange} />
 
         {/* LOCATION INPUT */}
         <div className="input-container">

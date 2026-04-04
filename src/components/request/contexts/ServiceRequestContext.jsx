@@ -16,6 +16,10 @@ export const ServiceRequestProvider = ({ children }) => {
   const [userNote, setUserNote] = useState(null);
 
   useEffect(() => {
+    console.log(userLocation);
+  }, [userLocation]);
+
+  useEffect(() => {
     const getClient = async () => {
       if (!isAuthenticated || !user) return;
 
@@ -30,16 +34,22 @@ export const ServiceRequestProvider = ({ children }) => {
   }, [user, isAuthenticated]);
 
   let job = JSON.stringify(serviceTasks || {});
+  let address = userLocation?.address;
+
+  console.log('Service Tasks:', job);
+  console.log('User Location:', address);
 
   console.log('@Context', job);
   const requestPayload = {
     client: userId,
     service: userService,
     description: JSON.stringify(serviceTasks || {}),
-    forAddress: userLocation,
+    forAddress: address,
     note: userNote || '',
     selectedSize: subjectSize,
   };
+
+  console.log('Request Payload:', requestPayload);
 
   return (
     <ServiceRequestContext.Provider

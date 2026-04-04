@@ -25,7 +25,7 @@ export default function NotificationContainer() {
           }
         }}
       >
-        <SheetTrigger className="group relative flex items-center justify-center h-7 w-7 transition cursor-pointer">
+        <SheetTrigger className="group relative flex items-center justify-center transition cursor-pointer">
           <Bell size={19} className="group-hover:hidden mt-[4px]" />
           <BellRing size={19} className="mt-[2px] hidden group-hover:block" />
           {hasNew && (

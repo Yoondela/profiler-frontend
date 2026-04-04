@@ -17,8 +17,10 @@ const getAddress = (requestData) => {
     return 'Address not provided';
   }
 
-  if (typeof requestData.address === 'string' && requestData.address.trim()) {
-    return requestData.address;
+  const forAddress = requestData.forAddress.formatted;
+
+  if (typeof forAddress === 'string' && forAddress.trim()) {
+    return forAddress.trim();
   }
 
   const addressObject =
@@ -53,8 +55,19 @@ export default function RequestModal({
   const [progress, setProgress] = useState(100);
   const [closingCountdown, setClosingCountdown] = useState(null);
 
-  const { requestAccepted, requestTaken, requestAwarded } =
+  const { requestAccepted, requestTaken, requestAwarded, requestCreated } =
     useServiceWSRequest();
+
+  const acceptedProvider =
+    requestAccepted?.request?.provider ||
+    requestAccepted?.provider ||
+    requestAccepted?.serviceProvider ||
+    requestAccepted?.acceptedBy ||
+    null;
+
+  const acceptedProviderAvatar =
+    acceptedProvider?.profile?.avatarUrl || acceptedProvider?.avatarUrl;
+  const acceptedProviderName = acceptedProvider?.name || 'Name Loading...';
 
   const clientName = requestData?.client?.name || 'Unknown user';
   const serviceName = requestData?.service?.name || 'Unknown service';
@@ -123,7 +136,7 @@ export default function RequestModal({
   useEffect(() => {
     if (!requestAwarded || !open) return;
 
-    setClosingCountdown(3);
+    setClosingCountdown(60);
 
     const interval = setInterval(() => {
       setClosingCountdown((prev) => {
@@ -157,30 +170,103 @@ export default function RequestModal({
               ? 'Request awarded'
               : requestAccepted
                 ? 'Request Accepted'
-                : requestTaken
+                : requestCreated
                   ? ''
-                  : 'New request'}
+                  : requestTaken
+                    ? ''
+                    : 'New request'}
           </AlertDialogTitle>
 
           <AlertDialogDescription asChild>
             <div className="space-y-2 text-sm text-foreground w-full">
               {requestAwarded ? (
                 <div className="text-center space-y-2">
-                  <div className="text-green-600 font-medium">
-                    ✓ You got this request
+                  <div className="mx-4 font-medium">
+                    <span className="font-medium">
+                      {requestAwarded.request.service.name} service for
+                    </span>{' '}
+                    {requestAwarded.request.forAddress.formatted}
                   </div>
-                  <div className="text-xs text-muted-foreground">
-                    Preparing job details...
+                  <div className="flex items-center justify-center w-full">
+                    {requestAwarded.request.client.profile.avatarUrl ? (
+                      <img
+                        src={requestAwarded.request.client.profile.avatarUrl}
+                        alt={
+                          requestAwarded.request.client.name || 'User avatar'
+                        }
+                        className="w-8 h-8 rounded-full mr-2 object-cover"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-gray-300 mr-2" />
+                    )}
+                    {requestAwarded.request.client?.name || 'Name Loading...'}
                   </div>
+                  <div className="text-xs text-muted-foreground"></div>
                 </div>
               ) : requestAccepted ? (
                 <div className="text-center space-y-2">
-                  <div className="text-green-600 font-medium">
-                    ✓ "-Provider-" accepted this request
+                  <div className="text-green-600 font-medium">By</div>
+                  <div className="flex items-center justify-center w-full">
+                    {acceptedProviderAvatar ? (
+                      <img
+                        src={acceptedProviderAvatar}
+                        alt={acceptedProviderName || 'User avatar'}
+                        className="w-8 h-8 rounded-full mr-2 object-cover"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-gray-300 mr-2" />
+                    )}
+                    {acceptedProviderName}
                   </div>
-                  <div className="text-xs text-muted-foreground">
-                    Preparing details...
+                  <div className="text-xs text-muted-foreground mt-9">
+                    Go to dashboard to see details
                   </div>
+                </div>
+              ) : requestCreated ? (
+                <div className="flex flex-col items-center justify-center gap-6 w-full">
+                  <div className="text-xl font-bold text-gray-600 animate-pulse">
+                    Looking for providers...
+                  </div>
+                  <div className="space-y-1">
+                    <div>
+                      <span className="font-medium">
+                        {requestCreated.service.name} service for
+                      </span>{' '}
+                      {requestCreated.forAddress.formatted}
+                    </div>
+                  </div>
+                  <div
+                    className="relative ml-3 h-1 w-full overflow-hidden rounded-full bg-blue-100"
+                    style={{
+                      WebkitMaskImage:
+                        'linear-gradient(90deg, transparent 0%, black 12%, black 88%, transparent 100%)',
+                      maskImage:
+                        'linear-gradient(90deg, transparent 0%, black 12%, black 88%, transparent 100%)',
+                    }}
+                  >
+                    <div
+                      className="h-full w-1/2 bg-blue-400"
+                      style={{
+                        animation:
+                          'request-modal-pingpong 3.2s ease-in-out infinite',
+                      }}
+                    />
+                  </div>
+                  <style>
+                    {`
+                      @keyframes request-modal-pingpong {
+                        0% { transform: translateX(-10%); }
+                        50% { transform: translateX(110%); }
+                        100% { transform: translateX(-10%); }
+                      }
+                    `}
+                  </style>
+                  <AlertDialogCancel
+                    onClick={handleIgnore}
+                    disabled={ignoreAction.disabled}
+                  >
+                    {ignoreAction.label || 'Cancel'}
+                  </AlertDialogCancel>
                 </div>
               ) : requestTaken ? (
                 <div className="flex items-center justify-center w-full">
@@ -205,37 +291,43 @@ export default function RequestModal({
           </AlertDialogDescription>
         </AlertDialogHeader>
 
-        {!requestTaken && !requestAwarded && !requestAccepted && (
-          <>
-            <p className="text-xs text-muted-foreground text-center">
-              {Math.ceil((progress / 100) * timeoutSeconds)}s remaining
-            </p>
-
-            <Progress
-              value={progress}
-              className="w-full h-1 [&>[data-slot=progress-indicator]]:bg-blue-400 bg-blue-100"
-            />
-          </>
-        )}
-
-        <AlertDialogFooter className="justify-center sm:justify-center">
-          {!requestTaken && !requestAwarded && !requestAccepted && (
+        {!requestTaken &&
+          !requestAwarded &&
+          !requestAccepted &&
+          !requestCreated && (
             <>
-              <AlertDialogCancel
-                onClick={handleIgnore}
-                disabled={ignoreAction.disabled}
-              >
-                {ignoreAction.label || 'Ignore'}
-              </AlertDialogCancel>
+              <p className="text-xs text-muted-foreground text-center">
+                {Math.ceil((progress / 100) * timeoutSeconds)}s remaining
+              </p>
 
-              <AlertDialogAction
-                onClick={handleAccept}
-                disabled={acceptAction.disabled}
-              >
-                {acceptAction.label || 'Accept'}
-              </AlertDialogAction>
+              <Progress
+                value={progress}
+                className="w-full h-1 [&>[data-slot=progress-indicator]]:bg-blue-400 bg-blue-100"
+              />
             </>
           )}
+
+        <AlertDialogFooter className="justify-center sm:justify-center">
+          {!requestTaken &&
+            !requestAwarded &&
+            !requestAccepted &&
+            !requestCreated && (
+              <>
+                <AlertDialogCancel
+                  onClick={handleIgnore}
+                  disabled={ignoreAction.disabled}
+                >
+                  {ignoreAction.label || 'Ignore'}
+                </AlertDialogCancel>
+
+                <AlertDialogAction
+                  onClick={handleAccept}
+                  disabled={acceptAction.disabled}
+                >
+                  {acceptAction.label || 'Accept'}
+                </AlertDialogAction>
+              </>
+            )}
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

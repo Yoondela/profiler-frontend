@@ -6,6 +6,7 @@ import UserAvatar from './common/UserAvatar';
 import CompanyMenu from './common/companyMenu';
 import NotificationContainer from '../notifications/notificationContainer';
 import SearchBar from '../intro/SearchBar';
+import { MessageContainer } from '../messages/messageContainer';
 
 export default function Navbar() {
   const [pageMenuOpen, setPageMenuOpen] = useState(false);
@@ -40,8 +41,10 @@ export default function Navbar() {
 
         {/* If authenticated, show avatar + optional logout */}
         {isAuthenticated && (
-          <div className="flex flex-row items-center justify-between gap-3">
-            <div className="px-3 mx-2">
+          <div className="flex flex-row items-center justify-between gap-12">
+            <div className="flex flex-row items-center justify-between gap-7">
+              <MessageContainer />
+
               <NotificationContainer />
             </div>
             <div className="flex flex-row items-center justify-between gap-3">

@@ -26,7 +26,8 @@
   .dropdown-container {
     position: relative;
     display: flex;
-    margin-bottom: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 2px;
     width: 100%; /* Ensure the container takes full width */
     padding: 0.75rem; /* Add padding to the container */
     border: 1px solid #ccc; /* Apply border to the container */
@@ -56,7 +57,7 @@
   .dropdown option:hover {
     // background-color: #f0a500; /* Style for hovered options */
   }
-  
+
   .dropdown-container:focus-within {
     border: none; /* Remove border when focused */
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15); /* Apply box shadow when focused */
@@ -79,6 +80,7 @@
     border: 1px solid #ccc; /* Apply border to the container */
     border-radius: 8px; /* Apply border radius to the container */
     font-size: 1rem; /* Apply font size to the container */
+    margin-top: 1rem;
     margin-bottom: 1rem; /* Add margin to the container */
     background: white; /* Apply background to the container */
     transition: all 0.3s ease-in-out; /* Apply transition to the container */

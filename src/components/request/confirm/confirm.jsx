@@ -36,6 +36,10 @@ export function RequestDrawer({ mode, open, onOpenChange }) {
   } = mode === 'booking' ? bookingState : requestState;
 
   const handleConfirm = () => {
+    console.log(
+      'Confirming with payload:',
+      mode === 'booking' ? bookingPayload : requestPayload
+    );
     try {
       if (mode === 'booking') {
         // Call createBooking API
@@ -55,7 +59,6 @@ export function RequestDrawer({ mode, open, onOpenChange }) {
         createRequest(api, requestPayload)
           .then((data) => {
             console.log('✅ Request created:', data);
-            alert('Request successfully created!');
           })
           .catch((err) => {
             console.error('❌ createRequest failed', err);

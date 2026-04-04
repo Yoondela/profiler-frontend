@@ -9,11 +9,13 @@ export function ServiceRequestWSProvider({ children }) {
   const { subscribe } = useSocket();
   const api = useApiClient();
 
+  const [requestCreated, setRequestCreated] = useState(null);
+
   const [requestQueue, setRequestQueue] = useState([]);
   const [activeRequest, setActiveRequest] = useState(null);
 
   const [requestTaken, setRequestTaken] = useState(false);
-  const [requestAwarded, setRequestAwarded] = useState(false);
+  const [requestAwarded, setRequestAwarded] = useState(null);
   const [requestAccepted, setRequestAccepted] = useState(null);
 
   // 🔑 Track the current request id independently
@@ -21,6 +23,26 @@ export function ServiceRequestWSProvider({ children }) {
 
   const resolveRequestId = (payload) =>
     payload?.requestId ?? payload?.request?._id ?? payload?._id ?? null;
+
+  /*
+  -----------------------------
+  SERVICE REQUEST CREATED
+  -----------------------------
+  */
+  useEffect(() => {
+    if (!subscribe) return;
+
+    const unsubscribe = subscribe('service_request_created', (payload) => {
+      console.log('Request created:', payload);
+
+      setRequestCreated(payload);
+      setRequestAwarded(null);
+      setRequestTaken(false);
+      setRequestAccepted(null);
+    });
+
+    return unsubscribe;
+  }, [subscribe]);
 
   /*
   -----------------------------
@@ -33,7 +55,7 @@ export function ServiceRequestWSProvider({ children }) {
     const unsubscribe = subscribe('new_service_request', (payload) => {
       console.log('New service request:', payload);
 
-      setRequestAwarded(false);
+      setRequestAwarded(null);
       setRequestTaken(false);
       setRequestAccepted(null);
 
@@ -45,7 +67,7 @@ export function ServiceRequestWSProvider({ children }) {
 
   /*
   -----------------------------
-  REQUEST QUEUE
+  REQUEST QUEUE, New requests are addrd to the queue
   -----------------------------
   */
   useEffect(() => {
@@ -71,6 +93,7 @@ export function ServiceRequestWSProvider({ children }) {
       console.log('Request accepted:', payload);
 
       setRequestAccepted(payload);
+      setRequestCreated(null);
     });
 
     return unsubscribe;
@@ -89,7 +112,7 @@ export function ServiceRequestWSProvider({ children }) {
 
       if (resolveRequestId(payload) === currentRequestId) {
         setRequestAccepted(null);
-        setRequestAwarded(true);
+        setRequestAwarded(payload);
       }
     });
 
@@ -147,8 +170,9 @@ export function ServiceRequestWSProvider({ children }) {
   */
   const clearRequest = () => {
     setActiveRequest(null);
+    setRequestCreated(null);
     setRequestTaken(false);
-    setRequestAwarded(false);
+    setRequestAwarded(null);
     setRequestAccepted(null);
   };
 
@@ -156,6 +180,7 @@ export function ServiceRequestWSProvider({ children }) {
     <ServiceRequestContext.Provider
       value={{
         activeRequest,
+        requestCreated,
         requestTaken,
         requestAwarded,
         requestAccepted,
