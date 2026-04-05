@@ -13,6 +13,7 @@ import { PortfolioProvider } from './api/context/portfolioContext';
 import { SocketProvider } from './api/context/socketContext';
 import { NotificationProvider } from './api/context/notificationContext';
 import { ServiceRequestWSProvider } from './api/context/ServiceRequestSocketContext';
+import { useChatStore } from './modules/chat/store/chatStore';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -22,16 +23,16 @@ import './assets/css/animate.css';
 import './assets/css/globals.css';
 
 function App() {
-  const { isLoading, isAuthenticated } = useAuth0();
-  // useEffect(() => {
-  //   AOS.init({
-  //       offset: 80,
-  //       duration: 1000,
-  //       once: true,
-  //       easing: "ease",
-  //   });
-  //   AOS.refresh();
-  // }, []);
+  const { isLoading, isAuthenticated, user } = useAuth0();
+
+  const connect = useChatStore((s) => s.connect);
+
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      connect(user?.name); // replace with real user later
+    }
+  }, [isLoading, isAuthenticated, connect]);
+
   return (
     <div>
       <UserProvider>

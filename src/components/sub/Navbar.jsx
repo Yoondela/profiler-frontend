@@ -5,8 +5,8 @@ import { useAuth0 } from '@auth0/auth0-react';
 import UserAvatar from './common/UserAvatar';
 import CompanyMenu from './common/companyMenu';
 import NotificationContainer from '../notifications/notificationContainer';
+import { ChatSheet } from '@/modules/chat/lite-chat/components/ChatSheet';
 import SearchBar from '../intro/SearchBar';
-import { MessageContainer } from '../messages/messageContainer';
 
 export default function Navbar() {
   const [pageMenuOpen, setPageMenuOpen] = useState(false);
@@ -43,7 +43,9 @@ export default function Navbar() {
         {isAuthenticated && (
           <div className="flex flex-row items-center justify-between gap-12">
             <div className="flex flex-row items-center justify-between gap-7">
-              <MessageContainer />
+              {/* <MessageContainer /> */}
+
+              <ChatSheet />
 
               <NotificationContainer />
             </div>
