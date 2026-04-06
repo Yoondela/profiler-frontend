@@ -5,7 +5,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import UserAvatar from './common/UserAvatar';
 import CompanyMenu from './common/companyMenu';
 import NotificationContainer from '../notifications/notificationContainer';
-import { ChatSheet } from '@/modules/chat/lite-chat/components/ChatSheet';
+import { LiteChat } from '@/modules/chat/lite-chat/components/LiteChat';
 import SearchBar from '../intro/SearchBar';
 
 export default function Navbar() {
@@ -45,7 +45,7 @@ export default function Navbar() {
             <div className="flex flex-row items-center justify-between gap-7">
               {/* <MessageContainer /> */}
 
-              <ChatSheet />
+              <LiteChat />
 
               <NotificationContainer />
             </div>

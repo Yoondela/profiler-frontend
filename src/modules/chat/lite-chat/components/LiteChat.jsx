@@ -14,10 +14,17 @@ import { LiteChatView } from './LiteChatView';
 import { MessageInput } from './MessageInput';
 import { ExitChatView } from './ExitChatView';
 import { MessageSquareMore, MessageSquareText } from 'lucide-react';
+import { useChatStore } from '@/modules/chat/store/chatStore';
 
-export function ChatSheet({ open, onOpenChange }) {
+export function LiteChat({ open, onOpenChange }) {
   const [activeUserId, setActiveUserId] = useState(null);
-  // const { hasNew, clearNewFlag } = useNotifications();
+  const totalUnread = useChatStore((s) => s.getTotalUnread());
+  const clearViewedChannel = useChatStore((s) => s.clearViewedChannel);
+
+  const handleBack = () => {
+    clearViewedChannel();
+    setActiveUserId(null);
+  };
 
   return (
     <div className="flex flex-wrap">
@@ -31,9 +38,11 @@ export function ChatSheet({ open, onOpenChange }) {
             size={19}
             className="mt-[2px] hidden group-hover:block"
           />
-          {/* {hasNew && (
-              <span className="absolute top-0 right-0 block h-[10px] w-[10px] rounded-full bg-red-600" />
-            )} */}
+          {totalUnread > 0 && (
+            <div className="absolute flex items-center justify-center top-0 right-0 block h-[13px] w-[13px] rounded-full bg-red-600">
+              <span className="text-[8px] text-white">{totalUnread}</span>
+            </div>
+          )}
         </SheetTrigger>
         <SheetContent
           side={'right'}
@@ -41,10 +50,7 @@ export function ChatSheet({ open, onOpenChange }) {
         >
           <SheetHeader>
             {activeUserId ? (
-              <ExitChatView
-                userId={activeUserId}
-                onBack={() => setActiveUserId(null)}
-              />
+              <ExitChatView userId={activeUserId} onBack={handleBack} />
             ) : (
               <>
                 <SheetTitle>Chats</SheetTitle>
@@ -56,10 +62,7 @@ export function ChatSheet({ open, onOpenChange }) {
             {!activeUserId ? (
               <DMList onSelect={setActiveUserId} />
             ) : (
-              <LiteChatView
-                userId={activeUserId}
-                onBack={() => setActiveUserId(null)}
-              />
+              <LiteChatView userId={activeUserId} onBack={handleBack} />
             )}
           </div>
           <SheetFooter>

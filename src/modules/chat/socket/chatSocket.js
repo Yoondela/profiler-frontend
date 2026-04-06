@@ -25,7 +25,7 @@ export const chatSocket = {
       socket = null;
     };
   },
-  
+
   onMessage(nextHandler) {
     console.log('Registering message handler');
     handler = nextHandler;
