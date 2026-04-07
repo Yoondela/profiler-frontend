@@ -13,6 +13,11 @@ export const useChatStore = create((set, get) => ({
   // { [channelId]: number }
   unreadCounts: {},
 
+  // todo: use a newChannels and channelAlerts on liteChat (to render a red badge) when a CHANNEL_AVAILABLE event is received for a channel that isn't active and also show it in the channel list. then show the allert inside the chat view when they click in. also remove the new channel alert when they click into the channel or when they receive a message in that channel (since that means they have seen it)
+  newChannels: {}, // { [channelId]: true }
+
+  channelAlerts: {}, // { [channelId]: string }
+
   // 🔌 CONNECT
   connect: (userId) => {
     console.log('@ connect with userId:', userId);
@@ -24,6 +29,7 @@ export const useChatStore = create((set, get) => ({
         case 'MESSAGE_RECEIVED':
           console.log(event.type, 'received:', event.payload);
           get().addMessage(event.payload);
+          clearChannelAlert(event.payload.channelId);
           break;
 
         case 'CHANNEL_CREATED':
@@ -36,6 +42,30 @@ export const useChatStore = create((set, get) => ({
 
           get().setActiveChannel(event.payload.id);
           break;
+
+        case 'CHANNEL_AVAILABLE':
+          console.log('CHANNEL_AVAILABLE received:', event.payload);
+          set((state) => ({
+            newChannels: {
+              ...state.newChannels,
+              [event.payload.id]: true,
+            },
+            channelAlerts: {
+              ...state.channelAlerts,
+              [event.payload.id]: 'Communication opened',
+            },
+
+          }));
+          console.log('CHANNEL_AVAILABLE, setting alert for channel:', event.payload.id),
+
+          get().addChannel({
+            id: event.payload.id,
+            type: event.payload.type,
+            members: event.payload.members,
+          });
+
+          get().setChannelState(event.payload.id, 'active');
+          break;
       }
     });
 
@@ -44,14 +74,44 @@ export const useChatStore = create((set, get) => ({
 
   // 📍 ACTIVE CHANNEL
   setActiveChannel: (channelId) => {
-    set((state) => ({
-      activeChannelId: channelId,
-      unreadCounts: {
-        ...state.unreadCounts,
-        [channelId]: 0, // clear unread
-      },
-    }));
+    set((state) => {
+      const { [channelId]: _, ...rest } = state.newChannels;
+      // const { [channelId]: __, ...restAlerts } = state.channelAlerts;
+
+      return {
+        activeChannelId: channelId,
+        // channelAlerts: restAlerts,
+        newChannels: rest, // remove this channel
+        unreadCounts: {
+          ...state.unreadCounts,
+          [channelId]: 0,
+        },
+      };
+    });
   },
+
+
+  clearNewChannel: (channelId) => {
+    set((state) => {
+      const { [channelId]: _, ...rest } = state.newChannels;
+      
+      return {
+        newChannels: rest, // remove this channel
+      };
+    });
+  },
+
+  clearChannelAlert: (channelId) => {
+    set((state) => {
+      const { [channelId]: __, ...restAlerts } = state.channelAlerts;
+
+      return {
+        channelAlerts: restAlerts,
+      };
+    });
+  },
+
+
 
   setViewedChannel: (channelId) => {
     set({ viewedChannelId: channelId });
@@ -135,5 +195,10 @@ export const useChatStore = create((set, get) => ({
   getTotalUnread: () => {
     const counts = get().unreadCounts;
     return Object.values(counts).reduce((a, b) => a + b, 0);
+  },
+
+  isNew: () => {
+    const { activeChannelId, newChannels } = get();
+    return !!newChannels[activeChannelId];
   },
 }));

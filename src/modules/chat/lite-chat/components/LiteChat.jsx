@@ -17,13 +17,14 @@ import { MessageSquareMore, MessageSquareText } from 'lucide-react';
 import { useChatStore } from '@/modules/chat/store/chatStore';
 
 export function LiteChat({ open, onOpenChange }) {
-  const [activeUserId, setActiveUserId] = useState(null);
+  const [activeChannelId, setActiveChannelId] = useState(null);
   const totalUnread = useChatStore((s) => s.getTotalUnread());
   const clearViewedChannel = useChatStore((s) => s.clearViewedChannel);
+  const isNew = useChatStore((s) => s.isNew());
 
   const handleBack = () => {
     clearViewedChannel();
-    setActiveUserId(null);
+    setActiveChannelId(null);
   };
 
   return (
@@ -43,14 +44,21 @@ export function LiteChat({ open, onOpenChange }) {
               <span className="text-[8px] text-white">{totalUnread}</span>
             </div>
           )}
+
+          {isNew && totalUnread < 1 && (
+            <span className="absolute flex items-center justify-center top-1 right-0 block h-[8px] w-[8px] rounded-full bg-red-600" />
+          )}
         </SheetTrigger>
         <SheetContent
           side={'right'}
           className="border-none w-[400px] sm:w-[500px] h-[93%] bg-[white] my-[50px] gap-0"
         >
           <SheetHeader>
-            {activeUserId ? (
-              <ExitChatView userId={activeUserId} onBack={handleBack} />
+            {activeChannelId ? (
+              <ExitChatView
+                channelId={activeChannelId}
+                onBack={handleBack}
+              />
             ) : (
               <>
                 <SheetTitle>Chats</SheetTitle>
@@ -59,16 +67,16 @@ export function LiteChat({ open, onOpenChange }) {
             )}
           </SheetHeader>
           <div className="no-scrollbar overflow-y-auto px-4">
-            {!activeUserId ? (
-              <DMList onSelect={setActiveUserId} />
+            {!activeChannelId ? (
+              <DMList onSelect={setActiveChannelId} />
             ) : (
-              <LiteChatView userId={activeUserId} onBack={handleBack} />
+              <LiteChatView userId={activeChannelId} onBack={handleBack} />
             )}
           </div>
           <SheetFooter>
-            {activeUserId ? (
+            {activeChannelId ? (
               <div className="w-full border-">
-                <MessageInput userId={activeUserId} />
+                <MessageInput userId={activeChannelId} />
               </div>
             ) : (
               <>
