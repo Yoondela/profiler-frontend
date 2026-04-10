@@ -54,15 +54,16 @@ export const useChatStore = create((set, get) => ({
               ...state.channelAlerts,
               [event.payload.id]: 'Communication opened',
             },
-
           }));
-          console.log('CHANNEL_AVAILABLE, setting alert for channel:', event.payload.id),
-
-          get().addChannel({
-            id: event.payload.id,
-            type: event.payload.type,
-            members: event.payload.members,
-          });
+          (console.log(
+            'CHANNEL_AVAILABLE, setting alert for channel:',
+            event.payload.id
+          ),
+            get().addChannel({
+              id: event.payload.id,
+              type: event.payload.type,
+              members: event.payload.members,
+            }));
 
           get().setChannelState(event.payload.id, 'active');
           break;
@@ -90,11 +91,10 @@ export const useChatStore = create((set, get) => ({
     });
   },
 
-
   clearNewChannel: (channelId) => {
     set((state) => {
       const { [channelId]: _, ...rest } = state.newChannels;
-      
+
       return {
         newChannels: rest, // remove this channel
       };
@@ -110,8 +110,6 @@ export const useChatStore = create((set, get) => ({
       };
     });
   },
-
-
 
   setViewedChannel: (channelId) => {
     set({ viewedChannelId: channelId });

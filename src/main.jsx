@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import Auth0ProviderWithRedirect from './auth/Auth0ProviderWithRedirect.jsx';
+import { UserProvider } from './api/context/userContext.jsx';
 import App from './App.jsx';
 
 import './assets/styles/tailwind.css';
@@ -14,7 +15,9 @@ createRoot(document.getElementById('root')).render(
     <HelmetProvider>
       <BrowserRouter>
         <Auth0ProviderWithRedirect>
-          <App />
+          <UserProvider>
+            <App />
+          </UserProvider>
         </Auth0ProviderWithRedirect>
       </BrowserRouter>
     </HelmetProvider>

@@ -6,6 +6,7 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [appUser_ID, setAppUser_ID] = useState(null);
+  const [flackUser_ID, setFlackUser_ID] = useState(null);
   const [avatarUrlCtx, setAvatarUrlCtx] = useState(null);
   const [userCtx, setUserCtx] = useState(null);
   const [profileCtx, setProfileCtx] = useState(null);
@@ -41,6 +42,8 @@ export const UserProvider = ({ children }) => {
   console.log('User Context Data__________________:', userCtx);
 
   useEffect(() => {
+    setFlackUser_ID(userCtx?.flackUserId || null);
+    console.log('Updated flackUser_ID is now:', flackUser_ID);
     if (userCtx?.roles) {
       setIsProviderCtx(userCtx.roles.includes('provider'));
     }
@@ -65,6 +68,7 @@ export const UserProvider = ({ children }) => {
         setLogoUrlCtx,
         bannerUrlCtx,
         setBannerUrlCtx,
+        flackUser_ID,
       }}
     >
       {children}
