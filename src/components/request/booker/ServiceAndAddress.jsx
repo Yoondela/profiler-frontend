@@ -6,7 +6,7 @@ import SelectSizePopup from '../modals/GetSizePopup';
 import SelectTasksPopup from '../modals/SelectTasksPopup';
 import { useServiceBooking } from '../contexts/ServiceBookingContext';
 import { RequestDrawer } from '../confirm/confirm';
-import { useJsApiLoader, StandaloneSearchBox } from '@react-google-maps/api';
+import { useJsApiLoader, StandaloneSearchBox, Autocomplete} from '@react-google-maps/api';
 
 export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
   const {
@@ -38,20 +38,15 @@ export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
   // ---------------------------
 
   const handleLocationChange = () => {
-    if (!searchBoxRef.current) return;
-
-    const places = searchBoxRef.current.getPlaces();
-
-    if (!places || places.length === 0) return;
+    const places = searchBoxRef.current?.getPlaces();
+    if (!places?.length) return;
 
     const place = places[0];
-
-    if (!place.geometry) return;
-
     setUserLocation({
-      address: place.formatted_address || '',
+      address: place.formatted_address,
     });
   };
+
 
   // ---------------------------
   // SERVICE HANDLER
@@ -118,6 +113,10 @@ export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
             <StandaloneSearchBox
               onLoad={(ref) => (searchBoxRef.current = ref)}
               onPlacesChanged={handleLocationChange}
+              options={{
+                types: ['address'],
+                componentRestrictions: { country: 'za' },
+              }}
             >
               <input
                 type="text"

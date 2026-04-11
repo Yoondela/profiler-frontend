@@ -14,7 +14,7 @@ export function DMList({ onSelect }) {
   const users = ['amber', 'Yondela Sasayi', 'bonga@bones.com']; // temp
 
   console.log('Channels:', channels);
-  
+
   return (
     <div className="flex flex-col">
       {/* Existing channels */}

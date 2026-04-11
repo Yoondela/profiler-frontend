@@ -194,10 +194,10 @@ export default function RequestModal({
                         alt={
                           requestAwarded.request.client.name || 'User avatar'
                         }
-                        className="w-8 h-8 rounded-full mr-2 object-cover"
+                        className="w-10 h-10 rounded-lg mr-2 object-cover"
                       />
                     ) : (
-                      <div className="w-8 h-8 rounded-full bg-gray-300 mr-2" />
+                      <div className="w-10 h-10 rounded-lg bg-gray-300 mr-2" />
                     )}
                     {requestAwarded.request.client?.name || 'Name Loading...'}
                   </div>
@@ -211,10 +211,10 @@ export default function RequestModal({
                       <img
                         src={acceptedProviderAvatar}
                         alt={acceptedProviderName || 'User avatar'}
-                        className="w-8 h-8 rounded-full mr-2 object-cover"
+                        className="w-10 h-10 rounded-lg mr-2 object-cover"
                       />
                     ) : (
-                      <div className="w-8 h-8 rounded-full bg-gray-300 mr-2" />
+                      <div className="w-10 h-10 rounded-lg bg-gray-300 mr-2" />
                     )}
                     {acceptedProviderName}
                   </div>

@@ -19,6 +19,11 @@ export const ServiceBookingProvider = ({ children }) => {
   const [serviceTasks, setServiceTasks] = useState(null);
   const [userNote, setUserNote] = useState('');
 
+
+  useEffect(() => {
+    console.log(userLocation);
+  }, [userLocation]);
+
   useEffect(() => {
     const getClient = async () => {
       if (!isAuthenticated || !user) return;
@@ -45,13 +50,15 @@ export const ServiceBookingProvider = ({ children }) => {
     todo: job,
   };
 
+  let address = userLocation?.address;
+
   const bookingPayload = {
     client: userId,
     service: userService,
     description: JSON.stringify(serviceTasks || {}),
     forDate: userDate,
     forTime: userTime,
-    forAddress: userLocation,
+    forAddress: address,
     note: userNote || '',
     selectedSize: subjectSize,
   };

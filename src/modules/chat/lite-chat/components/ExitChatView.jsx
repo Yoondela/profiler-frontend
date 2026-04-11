@@ -6,8 +6,9 @@ export function ExitChatView({ channelId, onBack }) {
   const channels = useChatStore((s) => s.channels);
   const userId = useChatStore((s) => s.userId);
   const channel = channels.find((c) => c.id === channelId);
-  const otherUser = channel?.members?.find((m) => m !== userId);
-  const displayName = otherUser.username || channelId;
+  const otherUser = channel?.members?.find((m) => m.userId !== userId);
+  console.log('other user:', otherUser);
+  const displayName = otherUser?.username || channelId;
 
   return (
     <div className="flex flex-col h-full">

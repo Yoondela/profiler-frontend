@@ -17,6 +17,7 @@ import { MessageSquareMore, MessageSquareText } from 'lucide-react';
 import { useChatStore } from '@/modules/chat/store/chatStore';
 
 export function LiteChat({ open, onOpenChange }) {
+  // todo: find current user id from store and pass to ExitChatView
   const [activeChannelId, setActiveChannelId] = useState(null);
   const totalUnread = useChatStore((s) => s.getTotalUnread());
   const clearViewedChannel = useChatStore((s) => s.clearViewedChannel);
@@ -55,7 +56,7 @@ export function LiteChat({ open, onOpenChange }) {
         >
           <SheetHeader>
             {activeChannelId ? (
-              <ExitChatView channelId={activeChannelId} onBack={handleBack} />
+              <ExitChatView onBack={handleBack} />
             ) : (
               <>
                 <SheetTitle>Chats</SheetTitle>
