@@ -1,0 +1,333 @@
+import { useEffect, useState } from 'react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { Progress } from '@/components/ui/progress';
+import { useServiceWSBooking } from '@/api/context/ServiceBookingSocketContext';
+
+const getAddress = (bookingData) => {
+  if (!bookingData || typeof bookingData !== 'object') {
+    return 'Address not provided';
+  }
+
+  const forAddress = bookingData.forAddress.formatted;
+
+  if (typeof forAddress === 'string' && forAddress.trim()) {
+    return forAddress.trim();
+  }
+
+  const addressObject =
+    bookingData.address && typeof bookingData.address === 'object'
+      ? bookingData.address
+      : bookingData.location && typeof bookingData.location === 'object'
+        ? bookingData.location
+        : null;
+
+  if (!addressObject) {
+    return 'Address not provided';
+  }
+
+  const parts = [
+    addressObject.street,
+    addressObject.suburb,
+    addressObject.city,
+    addressObject.state,
+    addressObject.postalCode,
+    addressObject.country,
+  ].filter(Boolean);
+
+  return parts.length ? parts.join(', ') : 'Address not provided';
+};
+
+export default function BookingModal({
+  open,
+  onOpenChange,
+  bookingData,
+  actions = {},
+}) {
+  const [progress, setProgress] = useState(100);
+  const [closingCountdown, setClosingCountdown] = useState(null);
+
+  const { bookingAccepted, bookingTaken, bookingAwarded, bookingCreated } =
+    useServiceWSBooking();
+
+  const acceptedProvider =
+    bookingAccepted?.booking?.provider || null;
+
+  const acceptedProviderAvatar =
+    acceptedProvider?.profile?.avatarUrl || acceptedProvider?.avatarUrl;
+  const acceptedProviderName = acceptedProvider?.name || 'Name Loading...';
+
+  const clientName = bookingData?.client?.name || 'Unknown user';
+  const serviceName = bookingData?.service?.name || 'Unknown service';
+  const address = getAddress(bookingData);
+
+  const acceptAction = actions.accept || {};
+  const ignoreAction = actions.ignore || {};
+  const ignoreOnClick = ignoreAction.onClick;
+  const timeoutSeconds = bookingData?.pingTimeInSeconds || 30;
+
+  // Request response timer
+  useEffect(() => {
+    if (!open || bookingTaken || bookingAwarded || bookingAccepted) return;
+
+    setProgress(100);
+    setClosingCountdown(null);
+
+    const totalTime = timeoutSeconds * 1000;
+    const start = Date.now();
+
+    console.log('Booking awarded. Modal', bookingAwarded);
+
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - start;
+      const percentage = Math.max(100 - (elapsed / totalTime) * 100, 0);
+
+      setProgress(percentage);
+
+      if (percentage <= 0) {
+        clearInterval(interval);
+        ignoreOnClick?.();
+        onOpenChange(false);
+      }
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, [
+    open,
+    bookingTaken,
+    bookingAwarded,
+    bookingAccepted,
+    timeoutSeconds,
+    ignoreOnClick,
+    onOpenChange,
+  ]);
+
+  // Closing countdown when request taken
+  useEffect(() => {
+    if (!bookingTaken || !open) return;
+
+    setClosingCountdown(6);
+
+    const interval = setInterval(() => {
+      setClosingCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          onOpenChange(false);
+          return null;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [bookingTaken, open, onOpenChange]);
+
+  // Closing countdown when request awarded
+  useEffect(() => {
+    if (!bookingAwarded || !open) return;
+
+    setClosingCountdown(60);
+
+    const interval = setInterval(() => {
+      setClosingCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          onOpenChange(false);
+          return null;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [bookingAwarded, open, onOpenChange]);
+
+  const handleAccept = () => {
+    acceptAction.onClick?.();
+  };
+
+  const handleIgnore = () => {
+    ignoreAction.onClick?.();
+    onOpenChange(false);
+  };
+
+  return (
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      <AlertDialogContent className="bg-white">
+        <AlertDialogHeader className="items-center text-center">
+          <AlertDialogTitle className="flex w-full justify-center">
+            {bookingAwarded
+              ? 'Booking awarded'
+              : bookingAccepted
+                ? 'Booking Accepted'
+                : bookingCreated
+                  ? ''
+                  : bookingTaken
+                    ? ''
+                    : 'New booking'}
+          </AlertDialogTitle>
+
+          <AlertDialogDescription asChild>
+            <div className="space-y-2 text-sm text-foreground w-full">
+              {bookingAwarded ? (
+                <div className="text-center space-y-2">
+                  <div className="mx-4 font-medium">
+                    <span className="font-medium">
+                      {bookingAwarded.booking.service.name} service for
+                    </span>{' '}
+                    {bookingAwarded.booking.forAddress.formatted}
+                  </div>
+                  <div className="flex items-center justify-center w-full">
+                    {bookingAwarded.booking.client.profile.avatarUrl ? (
+                      <img
+                        src={bookingAwarded.booking.client.profile.avatarUrl}
+                        alt={
+                          bookingAwarded.booking.client.name || 'User avatar'
+                        }
+                        className="w-10 h-10 rounded-lg mr-2 object-cover"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 rounded-lg bg-gray-300 mr-2" />
+                    )}
+                    {bookingAwarded.booking.client?.name || 'Name Loading...'}
+                  </div>
+                  <div className="text-xs text-muted-foreground"></div>
+                </div>
+              ) : bookingAccepted ? (
+                <div className="text-center space-y-2">
+                  <div className="text-green-600 font-medium">By</div>
+                  <div className="flex items-center justify-center w-full">
+                    {acceptedProviderAvatar ? (
+                      <img
+                        src={acceptedProviderAvatar}
+                        alt={acceptedProviderName || 'User avatar'}
+                        className="w-10 h-10 rounded-lg mr-2 object-cover"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 rounded-lg bg-gray-300 mr-2" />
+                    )}
+                    {acceptedProviderName}
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-9">
+                    Go to dashboard to see details
+                  </div>
+                </div>
+              ) : bookingCreated ? (
+                <div className="flex flex-col items-center justify-center gap-6 w-full">
+                  <div className="text-xl font-bold text-gray-600 animate-pulse">
+                    Looking for providers...
+                  </div>
+                  <div className="space-y-1">
+                    <div>
+                      <span className="font-medium">
+                        {bookingCreated.service.name} service for
+                      </span>{' '}
+                      {bookingCreated.forAddress.formatted}
+                    </div>
+                  </div>
+                  <div
+                    className="relative ml-3 h-1 w-full overflow-hidden rounded-full bg-blue-100"
+                    style={{
+                      WebkitMaskImage:
+                        'linear-gradient(90deg, transparent 0%, black 12%, black 88%, transparent 100%)',
+                      maskImage:
+                        'linear-gradient(90deg, transparent 0%, black 12%, black 88%, transparent 100%)',
+                    }}
+                  >
+                    <div
+                      className="h-full w-1/2 bg-blue-400"
+                      style={{
+                        animation:
+                          'request-modal-pingpong 3.2s ease-in-out infinite',
+                      }}
+                    />
+                  </div>
+                  <style>
+                    {`
+                      @keyframes request-modal-pingpong {
+                        0% { transform: translateX(-10%); }
+                        50% { transform: translateX(110%); }
+                        100% { transform: translateX(-10%); }
+                      }
+                    `}
+                  </style>
+                  <AlertDialogCancel
+                    onClick={handleIgnore}
+                    disabled={ignoreAction.disabled}
+                  >
+                    {ignoreAction.label || 'Cancel'}
+                  </AlertDialogCancel>
+                </div>
+              ) : bookingTaken ? (
+                <div className="flex items-center justify-center w-full">
+                  <div className="text-xl font-bold text-gray-600">
+                    Request Taken
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-1">
+                  <div>
+                    <span className="font-medium">User:</span> {clientName}
+                  </div>
+                  <div>
+                    <span className="font-medium">Service:</span> {serviceName}
+                  </div>
+                  <div>
+                    <span className="font-medium">Address:</span> {address}
+                  </div>
+                </div>
+              )}
+            </div>
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+
+        {!bookingTaken &&
+          !bookingAwarded &&
+          !bookingAccepted &&
+          !bookingCreated && (
+            <>
+              <p className="text-xs text-muted-foreground text-center">
+                {Math.ceil((progress / 100) * timeoutSeconds)}s remaining
+              </p>
+
+              <Progress
+                value={progress}
+                className="w-full h-1 [&>[data-slot=progress-indicator]]:bg-blue-400 bg-blue-100"
+              />
+            </>
+          )}
+
+        <AlertDialogFooter className="justify-center sm:justify-center">
+          {!bookingTaken &&
+            !bookingAwarded &&
+            !bookingAccepted &&
+            !bookingCreated && (
+              <>
+                <AlertDialogCancel
+                  onClick={handleIgnore}
+                  disabled={ignoreAction.disabled}
+                >
+                  {ignoreAction.label || 'Ignore'}
+                </AlertDialogCancel>
+
+                <AlertDialogAction
+                  onClick={handleAccept}
+                  disabled={acceptAction.disabled}
+                >
+                  {acceptAction.label || 'Accept'}
+                </AlertDialogAction>
+              </>
+            )}
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}

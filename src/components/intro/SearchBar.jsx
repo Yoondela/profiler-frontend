@@ -15,8 +15,8 @@ import axios from 'axios';
 
 const typeIconMap = {
   service: Briefcase,
-  provider: Building2,
-  user: User,
+  company: Building2,
+  provider: User,
   category: Layers,
   location: MapPin,
 };
@@ -188,7 +188,7 @@ export default function SearchBar() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute top-[2rem] left-[1rem] mt-2 w-[440px] rounded-md border bg-white shadow-md"
+                  className="absolute top-[2rem] left-[0rem] mt-2 w-[400px] rounded-md border bg-white shadow-md"
                 >
                   {suggestions.map((item, index) => {
                     const Icon = typeIconMap[item.type];

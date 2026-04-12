@@ -13,7 +13,11 @@ import ServiceField from '../formField/ServiceField';
 
 import { RequestDrawer } from '../confirm/confirm';
 
-import { useJsApiLoader, StandaloneSearchBox, Autocomplete } from '@react-google-maps/api';
+import {
+  useJsApiLoader,
+  StandaloneSearchBox,
+  Autocomplete,
+} from '@react-google-maps/api';
 
 export default function ServiceRequestForm({ onEdit, setGoToReview }) {
   // ---------------------------

@@ -13,6 +13,7 @@ import { PortfolioProvider } from './api/context/portfolioContext';
 import { SocketProvider } from './api/context/socketContext';
 import { NotificationProvider } from './api/context/notificationContext';
 import { ServiceRequestWSProvider } from './api/context/ServiceRequestSocketContext';
+import { ServiceBookingWSProvider } from './api/context/ServiceBookingSocketContext';
 import { useChatStore } from './modules/chat/store/chatStore';
 import { useUserContext } from './api/context/userContext';
 
@@ -49,7 +50,9 @@ function App() {
                 {isAuthenticated && !isLoading && <CreateUser />}
                 <Navbar />
                 <ServiceRequestWSProvider>
-                  <AppRoutes />
+                  <ServiceBookingWSProvider>
+                    <AppRoutes />
+                  </ServiceBookingWSProvider>
                 </ServiceRequestWSProvider>
                 <Toaster />
               </SearchContextProvider>

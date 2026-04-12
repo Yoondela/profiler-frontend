@@ -56,7 +56,7 @@ export function LiteChat({ open, onOpenChange }) {
         >
           <SheetHeader>
             {activeChannelId ? (
-              <ExitChatView onBack={handleBack} />
+              <ExitChatView channelId={activeChannelId} onBack={handleBack} />
             ) : (
               <>
                 <SheetTitle>Chats</SheetTitle>

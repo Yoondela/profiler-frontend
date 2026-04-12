@@ -12,13 +12,13 @@ import {
 import { useSearchContext } from './context/context';
 import axios from 'axios';
 
-const typeIconMap = {
-  service: Briefcase,
-  provider: Building2,
-  user: User,
-  category: Layers,
-  location: MapPin,
-};
+// const typeIconMap = {
+//   service: Briefcase,
+//   company: Building2,
+//   provider: User,
+//   category: Layers,
+//   location: MapPin,
+// };
 
 export default function SearchProvider() {
   const { searchField, setSearchField } = useSearchContext();

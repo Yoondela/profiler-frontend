@@ -6,7 +6,11 @@ import SelectSizePopup from '../modals/GetSizePopup';
 import SelectTasksPopup from '../modals/SelectTasksPopup';
 import { useServiceBooking } from '../contexts/ServiceBookingContext';
 import { RequestDrawer } from '../confirm/confirm';
-import { useJsApiLoader, StandaloneSearchBox, Autocomplete} from '@react-google-maps/api';
+import {
+  useJsApiLoader,
+  StandaloneSearchBox,
+  Autocomplete,
+} from '@react-google-maps/api';
 
 export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
   const {
@@ -46,7 +50,6 @@ export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
       address: place.formatted_address,
     });
   };
-
 
   // ---------------------------
   // SERVICE HANDLER

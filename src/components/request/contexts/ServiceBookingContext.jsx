@@ -19,7 +19,6 @@ export const ServiceBookingProvider = ({ children }) => {
   const [serviceTasks, setServiceTasks] = useState(null);
   const [userNote, setUserNote] = useState('');
 
-
   useEffect(() => {
     console.log(userLocation);
   }, [userLocation]);

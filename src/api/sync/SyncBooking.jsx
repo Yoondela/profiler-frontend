@@ -10,3 +10,10 @@ export async function getBookings(api, { status } = {}) {
   const res = await api.get('/service-requests', { params });
   return res.data;
 }
+
+export async function respondToBooking(api, requestId) {
+  const res = await api.patch(`/bookings/status/${requestId}`, {
+    status: 'accepted',
+  });
+  return res.data;
+}
