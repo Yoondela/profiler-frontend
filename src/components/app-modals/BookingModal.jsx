@@ -58,8 +58,7 @@ export default function BookingModal({
   const { bookingAccepted, bookingTaken, bookingAwarded, bookingCreated } =
     useServiceWSBooking();
 
-  const acceptedProvider =
-    bookingAccepted?.booking?.provider || null;
+  const acceptedProvider = bookingAccepted?.booking?.provider || null;
 
   const acceptedProviderAvatar =
     acceptedProvider?.profile?.avatarUrl || acceptedProvider?.avatarUrl;

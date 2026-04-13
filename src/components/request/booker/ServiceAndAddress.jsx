@@ -6,11 +6,9 @@ import SelectSizePopup from '../modals/GetSizePopup';
 import SelectTasksPopup from '../modals/SelectTasksPopup';
 import { useServiceBooking } from '../contexts/ServiceBookingContext';
 import { RequestDrawer } from '../confirm/confirm';
-import {
-  useJsApiLoader,
-  StandaloneSearchBox,
-  Autocomplete,
-} from '@react-google-maps/api';
+import { useJsApiLoader, Autocomplete } from '@react-google-maps/api';
+import { useCity } from '@/components/city/context/cityContext';
+import { getLatLngBounds } from '@/utils/getCityBounds';
 
 export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
   const {
@@ -25,7 +23,9 @@ export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
   const [showTasksPopup, setShowTasksPopup] = useState(false);
   const [showDrawer, setShowDrawer] = useState(false);
 
-  const searchBoxRef = useRef(null);
+  const autocompleteRef = useRef(null);
+  const { city } = useCity();
+  
 
   // ---------------------------
   // GOOGLE MAPS LOADER
@@ -42,10 +42,8 @@ export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
   // ---------------------------
 
   const handleLocationChange = () => {
-    const places = searchBoxRef.current?.getPlaces();
-    if (!places?.length) return;
-
-    const place = places[0];
+    const place = autocompleteRef.current?.getPlace();
+    if (!place) return;
     setUserLocation({
       address: place.formatted_address,
     });
@@ -113,12 +111,14 @@ export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
           <LocationIcon width="20" height="20" className="location-icon" />
 
           {isLoaded && (
-            <StandaloneSearchBox
-              onLoad={(ref) => (searchBoxRef.current = ref)}
-              onPlacesChanged={handleLocationChange}
+            <Autocomplete
+              onLoad={(ref) => (autocompleteRef.current = ref)}
+              onPlaceChanged={handleLocationChange}
               options={{
                 types: ['address'],
                 componentRestrictions: { country: 'za' },
+                bounds: getLatLngBounds(city),
+                strictBounds: false,
               }}
             >
               <input
@@ -132,7 +132,7 @@ export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
                   })
                 }
               />
-            </StandaloneSearchBox>
+            </Autocomplete>
           )}
         </div>
 

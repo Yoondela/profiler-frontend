@@ -1,0 +1,28 @@
+[
+  {
+    "name": "Durban",
+    "slug": "durban",
+    "acr": "DUR",
+    "lat": -29.8587,
+    "lng": 31.0218,
+    "bounds": {
+      "south": -29.97,
+      "west": 30.88,
+      "north": -29.80,
+      "east": 31.10
+    }
+  },
+  {
+    "name": "Cape Town",
+    "slug": "cape-town",
+    "acr": "CPT",
+    "lat": -33.9249,
+    "lng": 18.4241,
+    "bounds": {
+      "south": -34.05,
+      "west": 18.30,
+      "north": -33.80,
+      "east": 18.60
+    }
+  }
+]

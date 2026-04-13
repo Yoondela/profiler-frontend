@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { X } from 'lucide-react';
@@ -10,15 +10,12 @@ import SelectTasksPopup from '../modals/SelectTasksPopup';
 import BriefcaseIcon from '../../../assets/icons/other/briefcase.svg?react';
 import LocationIcon from '../../../assets/icons/other/location.svg?react';
 import ServiceField from '../formField/ServiceField';
+import { useCity } from '@/components/city/context/cityContext';
+import { getLatLngBounds } from '@/utils/getCityBounds';
 
 import { RequestDrawer } from '../confirm/confirm';
 
-import {
-  useJsApiLoader,
-  StandaloneSearchBox,
-  Autocomplete,
-} from '@react-google-maps/api';
-
+import { useJsApiLoader, Autocomplete } from '@react-google-maps/api';
 export default function ServiceRequestForm({ onEdit, setGoToReview }) {
   // ---------------------------
   // CONTEXT (SOURCE OF TRUTH)
@@ -34,6 +31,8 @@ export default function ServiceRequestForm({ onEdit, setGoToReview }) {
     setServiceTasks,
   } = useServiceRequest();
 
+  const { city } = useCity();
+
   // ---------------------------
   // LOCAL UI STATE ONLY
   // ---------------------------
@@ -41,7 +40,7 @@ export default function ServiceRequestForm({ onEdit, setGoToReview }) {
   const [showTasksPopup, setShowTasksPopup] = useState(false);
   const [showDrawer, setShowDrawer] = useState(false);
 
-  const searchBoxRef = useRef(null);
+  const autocompleteRef = useRef(null);
   const inputElementRef = useRef(null);
 
   // ---------------------------
@@ -61,10 +60,8 @@ export default function ServiceRequestForm({ onEdit, setGoToReview }) {
   };
 
   const handleLocationChange = () => {
-    const places = searchBoxRef.current?.getPlaces();
-    if (!places?.length) return;
-
-    const place = places[0];
+    const place = autocompleteRef.current?.getPlace();
+    if (!place) return;
     setUserLocation({
       address: place.formatted_address,
     });
@@ -102,12 +99,14 @@ export default function ServiceRequestForm({ onEdit, setGoToReview }) {
 
           {isLoaded && (
             <div className="local">
-              <StandaloneSearchBox
-                onLoad={(ref) => (searchBoxRef.current = ref)}
-                onPlacesChanged={handleLocationChange}
+              <Autocomplete
+                onLoad={(ref) => (autocompleteRef.current = ref)}
+                onPlaceChanged={handleLocationChange}
                 options={{
                   types: ['address'],
                   componentRestrictions: { country: 'za' },
+                  bounds: getLatLngBounds(city),
+                  strictBounds: false,
                 }}
               >
                 <input
@@ -118,7 +117,7 @@ export default function ServiceRequestForm({ onEdit, setGoToReview }) {
                   onChange={(e) => setUserLocation({ address: e.target.value })}
                   ref={inputElementRef}
                 />
-              </StandaloneSearchBox>
+              </Autocomplete>
             </div>
           )}
 

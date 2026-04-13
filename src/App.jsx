@@ -16,6 +16,7 @@ import { ServiceRequestWSProvider } from './api/context/ServiceRequestSocketCont
 import { ServiceBookingWSProvider } from './api/context/ServiceBookingSocketContext';
 import { useChatStore } from './modules/chat/store/chatStore';
 import { useUserContext } from './api/context/userContext';
+import { CityProvider } from './components/city/context/cityContext';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -42,24 +43,26 @@ function App() {
 
   return (
     <div>
-      <SocketProvider>
-        <NotificationProvider>
-          <PortfolioProvider>
-            <GoogleMapsProvider>
-              <SearchContextProvider>
-                {isAuthenticated && !isLoading && <CreateUser />}
-                <Navbar />
-                <ServiceRequestWSProvider>
-                  <ServiceBookingWSProvider>
-                    <AppRoutes />
-                  </ServiceBookingWSProvider>
-                </ServiceRequestWSProvider>
-                <Toaster />
-              </SearchContextProvider>
-            </GoogleMapsProvider>
-          </PortfolioProvider>
-        </NotificationProvider>
-      </SocketProvider>
+      <CityProvider>
+        <SocketProvider>
+          <NotificationProvider>
+            <PortfolioProvider>
+              <GoogleMapsProvider>
+                <SearchContextProvider>
+                  {isAuthenticated && !isLoading && <CreateUser />}
+                  <Navbar />
+                  <ServiceRequestWSProvider>
+                    <ServiceBookingWSProvider>
+                      <AppRoutes />
+                    </ServiceBookingWSProvider>
+                  </ServiceRequestWSProvider>
+                  <Toaster />
+                </SearchContextProvider>
+              </GoogleMapsProvider>
+            </PortfolioProvider>
+          </NotificationProvider>
+        </SocketProvider>
+      </CityProvider>
     </div>
   );
 }

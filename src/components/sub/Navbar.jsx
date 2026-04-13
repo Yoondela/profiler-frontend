@@ -7,6 +7,7 @@ import CompanyMenu from './common/companyMenu';
 import NotificationContainer from '../notifications/notificationContainer';
 import { LiteChat } from '@/modules/chat/lite-chat/components/LiteChat';
 import SearchBar from '../intro/SearchBar';
+import CitySelector from '../city/CitySelector';
 
 export default function Navbar() {
   const [pageMenuOpen, setPageMenuOpen] = useState(false);
@@ -49,6 +50,9 @@ export default function Navbar() {
 
               <NotificationContainer />
             </div>
+
+            <CitySelector />
+
             <div className="flex flex-row items-center justify-between gap-3">
               <div className="flex items-center mt-[1px]">
                 <CompanyMenu />
