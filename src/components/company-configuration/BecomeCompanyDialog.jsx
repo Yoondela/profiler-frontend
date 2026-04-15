@@ -28,6 +28,7 @@ export default function BecomeCompanyDialog({ open, onClose, onSubmit }) {
     setAddress({
       formatted: place.formatted_address,
       placeId: place.place_id,
+      addressComponents: place.address_components,
     });
   };
 

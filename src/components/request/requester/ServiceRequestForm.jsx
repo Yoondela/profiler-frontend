@@ -64,6 +64,8 @@ export default function ServiceRequestForm({ onEdit, setGoToReview }) {
     if (!place) return;
     setUserLocation({
       address: place.formatted_address,
+      placeId: place.place_id,
+      addressComponents: place.address_components,
     });
   };
 

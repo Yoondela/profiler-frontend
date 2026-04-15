@@ -34,7 +34,11 @@ export const ServiceRequestProvider = ({ children }) => {
   }, [user, isAuthenticated]);
 
   let job = JSON.stringify(serviceTasks || {});
-  let address = userLocation?.address;
+  let address = {
+    address: userLocation?.address,
+    placeId: userLocation?.placeId,
+    addressComponents: userLocation?.addressComponents,
+  };
 
   console.log('Service Tasks:', job);
   console.log('User Location:', address);

@@ -24,7 +24,7 @@ export default function CitySelector() {
         <SelectValue placeholder="ZA">{city?.acr}</SelectValue>
       </SelectTrigger>
 
-      <SelectContent 
+      <SelectContent
         position="popper"
         sideOffset={12}
         avoidCollisions={true}

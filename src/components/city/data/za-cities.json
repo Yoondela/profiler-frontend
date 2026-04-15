@@ -2,6 +2,7 @@
   {
     "name": "Durban",
     "slug": "durban",
+    "normalized": "durban",
     "acr": "DUR",
     "lat": -29.8587,
     "lng": 31.0218,
@@ -15,6 +16,7 @@
   {
     "name": "Cape Town",
     "slug": "cape-town",
+    "normalized": "cape town",
     "acr": "CPT",
     "lat": -33.9249,
     "lng": 18.4241,
@@ -23,6 +25,48 @@
       "west": 18.30,
       "north": -33.80,
       "east": 18.60
+    }
+  },
+  {
+    "name": "Johannesburg",
+    "slug": "johannesburg",
+    "normalized": "johannesburg",
+    "acr": "JHB",
+    "lat": -26.2041,
+    "lng": 28.0473,
+    "bounds": {
+      "south": -26.40,
+      "west": 27.80,
+      "north": -26.00,
+      "east": 28.20
+    }
+  },
+  {
+    "name": "Pretoria",
+    "slug": "pretoria",
+    "normalized": "pretoria",
+    "acr": "PTA",
+    "lat": -25.7479,
+    "lng": 28.2293,
+    "bounds": {
+      "south": -25.85,
+      "west": 28.10,
+      "north": -25.65,
+      "east": 28.35
+    }
+  },
+  {
+    "name": "East London",
+    "slug": "east-london",
+    "normalized": "east london",
+    "acr": "ELS",
+    "lat": -33.0153,
+    "lng": 27.9116,
+    "bounds": {
+      "south": -33.10,
+      "west": 27.80,
+      "north": -32.95,
+      "east": 28.00
     }
   }
 ]

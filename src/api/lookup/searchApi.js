@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const searchProviders = async (query, page = 1, limit = 18) => {
+export const searchProviders = async (query, city, page = 1, limit = 18) => {
   if (!query.trim()) return [];
 
   const res = await axios.get(
@@ -8,6 +8,7 @@ export const searchProviders = async (query, page = 1, limit = 18) => {
     {
       params: {
         q: query,
+        city,
         page,
         limit,
       },

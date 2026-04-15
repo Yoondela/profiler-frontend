@@ -25,7 +25,6 @@ export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
 
   const autocompleteRef = useRef(null);
   const { city } = useCity();
-  
 
   // ---------------------------
   // GOOGLE MAPS LOADER
@@ -46,6 +45,8 @@ export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
     if (!place) return;
     setUserLocation({
       address: place.formatted_address,
+      placeId: place.place_id,
+      addressComponents: place.address_components,
     });
   };
 

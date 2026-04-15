@@ -11,6 +11,7 @@ import SearchResultCard from './SearchResultsCard';
 import SearchResultSkeleton from './SearchResultSkeleton';
 import ResultsEmpty from './ResultsEmpty';
 import SearchEmpty from './EmptySearch';
+import { useCity } from '@/components/city/context/cityContext';
 
 import {
   Pagination,
@@ -38,6 +39,13 @@ export default function AppSearchResults() {
 
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { city } = useCity() || {};
+
+  console.log('CITY CONTEXT:', useCity());
+
+
+  // const inCity = city?.normalized
+  const inCity = city?.slug?.replace(/-/g, ' ') || 'south africa';
 
   // Clear map hover when results change
   useEffect(() => {
@@ -80,7 +88,7 @@ export default function AppSearchResults() {
 
     const delay = setTimeout(async () => {
       try {
-        const res = await searchProviders(searchField, page);
+        const res = await searchProviders(searchField, inCity, page);
 
         if (!cancelled) {
           setResults(res.data || []);
@@ -101,7 +109,7 @@ export default function AppSearchResults() {
       cancelled = true;
       clearTimeout(delay);
     };
-  }, [searchField, page, setResults, setIsLoading, setTotalPages]);
+  }, [searchField, page, inCity, setResults, setIsLoading, setTotalPages]);
 
   return (
     <div className="flex h-full w-full flex-col overflow-hidden">

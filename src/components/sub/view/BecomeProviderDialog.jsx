@@ -27,6 +27,7 @@ export default function BecomeProviderDialog({ open, onOpenChange, onSubmit }) {
     setAddress({
       formatted: place.formatted_address,
       placeId: place.place_id,
+      addressComponents: place.address_components,
     });
 
     console.log('Selected address:', place.formatted_address);

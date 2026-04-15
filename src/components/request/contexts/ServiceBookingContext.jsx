@@ -49,7 +49,11 @@ export const ServiceBookingProvider = ({ children }) => {
     todo: job,
   };
 
-  let address = userLocation?.address;
+  let address = {
+    address: userLocation?.address,
+    placeId: userLocation?.placeId,
+    addressComponents: userLocation?.addressComponents,
+  };
 
   const bookingPayload = {
     client: userId,
