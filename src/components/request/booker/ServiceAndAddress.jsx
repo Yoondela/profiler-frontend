@@ -6,7 +6,7 @@ import SelectSizePopup from '../modals/GetSizePopup';
 import SelectTasksPopup from '../modals/SelectTasksPopup';
 import { useServiceBooking } from '../contexts/ServiceBookingContext';
 import { RequestDrawer } from '../confirm/confirm';
-import { useJsApiLoader, Autocomplete } from '@react-google-maps/api';
+import { Autocomplete } from '@react-google-maps/api';
 import { useCity } from '@/components/city/context/cityContext';
 import { getLatLngBounds } from '@/utils/getCityBounds';
 
@@ -25,16 +25,6 @@ export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
 
   const autocompleteRef = useRef(null);
   const { city } = useCity();
-
-  // ---------------------------
-  // GOOGLE MAPS LOADER
-  // ---------------------------
-
-  const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
-    libraries: ['places'],
-  });
 
   // ---------------------------
   // LOCATION HANDLER
@@ -111,7 +101,7 @@ export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
         <div className="input-container">
           <LocationIcon width="20" height="20" className="location-icon" />
 
-          {isLoaded && (
+          {typeof window !== 'undefined' && window.google ? (
             <Autocomplete
               onLoad={(ref) => (autocompleteRef.current = ref)}
               onPlaceChanged={handleLocationChange}
@@ -134,6 +124,8 @@ export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
                 }
               />
             </Autocomplete>
+          ): (
+              <Input disabled placeholder="Loading address…" />
           )}
         </div>
 
