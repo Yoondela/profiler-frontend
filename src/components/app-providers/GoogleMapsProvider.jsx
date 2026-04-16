@@ -8,7 +8,7 @@ export default function GoogleMapsProvider({ children }) {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
-    libraries,
+    libraries: ['marker']
   });
 
   if (!isLoaded) {

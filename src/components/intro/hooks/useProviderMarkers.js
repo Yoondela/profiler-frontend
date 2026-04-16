@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 /**
- * Manages Google Maps markers imperatively for providers
+ * Manages Google Maps Advanced Markers for providers
  */
 export function useProviderMarkers({
   map,
@@ -9,31 +9,36 @@ export function useProviderMarkers({
   hoveredProviderId,
   onMarkerClick,
 }) {
-  // Stores: providerId -> google.maps.Marker
+  // Stores: providerId -> AdvancedMarkerElement
   const markersRef = useRef(new Map());
 
+  console.log('marker lib:', window.google?.maps?.marker);
+
+
   useEffect(() => {
-    if (!map) return;
+    if (!map || !window.google?.maps?.marker) return;
 
     const nextIds = new Set(providers.map((p) => p._id));
 
-    // 1. REMOVE markers that no longer exist
+    // 1. REMOVE
     markersRef.current.forEach((marker, providerId) => {
       if (!nextIds.has(providerId)) {
-        marker.setMap(null);
+        marker.map = null;
         markersRef.current.delete(providerId);
       }
     });
 
-    // 2. ADD missing markers
+    // 2. ADD
     providers.forEach((provider) => {
       if (markersRef.current.has(provider._id)) return;
 
-      const marker = new google.maps.Marker({
+      const isHovered = provider._id === hoveredProviderId;
+
+      const marker = new google.maps.marker.AdvancedMarkerElement({
         map,
-        position: provider.location,
-        icon: getMarkerIcon(provider, false),
-        clickable: true,
+        position: provider.location, // ⚠️ validate this!
+        content: createMarkerContent(provider),
+        zIndex: isHovered ? 1000 : 1,
       });
 
       if (onMarkerClick) {
@@ -45,19 +50,20 @@ export function useProviderMarkers({
       markersRef.current.set(provider._id, marker);
     });
 
-    // 3. UPDATE marker styles (hover, zIndex)
+    // 3. UPDATE
     markersRef.current.forEach((marker, providerId) => {
-      const provider = providers.find((p) => p._id === providerId);
-      if (!provider) return;
-
       const isHovered = providerId === hoveredProviderId;
 
-      marker.setIcon(getMarkerIcon(provider, isHovered));
-      marker.setZIndex(isHovered ? 1000 : 1);
+      marker.content.classList.toggle('marker--hovered', isHovered);
+      marker.zIndex = isHovered ? 1000 : 1;
     });
   }, [map, providers, hoveredProviderId, onMarkerClick]);
+
 }
 
+/**
+ * Resolve which image to use for the marker
+ */
 function resolveIconSource(provider) {
   if (provider.logoUrl) return provider.logoUrl;
   if (provider.avatarUrl) return provider.avatarUrl;
@@ -68,12 +74,20 @@ function resolveIconSource(provider) {
   return '/icons/default-provider.svg';
 }
 
-function getMarkerIcon(provider, isHovered) {
-  const size = isHovered ? 40 : 32;
+/**
+ * Creates DOM content for Advanced Marker
+ */
+function createMarkerContent(provider) {
+  const container = document.createElement('div');
 
-  return {
-    url: resolveIconSource(provider),
-    scaledSize: new google.maps.Size(size, size),
-    anchor: new google.maps.Point(size / 2, size / 2),
-  };
+  container.className = 'marker';
+
+  container.innerHTML = `
+    <div class="marker__inner">
+      <img src="${resolveIconSource(provider)}" />
+    </div>
+  `;
+
+  return container;
 }
+
