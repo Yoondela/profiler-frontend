@@ -24,7 +24,7 @@ export default function SearchResultCard({
       {/* IMAGE */}
       <div className="w-full h-32 rounded-lg bg-gray-100 overflow-hidden">
         <img
-          src={provider.logoUrl}
+          src={provider.primaryImage || provider.logoUrl}
           alt={`${provider.name} logo`}
           className="w-full h-full object-cover"
         />

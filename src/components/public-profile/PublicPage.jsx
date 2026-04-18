@@ -18,9 +18,13 @@ export default function ProviderPublicPage() {
   const { id } = useParams();
   const [providerData, setProviderData] = useState(null);
 
+  console.log("This is the object", providerData)
+
   useEffect(() => {
     async function loadData() {
       const data = await fetchPublicPage(id);
+  console.log("SETTING object with", data)
+
       setProviderData(data);
     }
     loadData();
@@ -33,16 +37,16 @@ export default function ProviderPublicPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <PortfolioHeader
-        bannerUrl={providerData.portfolio.bannerUrl}
-        logoUrl={providerData.portfolio.logoUrl}
-        providerName={providerData.portfolio.company || 'Unknown Provider'}
-        averageRating={providerData.portfolio.rating}
-        reviewCount={providerData.portfolio.completedJobs}
+        bannerUrl={providerData.provider.bannerUrl}
+        logoUrl={providerData.provider.logoUrl}
+        providerName={providerData.provider.name || 'Unknown Provider'}
+        averageRating={providerData.provider.rating}
+        reviewCount={providerData.provider.completedJobs}
       />
       <div className="flex items-start w-full">
         <div className="w-3/4 space-x-6 p-6">
           <div className="">
-            <PortfolioDetailsContainer portfolio={providerData.portfolio} />
+            <PortfolioDetailsContainer data={providerData} />
           </div>
         </div>
 
@@ -50,7 +54,7 @@ export default function ProviderPublicPage() {
 
         <div className="w-1/4 border-s border-gray-200 p-6 sticky top-10">
           <div>
-            <PublicProfile provider={providerData} className=" px-6" />
+            {/* <PublicProfile provider={providerData} className=" px-6" /> */}
           </div>
         </div>
       </div>

@@ -10,6 +10,7 @@ import {
   sendGalleryUrlsToApp,
   fetchGalleryImages,
   deleteGalleryImage,
+  setPrimaryGalleryImage,
 } from '@/api/sync/SyncGallery';
 import { useAuth0 } from '@auth0/auth0-react';
 import { getUserID } from '@/api/sync/SyncUser';
@@ -103,6 +104,19 @@ const GalleryManager = () => {
       console.error('Failed to delete gallery image', error);
     }
   };
+  const setPrimary = async (image) => {
+    if (!userId) return;
+
+    try {
+      const res = await setPrimaryGalleryImage(userId, image._id);
+
+      if (res?.galleryPhotos) {
+        setGalleryImages(res.galleryPhotos);
+      }
+    } catch (err) {
+      console.error('Failed to set primary', err);
+    }
+  };
 
   return (
     <div className="gallery-manager">
@@ -118,6 +132,7 @@ const GalleryManager = () => {
             images={galleryImages}
             setImages={setGalleryImages}
             onDelete={deleteImage}
+            onSetPrimary={setPrimary}
           />
         </div>
       )}

@@ -7,7 +7,7 @@ import SidebarLayout from '../layouts/SidebarLayout';
 import ProviderDashboard from '@/components/sub/view/dashboard/ProviderDashboard';
 import PortfolioLayout from '@/components/sub/view/portfolio/ProviderLayout';
 import GalleryManager from '@/components/sub/view/gallery-manager/GalleryManager';
-import ProviderPublicPage from '@/components/public-profile/PublickPage';
+import ProviderPublicPage from '@/components/public-profile/PublicPage';
 import SearchPage from '@/components/intro/SearchPage';
 import CompanyConfigurations from '@/components/company-configuration/CompanyConfigurations';
 import { useServiceWSRequest } from '@/api/context/ServiceRequestSocketContext';
