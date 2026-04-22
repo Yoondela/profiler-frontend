@@ -14,7 +14,6 @@ export function useProviderMarkers({
 
   console.log('marker lib:', window.google?.maps?.marker);
 
-
   useEffect(() => {
     if (!map || !window.google?.maps?.marker) return;
 
@@ -58,7 +57,6 @@ export function useProviderMarkers({
       marker.zIndex = isHovered ? 1000 : 1;
     });
   }, [map, providers, hoveredProviderId, onMarkerClick]);
-
 }
 
 /**
@@ -90,4 +88,3 @@ function createMarkerContent(provider) {
 
   return container;
 }
-

@@ -72,7 +72,6 @@ function SortableImage({ image, onDelete, onSetPrimary }) {
   );
 }
 
-
 export const GalleryGrid = ({ images, setImages, onDelete, onSetPrimary }) => {
   if (!images?.length) return null;
 

@@ -32,7 +32,7 @@ export default function SearchResultCard({
 
       <CardHeader className="p-2 pb-0 gap-0">
         <CardTitle className="text-sm font-semibold capitalize truncate">
-          {provider.company}
+          {provider.name}
         </CardTitle>
       </CardHeader>
 

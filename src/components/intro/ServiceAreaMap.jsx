@@ -5,10 +5,9 @@ import { useProviderMarkers } from './hooks/useProviderMarkers';
 export default function ServiceAreaMap({ providers, hoveredProviderId }) {
   console.log('Providers in ServiceAreaMap:', providers);
 
-  console.log(providers)
-  console.log(providers[0])
+  console.log(providers);
+  console.log(providers[0]);
   console.log('provider location:', providers[0]?.location);
-
 
   if (!providers.length) return null;
 
@@ -16,9 +15,7 @@ export default function ServiceAreaMap({ providers, hoveredProviderId }) {
 
   const defaultCenter = { lat: -25.7479, lng: 28.2293 }; // Pretoria
 
-  const center = providers.length
-    ? providers[0].location
-    : defaultCenter;
+  const center = providers.length ? providers[0].location : defaultCenter;
 
   useProviderMarkers({
     map,

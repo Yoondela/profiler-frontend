@@ -32,13 +32,10 @@ export const deleteGalleryImage = async (userId, photoId) => {
 export const reorderGalleryPhotos = async (userId, fromIndex, toIndex) => {
   if (!userId) throw new Error('No user ID provided');
 
-  const res = await axios.patch(
-    `${API}/portfolios/${userId}/gallery/reorder`,
-    {
-      from: fromIndex,
-      to: toIndex,
-    }
-  );
+  const res = await axios.patch(`${API}/portfolios/${userId}/gallery/reorder`, {
+    from: fromIndex,
+    to: toIndex,
+  });
 
   return res.data;
 };
@@ -47,9 +44,7 @@ export const reorderGalleryPhotos = async (userId, fromIndex, toIndex) => {
 export const setPrimaryGalleryImage = async (userId, photoId) => {
   if (!userId) throw new Error('No user ID provided');
 
-  const res = await axios.patch(
-    `${API}/gallery/${userId}/${photoId}/primary`,
-  );
+  const res = await axios.patch(`${API}/gallery/${userId}/${photoId}/primary`);
 
   return res.data;
 };

@@ -124,8 +124,8 @@ export default function ServiceAndAddress({ onNext, onBack, onEdit }) {
                 }
               />
             </Autocomplete>
-          ): (
-              <Input disabled placeholder="Loading address…" />
+          ) : (
+            <Input disabled placeholder="Loading address…" />
           )}
         </div>
 

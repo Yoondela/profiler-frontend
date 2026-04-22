@@ -89,7 +89,7 @@ export default function ServiceRequestForm({ onEdit, setGoToReview }) {
         {/* LOCATION INPUT */}
         <div className="input-container">
           <LocationIcon width="20" height="20" className="location-icon" />
-            {typeof window !== 'undefined' && window.google ? (
+          {typeof window !== 'undefined' && window.google ? (
             <div className="local">
               <Autocomplete
                 onLoad={(ref) => (autocompleteRef.current = ref)}
@@ -111,8 +111,8 @@ export default function ServiceRequestForm({ onEdit, setGoToReview }) {
                 />
               </Autocomplete>
             </div>
-          ): (
-              <Input disabled placeholder="Loading address…" />
+          ) : (
+            <Input disabled placeholder="Loading address…" />
           )}
 
           {userLocation?.address && (

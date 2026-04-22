@@ -43,7 +43,6 @@ export default function AppSearchResults() {
 
   console.log('CITY CONTEXT:', useCity());
 
-
   // const inCity = city?.normalized
   const inCity = city?.slug?.replace(/-/g, ' ') || 'south africa';
 

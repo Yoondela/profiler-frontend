@@ -17,15 +17,15 @@ import PortfolioGallery from '@/components/sub/view/portfolio/PortfolioGallery';
 import { fetchGalleryImages } from '@/api/sync/SyncGallery';
 
 const PublicPortfolio = ({ data }) => {
-  console.log("data inside", data)
+  console.log('data inside', data);
 
   const portfolio = data.provider;
   let company;
   if (data.company) {
-    company = data.company
+    company = data.company;
   }
-  
-  console.log(portfolio)
+
+  console.log(portfolio);
   return (
     <div className="provider-overview-card">
       <Card className="portfolio-intro border-none shadow-none">

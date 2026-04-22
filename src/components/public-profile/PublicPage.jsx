@@ -18,12 +18,12 @@ export default function ProviderPublicPage() {
   const { id } = useParams();
   const [providerData, setProviderData] = useState(null);
 
-  console.log("This is the object", providerData)
+  console.log('This is the object', providerData);
 
   useEffect(() => {
     async function loadData() {
       const data = await fetchPublicPage(id);
-  console.log("SETTING object with", data)
+      console.log('SETTING object with', data);
 
       setProviderData(data);
     }
