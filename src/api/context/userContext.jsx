@@ -58,7 +58,7 @@ export const UserProvider = ({ children }) => {
         setAppUser_ID,
         avatarUrlCtx,
         setAvatarUrlCtx,
-        user: userCtx,
+        userCtx,
         setUserCtx,
         profileCtx,
         setProfileCtx,

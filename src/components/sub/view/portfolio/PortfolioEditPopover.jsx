@@ -43,7 +43,7 @@ const PortfolioEditDialog = ({ provider, children }) => {
     if (!provider) return;
 
     setAddress(provider.address ?? '');
-    setAbout(provider.bio ?? '');
+    setAbout(provider.about ?? '');
     setServices(
       Array.isArray(provider.servicesOffered)
         ? [...provider.servicesOffered]
@@ -88,7 +88,7 @@ const PortfolioEditDialog = ({ provider, children }) => {
     try {
       const payload = {
         address: address || undefined,
-        bio: about || undefined,
+        about: about || undefined,
         servicesOffered: services,
         otherSkills,
       };

@@ -10,16 +10,21 @@ import { getUserID } from '@/api/sync/SyncUser';
 import { toast } from 'sonner';
 import StarDisplay from '@/components/common/StartDisplay';
 
-export default function PortfolioHeader({
-  bannerUrl,
-  logoUrl,
-  providerName,
-  averageRating,
-  reviewCount,
-}) {
+export default function PortfolioHeader({ provider }) {
   const { user, getAccessTokenSilently } = useAuth0();
   const { setBannerUrlCtx, setLogoUrlCtx, appUser_ID } = useUserContext();
   const [userBackendId, setUserBackendId] = useState(appUser_ID);
+
+  // todo: why are these props undefine
+
+  console.log('PortfolioHeader received provider:', provider);
+
+  const bannerUrl = provider?.portfolio?.bannerUrl || '';
+  const logoUrl = provider?.portfolio?.logoUrl || '';
+  const providerName =
+    provider?.company?.name || provider?.user?.name || 'Unknown Provider';
+  const averageRating = provider?.portfolio?.rating || 0;
+  const reviewCount = provider?.portfolio?.completedJobs || 0;
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -75,14 +80,14 @@ export default function PortfolioHeader({
             <BadgeCheck className="text-blue-300" />
           </div>
 
-          {averageRating && (
+          {/* {averageRating && (
             <div className="flex hidden md:flex items-center gap-1 text-sm text-muted-foreground">
               <StarDisplay rating={averageRating} />
               <span className="text-xs text-gray-500">
                 {averageRating.toFixed(1)}
               </span>
             </div>
-          )}
+          )} */}
         </div>
 
         {/* Toggle Group pinned to right */}

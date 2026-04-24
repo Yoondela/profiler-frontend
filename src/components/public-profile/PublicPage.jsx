@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { fetchPublicPage } from '@/api/lookup/publicPageApi';
 import { useEffect, useState } from 'react';
 import { PageLoadingSpinner } from '../loader/page-loader';
+import { Reviews } from './Reviews';
 import {
   ResizableHandle,
   ResizablePanel,
@@ -12,7 +13,7 @@ import {
 
 import PortfolioDetailsContainer from './PublicPortfolio';
 import PublicProfile from './PublicProfile';
-import PortfolioHeader from '../sub/view/portfolio/PortfolioHeader';
+import PortfolioHeader from './PortfolioHeader';
 
 export default function ProviderPublicPage() {
   const { id } = useParams();
@@ -35,18 +36,18 @@ export default function ProviderPublicPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <PortfolioHeader
-        bannerUrl={providerData.provider.bannerUrl}
-        logoUrl={providerData.provider.logoUrl}
-        providerName={providerData.provider.name || 'Unknown Provider'}
-        averageRating={providerData.provider.rating}
-        reviewCount={providerData.provider.completedJobs}
-      />
+    <div className="min-h-screen flex flex-col bg-slate-50 py-6 px-4">
+      <PortfolioHeader provider={providerData} />
       <div className="flex items-start w-full">
         <div className="w-3/4 space-x-6 p-6">
           <div className="">
             <PortfolioDetailsContainer data={providerData} />
+            <Reviews
+              providerId={
+                providerData?.provider?._id || providerData?.provider?.id || id
+              }
+              providerName={providerData?.provider?.name || 'this provider'}
+            />
           </div>
         </div>
 
@@ -54,7 +55,7 @@ export default function ProviderPublicPage() {
 
         <div className="w-1/4 border-s border-gray-200 p-6 sticky top-10">
           <div>
-            {/* <PublicProfile provider={providerData} className=" px-6" /> */}
+            <PublicProfile provider={providerData} className=" px-6" />
           </div>
         </div>
       </div>

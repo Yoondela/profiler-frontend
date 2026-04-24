@@ -28,9 +28,9 @@ const PublicPortfolio = ({ data }) => {
   console.log(portfolio);
   return (
     <div className="provider-overview-card">
-      <Card className="portfolio-intro border-none shadow-none">
+      <Card className="portfolio-intro border-none shadow-none bg-blue-50">
         <div className="flex flex-col md:flex-row md:items-start md:gap-6">
-          <CardContent className="md:flex md:flex-wrap md:gap-3 md:max-w-[100%]">
+          <CardContent className="w-full md:flex md:flex-wrap md:gap-3 md:max-w-[100%]">
             <div className="flex flex-col bits w-full">
               <div className="address flex items-center gap-2">
                 <Map min={20} />
@@ -122,12 +122,6 @@ const PublicPortfolio = ({ data }) => {
             <p>No featured work yet.</p>
           </div>
         )}
-      </div>
-
-      {/* Reviews section */}
-
-      <div className="placeholder">
-        <p>Client reviews.</p>
       </div>
     </div>
   );

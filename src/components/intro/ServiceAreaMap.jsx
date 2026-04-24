@@ -8,14 +8,7 @@ export default function ServiceAreaMap({ providers, hoveredProviderId }) {
   console.log(providers);
   console.log(providers[0]);
   console.log('provider location:', providers[0]?.location);
-
-  if (!providers.length) return null;
-
   const [map, setMap] = useState(null);
-
-  const defaultCenter = { lat: -25.7479, lng: 28.2293 }; // Pretoria
-
-  const center = providers.length ? providers[0].location : defaultCenter;
 
   useProviderMarkers({
     map,
@@ -25,6 +18,12 @@ export default function ServiceAreaMap({ providers, hoveredProviderId }) {
       console.log('Marker clicked:', provider._id);
     },
   });
+
+  if (!providers.length) return null;
+
+  const defaultCenter = { lat: -25.7479, lng: 28.2293 }; // Pretoria
+
+  const center = providers.length ? providers[0].location : defaultCenter;
 
   return (
     <GoogleMap

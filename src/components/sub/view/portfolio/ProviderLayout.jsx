@@ -20,13 +20,7 @@ const PortfolioLayout = () => {
 
   return (
     <div className="provider-page pt-1">
-      <PortfolioHeader
-        bannerUrl={portfolio.bannerUrl}
-        logoUrl={portfolio.logoUrl}
-        providerName={companyName}
-        averageRating={portfolio.rating}
-        reviewCount={portfolio.completedJobs}
-      />
+      <PortfolioHeader provider={portfolio} />
 
       <main className="provider-page__content">
         <PortfolioDetailsContainer provider={portfolio} />
