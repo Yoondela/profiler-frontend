@@ -9,6 +9,7 @@ import PortfolioLayout from '@/components/sub/view/portfolio/ProviderLayout';
 import GalleryManager from '@/components/sub/view/gallery-manager/GalleryManager';
 import ProviderPublicPage from '@/components/public-profile/PublicPage';
 import SearchPage from '@/components/intro/SearchPage';
+import Bookmarks from '@/components/sub/view/bookmarks/Bookmarks';
 import CompanyConfigurations from '@/components/company-configuration/CompanyConfigurations';
 import { useServiceWSRequest } from '@/api/context/ServiceRequestSocketContext';
 import ModalLayer from '@/components/app-modals/ModalLayer';
@@ -33,6 +34,8 @@ function AppRoutes() {
           <Route path="/provider-page" element={<PortfolioLayout />} />
           <Route path="/user-schedule" element={<UserSchedule />} />
           <Route path="/user-gallery" element={<GalleryManager />} />
+          <Route path="/marked-providers" element={<Bookmarks />} />
+
         </Route>
         {/* Catch-all redirect */}
         <Route path="*" element={<Navigate to="/" />} />

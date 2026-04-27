@@ -1,21 +1,37 @@
 import { GoogleMap, Circle } from '@react-google-maps/api';
 import { useState } from 'react';
 import { useProviderMarkers } from './hooks/useProviderMarkers';
+import { getPublicPage } from './helper/getPublickPage';
+import { fetchPublicPage } from '@/api/lookup/publicPageApi';
+import { useNavigate } from 'react-router-dom';
 
 export default function ServiceAreaMap({ providers, hoveredProviderId }) {
   console.log('Providers in ServiceAreaMap:', providers);
+
+  const navigate = useNavigate();
 
   console.log(providers);
   console.log(providers[0]);
   console.log('provider location:', providers[0]?.location);
   const [map, setMap] = useState(null);
 
+  async function getPublicPage(providerId) {
+    try {
+      const providerInfo = await fetchPublicPage(providerId);
+      if (providerInfo) {
+        navigate(`/providers/${providerId}/public`);
+      }
+    } catch (err) {
+      console.error('Public page error:', err);
+    }
+  }
+
   useProviderMarkers({
     map,
     providers,
     hoveredProviderId,
     onMarkerClick: (provider) => {
-      console.log('Marker clicked:', provider._id);
+      getPublicPage(provider._id);
     },
   });
 

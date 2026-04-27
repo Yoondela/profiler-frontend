@@ -1,13 +1,26 @@
 import { HeartIcon, BookmarkIcon, BadgeCheck } from 'lucide-react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { createBookmark } from '@/api/sync/syncBookmarks';
+import { useApiClient } from '@/api/useApiClient';
 
 export default function PortfolioHeader({ provider }) {
   console.log('PortfolioHeader received provider:', provider);
 
+  const api = useApiClient();
+  const providerId = provider?.provider?._id || provider?.provider?.id;
   const bannerUrl = provider?.provider?.bannerUrl || '';
   const logoUrl = provider?.provider?.logoUrl || '';
   const providerName =
     provider?.company?.name || provider?.user?.name || 'Unknown Provider';
+
+  const handleCreateBookmark = async () => {
+    if (!providerId) return;
+    try {
+      await createBookmark(api, providerId);
+    } catch (err) {
+      console.error('Failed to create bookmark:', err);
+    }
+  };
 
   return (
     <div className="relative w-full bg-background">
@@ -75,6 +88,7 @@ export default function PortfolioHeader({ provider }) {
               <HeartIcon />
             </ToggleGroupItem>
             <ToggleGroupItem
+              onClick={handleCreateBookmark}
               value="save"
               aria-label="Save"
               className="data-[state=on]:bg-transparent data-[state=on]:*:[svg]:fill-blue-500 data-[state=on]:*:[svg]:stroke-blue-500 cursor-pointer"

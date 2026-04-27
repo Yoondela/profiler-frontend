@@ -50,7 +50,7 @@ const PortfolioDetailsContainer = ({ provider }) => {
       <Card className="portfolio-intro border-none shadow-none">
         <div className="flex flex-col md:flex-row md:items-start md:gap-6">
           <CardContent className="md:flex md:flex-wrap md:gap-3 md:max-w-[50%]">
-            <div className="bits w-full">
+            <div className="bits w-full flex">
               <div className="address flex items-center gap-2">
                 <Map size={20} />
                 <p>{address?.suburb}</p>
