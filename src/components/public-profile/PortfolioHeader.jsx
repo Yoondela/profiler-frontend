@@ -3,6 +3,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { createBookmark } from '@/api/sync/syncBookmarks';
 import { useApiClient } from '@/api/useApiClient';
 import { createLike } from '@/api/sync/syncLikes';
+import { useState, useEffect } from 'react';
 
 export default function PortfolioHeader({ provider }) {
   console.log('PortfolioHeader received provider:', provider);
@@ -14,24 +15,38 @@ export default function PortfolioHeader({ provider }) {
   const providerName =
     provider?.company?.name || provider?.user?.name || 'Unknown Provider';
   
-  const isBookmarked = provider?.provider?.isBookmarked || false;
-  const isLiked = provider?.provider?.isLiked || false;
+  const initialBookmarked = provider?.provider?.isBookmarked || false;
+  const initialLiked = provider?.provider?.isLiked || false;
 
+  const [bookmarked, setBookmarked] = useState(initialBookmarked);
+  const [liked, setLiked] = useState(initialLiked);
+
+  useEffect(() => {
+    setBookmarked(initialBookmarked);
+    setLiked(initialLiked);
+  }, [initialBookmarked, initialLiked]);
+  
   const handleCreateBookmark = async () => {
     if (!providerId) return;
+    setBookmarked(prev => !prev);
     try {
       await createBookmark(api, providerId);
     } catch (err) {
       console.error('Failed to create bookmark:', err);
+      // rollback on failure
+      setBookmarked(prev => !prev);
     }
   };
 
-  const handleCreatelike = async () => {
+  const handleCreateLike = async () => {
     if (!providerId) return;
+    setLiked(prev => !prev);
     try {
       await createLike(api, providerId);
     } catch (err) {
       console.error('Failed to create a like:', err);
+      setLiked(prev => !prev);
+
     }
   };
 
@@ -95,12 +110,12 @@ export default function PortfolioHeader({ provider }) {
           <ToggleGroup
             type="multiple"
             value={[
-              ...(isLiked ? ['like'] : []),
-              ...(isBookmarked ? ['save'] : []),
+              ...(liked ? ['like'] : []),
+              ...(bookmarked ? ['save'] : []),
             ]}
           >
             <ToggleGroupItem
-              onClick={handleCreatelike}
+              onClick={handleCreateLike}
               value="like"
               aria-label="Like"
               className="data-[state=on]:bg-transparent data-[state=on]:*:[svg]:fill-red-500 data-[state=on]:*:[svg]:stroke-red-500 cursor-pointer"

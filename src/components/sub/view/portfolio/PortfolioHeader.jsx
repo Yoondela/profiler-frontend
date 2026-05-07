@@ -89,26 +89,6 @@ export default function PortfolioHeader({ provider }) {
             </div>
           )} */}
         </div>
-
-        {/* Toggle Group pinned to right */}
-        <div className="absolute right-4 top-13">
-          <ToggleGroup type="multiple" variant="outline" spacing={2} size="lg">
-            <ToggleGroupItem
-              value="like"
-              aria-label="Like"
-              className="data-[state=on]:bg-transparent data-[state=on]:*:[svg]:fill-red-500 data-[state=on]:*:[svg]:stroke-red-500 cursor-pointer"
-            >
-              <HeartIcon className="w-10 h-10" />
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value="save"
-              aria-label="Save"
-              className="data-[state=on]:bg-transparent data-[state=on]:*:[svg]:fill-blue-500 data-[state=on]:*:[svg]:stroke-blue-500 cursor-pointer"
-            >
-              <BookmarkIcon className="w-10 h-10" />
-            </ToggleGroupItem>
-          </ToggleGroup>
-        </div>
       </div>
 
       <div className="h-4" />
