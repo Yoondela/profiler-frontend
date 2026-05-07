@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSearchContext } from './context/context';
 import { searchProviders } from '@/api/lookup/searchApi';
 import { fetchPublicPage } from '@/api/lookup/publicPageApi';
+import { useApiClient } from '@/api/useApiClient';
 
 import SearchResultCard from './SearchResultsCard';
 import SearchResultSkeleton from './SearchResultSkeleton';
@@ -40,6 +41,7 @@ export default function AppSearchResults() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { city } = useCity() || {};
+  const api = useApiClient();
 
   console.log('CITY CONTEXT:', useCity());
 
@@ -62,7 +64,8 @@ export default function AppSearchResults() {
 
   async function getPublicPage(providerId) {
     try {
-      const providerInfo = await fetchPublicPage(providerId);
+      // todo: why is this being called twice on click? investigate and fix
+      const providerInfo = await fetchPublicPage(api, providerId);
       if (providerInfo) {
         navigate(`/providers/${providerId}/public`);
       }
@@ -149,7 +152,6 @@ export default function AppSearchResults() {
                   serviceLabel={serviceLabel}
                   onMouseEnter={() => setHoveredProviderId(provider._id)}
                   onMouseLeave={() => setHoveredProviderId(null)}
-                  onClick={() => getPublicPage(provider._id)}
                   actions={
                     <Button
                       variant="secondary"

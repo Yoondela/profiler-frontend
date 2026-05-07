@@ -2,6 +2,7 @@ import { HeartIcon, BookmarkIcon, BadgeCheck } from 'lucide-react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { createBookmark } from '@/api/sync/syncBookmarks';
 import { useApiClient } from '@/api/useApiClient';
+import { createLike } from '@/api/sync/syncLikes';
 
 export default function PortfolioHeader({ provider }) {
   console.log('PortfolioHeader received provider:', provider);
@@ -12,6 +13,9 @@ export default function PortfolioHeader({ provider }) {
   const logoUrl = provider?.provider?.logoUrl || '';
   const providerName =
     provider?.company?.name || provider?.user?.name || 'Unknown Provider';
+  
+  const isBookmarked = provider?.provider?.isBookmarked || false;
+  const isLiked = provider?.provider?.isLiked || false;
 
   const handleCreateBookmark = async () => {
     if (!providerId) return;
@@ -19,6 +23,15 @@ export default function PortfolioHeader({ provider }) {
       await createBookmark(api, providerId);
     } catch (err) {
       console.error('Failed to create bookmark:', err);
+    }
+  };
+
+  const handleCreatelike = async () => {
+    if (!providerId) return;
+    try {
+      await createLike(api, providerId);
+    } catch (err) {
+      console.error('Failed to create a like:', err);
     }
   };
 
@@ -79,14 +92,22 @@ export default function PortfolioHeader({ provider }) {
 
         {/* Toggle Group pinned to right */}
         <div className="absolute right-4 top-13">
-          <ToggleGroup type="multiple" variant="" spacing={0} size="">
+          <ToggleGroup
+            type="multiple"
+            value={[
+              ...(isLiked ? ['like'] : []),
+              ...(isBookmarked ? ['save'] : []),
+            ]}
+          >
             <ToggleGroupItem
+              onClick={handleCreatelike}
               value="like"
               aria-label="Like"
               className="data-[state=on]:bg-transparent data-[state=on]:*:[svg]:fill-red-500 data-[state=on]:*:[svg]:stroke-red-500 cursor-pointer"
             >
               <HeartIcon />
             </ToggleGroupItem>
+            {/* todo: use isBookmarked variable here*/}
             <ToggleGroupItem
               onClick={handleCreateBookmark}
               value="save"

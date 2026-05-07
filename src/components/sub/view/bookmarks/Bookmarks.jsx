@@ -11,7 +11,10 @@ function normalizeBookmark(item) {
   const providerId = provider?.providerId;
   const ownerId = provider?.owner;
   const providerName =
-    provider?.name || provider?.company?.name || provider?.user?.name || 'Unknown Provider';
+    provider?.name ||
+    provider?.company?.name ||
+    provider?.user?.name ||
+    'Unknown Provider';
   const primaryImage =
     provider?.primaryImage ||
     provider?.logoUrl ||
@@ -106,7 +109,10 @@ export default function Bookmarks() {
       ) : (
         <div className="flex flex-col gap-3">
           {bookmarks.map((b) => (
-            <Card key={b.providerId || b.providerName} className="py-0 border-none shadow-none">
+            <Card
+              key={b.providerId || b.providerName}
+              className="py-0 border-none shadow-none"
+            >
               <div className="flex gap-4 p-4">
                 <button
                   type="button"

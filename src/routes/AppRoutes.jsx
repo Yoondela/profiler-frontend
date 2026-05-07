@@ -35,7 +35,6 @@ function AppRoutes() {
           <Route path="/user-schedule" element={<UserSchedule />} />
           <Route path="/user-gallery" element={<GalleryManager />} />
           <Route path="/marked-providers" element={<Bookmarks />} />
-
         </Route>
         {/* Catch-all redirect */}
         <Route path="*" element={<Navigate to="/" />} />

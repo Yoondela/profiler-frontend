@@ -5,6 +5,7 @@ import { fetchPublicPage } from '@/api/lookup/publicPageApi';
 import { useEffect, useState } from 'react';
 import { PageLoadingSpinner } from '../loader/page-loader';
 import { Reviews } from './Reviews';
+import { useApiClient } from '@/api/useApiClient';
 import {
   ResizableHandle,
   ResizablePanel,
@@ -16,6 +17,7 @@ import PublicProfile from './PublicProfile';
 import PortfolioHeader from './PortfolioHeader';
 
 export default function ProviderPublicPage() {
+  const api = useApiClient();
   const { id } = useParams();
   const [providerData, setProviderData] = useState(null);
 
@@ -23,7 +25,8 @@ export default function ProviderPublicPage() {
 
   useEffect(() => {
     async function loadData() {
-      const data = await fetchPublicPage(id);
+      // todo: we shouldn't make another api call here we should already be keeping data in context
+      const data = await fetchPublicPage(api, id);
       console.log('SETTING object with', data);
 
       setProviderData(data);

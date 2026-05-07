@@ -1,6 +1,8 @@
 export async function createBookmark(api, providerId) {
   console.log('Creating a bookmark with data:', providerId);
-  const res = await api.post('/bookmarks/providers/save', { providerId: providerId });
+  const res = await api.post('/bookmarks/providers/save', {
+    providerId: providerId,
+  });
   console.log('Bookmark created:', res.data);
   return res.data;
 }
@@ -18,5 +20,4 @@ export async function removeBookmark(api, providerId) {
   const res = await api.delete(`/bookmarks/providers/save/${providerId}`);
 
   return res.data;
-  
 }
