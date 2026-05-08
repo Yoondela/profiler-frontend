@@ -50,6 +50,7 @@ export default function ProviderPublicPage() {
                 providerData?.provider?._id || providerData?.provider?.id || id
               }
               providerName={providerData?.provider?.name || 'this provider'}
+              reviews={providerData?.provider.reviews || []}
             />
           </div>
         </div>

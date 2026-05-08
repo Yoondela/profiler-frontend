@@ -10,7 +10,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import PortfolioGallery from '@/components/sub/view/portfolio/PortfolioGallery';
-import { ReviewCard } from './ReviewCard';
+import ReviewCarousel from './ReviewCarousel';
 
 const PortfolioDetailsContainer = ({ provider }) => {
   const portfolio = provider?.portfolio ?? provider;
@@ -159,17 +159,9 @@ const PortfolioDetailsContainer = ({ provider }) => {
 
       {/* Reviews */}
       <div className="section reviews max-w-[100%]">
-        <h4>Client reviews</h4>
+        <h4 className='p-5 mb-[30px]'>Client reviews</h4>
         {reviews.length ? (
-          <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap">
-            {reviews.map((review, idx) => (
-              <ReviewCard
-                key={review?._id || review?.id || idx}
-                review={review}
-                className="w-full lg:basis-[calc(33.333%-1rem)] lg:grow-0"
-              />
-            ))}
-          </div>
+          <ReviewCarousel reviews={reviews} />
         ) : (
           <div className="placeholder">
             <p>No reviews yet.</p>

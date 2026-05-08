@@ -85,12 +85,6 @@ export function ReviewCard({ review, className }) {
                 <Stars rating={review?.rating} />
               </div>
             </div>
-
-            {review?.isFeatured ? (
-              <span className="shrink-0 rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-700">
-                Featured
-              </span>
-            ) : null}
           </div>
 
           {review?.comment ? (

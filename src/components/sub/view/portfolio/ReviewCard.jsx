@@ -3,8 +3,9 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';
-import { BookmarkIcon } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { Toggle } from '@/components/ui/toggle';
+import { useApiClient } from '@/api/useApiClient';
 
 function getInitials(name = '') {
   const parts = String(name).trim().split(/\s+/).filter(Boolean);
@@ -29,7 +30,7 @@ function Stars({ rating = 0, max = 5, size = 16 }) {
             key={starValue}
             size={size}
             className={
-              filled ? 'fill-amber-200 text-amber-200' : 'text-zinc-200'
+              filled ? 'fill-slate-400 text-slate-400' : 'text-zinc-200'
             }
           />
         );
@@ -44,6 +45,7 @@ import axios from 'axios';
 export function ToggleIsFeatured({ review }) {
   const [isFeatured, setIsFeatured] = useState(review.isFeatured);
   const [loading, setLoading] = useState(false);
+  const api = useApiClient();
 
   const handleToggle = async () => {
     if (loading) return;
@@ -55,7 +57,7 @@ export function ToggleIsFeatured({ review }) {
     setLoading(true);
 
     try {
-      await axios.patch(`/api/reviews/provider/${review._id}/feature`, {
+      await api.patch(`reviews/provider/${review._id}/feature`, {
         isFeatured: next,
       });
     } catch (err) {
@@ -71,19 +73,25 @@ export function ToggleIsFeatured({ review }) {
   };
 
   return (
-    <Toggle
-      pressed={isFeatured}
-      onPressedChange={handleToggle}
-      disabled={loading}
-      aria-label="Toggle featured"
-      size="sm"
-      variant="accent"
-    >
-      <BookmarkIcon
-        className={cn('transition', isFeatured && 'fill-foreground')}
-      />
-      Feature
-    </Toggle>
+    <div className='flex w-full items-center justify-center gap-2'>
+      <Toggle
+        pressed={isFeatured}
+        onPressedChange={handleToggle}
+        disabled={loading}
+        aria-label="Toggle featured"
+        className={
+          'h-6 w-6 rounded-full border transition-all hover:scale-105 ' +
+          (
+            isFeatured
+              ? 'bg-slate-400 text-white border-slate-400'
+              : 'bg-white text-zinc-500 border-zinc-200'
+          )
+        }
+      >
+        <Check strokeWidth={2} className="w-3 h-3" />
+      </Toggle>
+        <span>Featured</span>
+    </div>
   );
 }
 
@@ -128,18 +136,19 @@ export function ReviewCard({ review, className }) {
                   <Stars rating={review?.rating} />
                 </div>
               </div>
-
-              {review?.isFeatured ? (
-                <span className="shrink-0 rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-700">
-                  Featured
-                </span>
-              ) : null}
             </div>
 
             {review?.comment ? (
-              <p className="col-start-2 mt-3 text-sm leading-relaxed text-zinc-700 whitespace-pre-wrap">
+              <p className="col-start-2 mt-3 text-sm leading-relaxed text-zinc-700 whitespace-pre-wrap break-all">
                 {review.comment}
               </p>
+            ) : null}
+            {review?.isFeatured ? (
+              <div className="absolute bottom-1 right-2"> 
+                <span className="w-full shrink-0 rounded-full bg-amber-50 text-[11px] font-medium text-amber-700">
+                  Featured
+                </span>
+              </div>              
             ) : null}
           </div>
         </CardContent>
