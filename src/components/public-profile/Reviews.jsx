@@ -18,13 +18,7 @@ export const Reviews = ({ providerId, providerName, reviews }) => {
   const resolvedProviderId = providerId;
 
   const mergedReviews = myReview
-    ? [
-        myReview,
-
-        ...reviews.filter(
-          (review) => review._id !== myReview._id
-        ),
-      ]
+    ? [myReview, ...reviews.filter((review) => review._id !== myReview._id)]
     : reviews;
 
   const handleSubmitReview = async ({ rating, comment }) => {

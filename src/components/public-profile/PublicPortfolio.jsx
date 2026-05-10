@@ -16,6 +16,18 @@ import { Button } from '@/components/ui/button';
 import PortfolioGallery from '@/components/sub/view/portfolio/PortfolioGallery';
 import { fetchGalleryImages } from '@/api/sync/SyncGallery';
 
+function BadgeVariants() {
+  return (
+    <div className="flex flex-wrap gap-2">
+      <Badge>Default</Badge>
+      <Badge variant="secondary">Secondary</Badge>
+      <Badge variant="destructive">Destructive</Badge>
+      <Badge variant="outline">Outline</Badge>
+      <Badge variant="ghost">Ghost</Badge>
+    </div>
+  );
+}
+
 const PublicPortfolio = ({ data }) => {
   console.log('data inside', data);
 
@@ -41,8 +53,15 @@ const PublicPortfolio = ({ data }) => {
               <div className="categories flex items-start gap-2">
                 <BriefcaseBusiness size={20} />
                 <ul className="m-0 p-0 list-none flex flex-wrap gap-1">
-                  {portfolio.servicesOffered.map((items, index) => (
-                    <li key={index}>{items}</li>
+                  {portfolio.servicesOffered.map((item, index) => (
+                    <li key={index} className="flex items-center">
+                      {index > 0 ? (
+                        <span className="mr-1 text-xl" aria-hidden="true">
+                          •
+                        </span>
+                      ) : null}
+                      <span>{item?.name}</span>
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -94,8 +113,8 @@ const PublicPortfolio = ({ data }) => {
                 portfolio.otherSkills.map((skill, i) => (
                   <Badge
                     key={i}
-                    size={22}
-                    variant="secondary"
+                    size={'lg'}
+                    variant="outline"
                     className="skill-badge"
                   >
                     {skill}

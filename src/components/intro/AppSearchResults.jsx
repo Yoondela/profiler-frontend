@@ -53,12 +53,17 @@ export default function AppSearchResults() {
     setHoveredProviderId(null);
   }, [results, setHoveredProviderId]);
 
-  function pickRelevantService(provider, query) {
-    const q = query.toLowerCase();
+  function pickRelevantService(provider, query = '') {
+    const normalizedQuery = query.trim().toLowerCase();
+
+    const services = provider.servicesOffered || [];
+
     return (
-      provider.servicesOffered?.find((s) => s.toLowerCase().includes(q)) ||
-      provider.servicesOffered?.[0] ||
-      ''
+      services.find((service) =>
+        service.name?.toLowerCase().includes(normalizedQuery)
+      ) ||
+      services[0] ||
+      null
     );
   }
 
@@ -144,12 +149,18 @@ export default function AppSearchResults() {
           <div className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(180px,1fr))]">
             {results.map((provider) => {
               const serviceLabel = pickRelevantService(provider, searchField);
+              console.log(
+                'Service label for',
+                provider._id,
+                ':',
+                serviceLabel?.name
+              );
 
               return (
                 <SearchResultCard
                   key={provider._id}
                   provider={provider}
-                  serviceLabel={serviceLabel}
+                  serviceLabel={serviceLabel?.name}
                   onMouseEnter={() => setHoveredProviderId(provider._id)}
                   onMouseLeave={() => setHoveredProviderId(null)}
                   actions={

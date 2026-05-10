@@ -73,7 +73,7 @@ export function ToggleIsFeatured({ review }) {
   };
 
   return (
-    <div className='flex w-full items-center justify-center gap-2'>
+    <div className="flex w-full items-center justify-center gap-2">
       <Toggle
         pressed={isFeatured}
         onPressedChange={handleToggle}
@@ -81,16 +81,14 @@ export function ToggleIsFeatured({ review }) {
         aria-label="Toggle featured"
         className={
           'h-6 w-6 rounded-full border transition-all hover:scale-105 ' +
-          (
-            isFeatured
-              ? 'bg-slate-400 text-white border-slate-400'
-              : 'bg-white text-zinc-500 border-zinc-200'
-          )
+          (isFeatured
+            ? 'bg-slate-400 text-white border-slate-400'
+            : 'bg-white text-zinc-500 border-zinc-200')
         }
       >
         <Check strokeWidth={2} className="w-3 h-3" />
       </Toggle>
-        <span>Featured</span>
+      <span>Featured</span>
     </div>
   );
 }
@@ -144,11 +142,11 @@ export function ReviewCard({ review, className }) {
               </p>
             ) : null}
             {review?.isFeatured ? (
-              <div className="absolute bottom-1 right-2"> 
+              <div className="absolute bottom-1 right-2">
                 <span className="w-full shrink-0 rounded-full bg-amber-50 text-[11px] font-medium text-amber-700">
                   Featured
                 </span>
-              </div>              
+              </div>
             ) : null}
           </div>
         </CardContent>

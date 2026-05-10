@@ -105,7 +105,11 @@ function CarouselContent({ className, ...props }) {
   const { carouselRef, orientation } = useCarousel();
 
   return (
-    <div data-slot="carousel-viewport" ref={carouselRef} className="overflow-hidden">
+    <div
+      data-slot="carousel-viewport"
+      ref={carouselRef}
+      className="overflow-hidden"
+    >
       <div
         data-slot="carousel-content"
         className={cn(
@@ -137,7 +141,12 @@ function CarouselItem({ className, ...props }) {
   );
 }
 
-function CarouselPrevious({ className, variant = 'outline', size = 'icon', ...props }) {
+function CarouselPrevious({
+  className,
+  variant = 'outline',
+  size = 'icon',
+  ...props
+}) {
   const { orientation, scrollPrev, canScrollPrev } = useCarousel();
 
   return (
@@ -163,7 +172,12 @@ function CarouselPrevious({ className, variant = 'outline', size = 'icon', ...pr
   );
 }
 
-function CarouselNext({ className, variant = 'outline', size = 'icon', ...props }) {
+function CarouselNext({
+  className,
+  variant = 'outline',
+  size = 'icon',
+  ...props
+}) {
   const { orientation, scrollNext, canScrollNext } = useCarousel();
 
   return (
@@ -196,4 +210,3 @@ export {
   CarouselPrevious,
   CarouselNext,
 };
-

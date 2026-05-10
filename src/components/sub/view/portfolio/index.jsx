@@ -60,8 +60,15 @@ const PortfolioDetailsContainer = ({ provider }) => {
               <div className="categories flex items-start gap-2">
                 <BriefcaseBusiness size={20} />
                 <ul className="m-0 p-0 list-none flex flex-wrap gap-1">
-                  {servicesOffered.map((items, index) => (
-                    <li key={index}>{items}</li>
+                  {servicesOffered.map((item, index) => (
+                    <li key={index} className="flex items-center">
+                      {index > 0 ? (
+                        <span className="mr-1 text-xl" aria-hidden="true">
+                          •
+                        </span>
+                      ) : null}
+                      <span>{item?.name}</span>
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -130,7 +137,7 @@ const PortfolioDetailsContainer = ({ provider }) => {
                   <Badge
                     key={i}
                     size={22}
-                    variant="secondary"
+                    variant="outline"
                     className="skill-badge"
                   >
                     {skill}
@@ -159,7 +166,7 @@ const PortfolioDetailsContainer = ({ provider }) => {
 
       {/* Reviews */}
       <div className="section reviews max-w-[100%]">
-        <h4 className='p-5 mb-[30px]'>Client reviews</h4>
+        <h4 className="p-5 mb-[30px]">Client reviews</h4>
         {reviews.length ? (
           <ReviewCarousel reviews={reviews} />
         ) : (

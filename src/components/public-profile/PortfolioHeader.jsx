@@ -14,7 +14,7 @@ export default function PortfolioHeader({ provider }) {
   const logoUrl = provider?.provider?.logoUrl || '';
   const providerName =
     provider?.company?.name || provider?.user?.name || 'Unknown Provider';
-  
+
   const initialBookmarked = provider?.provider?.isBookmarked || false;
   const initialLiked = provider?.provider?.isLiked || false;
 
@@ -25,28 +25,27 @@ export default function PortfolioHeader({ provider }) {
     setBookmarked(initialBookmarked);
     setLiked(initialLiked);
   }, [initialBookmarked, initialLiked]);
-  
+
   const handleCreateBookmark = async () => {
     if (!providerId) return;
-    setBookmarked(prev => !prev);
+    setBookmarked((prev) => !prev);
     try {
       await createBookmark(api, providerId);
     } catch (err) {
       console.error('Failed to create bookmark:', err);
       // rollback on failure
-      setBookmarked(prev => !prev);
+      setBookmarked((prev) => !prev);
     }
   };
 
   const handleCreateLike = async () => {
     if (!providerId) return;
-    setLiked(prev => !prev);
+    setLiked((prev) => !prev);
     try {
       await createLike(api, providerId);
     } catch (err) {
       console.error('Failed to create a like:', err);
-      setLiked(prev => !prev);
-
+      setLiked((prev) => !prev);
     }
   };
 

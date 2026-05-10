@@ -10,7 +10,10 @@ export function CompanyAvatar() {
   const { portfolio, loading, error, refetch } = useProviderPortfolio();
   const { user } = useAuth0();
   const companyName =
-    portfolio?.company?.name || portfolio?.portfolio?.name || user.name || 'Unknown Provider';
+    portfolio?.company?.name ||
+    portfolio?.portfolio?.name ||
+    user.name ||
+    'Unknown Provider';
 
   if (loading)
     return (
@@ -31,7 +34,9 @@ export function CompanyAvatar() {
           <AvatarFallback className="rounded-lg">Ex</AvatarFallback>
         </Avatar>
         <div className="grid flex-1 text-left !text-black-300 text-sm leading-tight">
-          <span className="truncate font-medium text-[var(--sidebar-primary)]!">{companyName}</span>
+          <span className="truncate font-medium text-[var(--sidebar-primary)]!">
+            {companyName}
+          </span>
           <div className=" truncate flex items-center gap-1">
             <CompanyRating
               averageRating={portfolio.rating}
