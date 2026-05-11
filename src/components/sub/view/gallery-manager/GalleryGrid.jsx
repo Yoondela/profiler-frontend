@@ -26,7 +26,6 @@ function SortableImage({ image, onDelete, onSetPrimary }) {
     <div
       ref={setNodeRef}
       style={style}
-      {...attributes}
       className="relative aspect-square overflow-hidden group rounded-lg"
     >
       <img
@@ -63,6 +62,7 @@ function SortableImage({ image, onDelete, onSetPrimary }) {
 
       {/* Drag handle */}
       <div
+        {...attributes}
         {...listeners}
         className="absolute bottom-2 right-2 bg-black/70 p-1 rounded cursor-grab opacity-0 group-hover:opacity-100"
       >
@@ -72,7 +72,7 @@ function SortableImage({ image, onDelete, onSetPrimary }) {
   );
 }
 
-export const GalleryGrid = ({ images, setImages, onDelete, onSetPrimary }) => {
+export const GalleryGrid = ({ images, setImages, onDelete, onSetPrimary, onReorder }) => {
   if (!images?.length) return null;
 
   const handleDragEnd = (event) => {
@@ -80,12 +80,25 @@ export const GalleryGrid = ({ images, setImages, onDelete, onSetPrimary }) => {
 
     if (!over || active.id === over.id) return;
 
-    setImages((items) => {
-      const oldIndex = items.findIndex((i) => i._id === active.id);
-      const newIndex = items.findIndex((i) => i._id === over.id);
+    const oldIndex = images.findIndex(
+      (i) => i._id === active.id
+    );
 
-      return arrayMove(items, oldIndex, newIndex);
-    });
+    const newIndex = images.findIndex(
+      (i) => i._id === over.id
+    );
+
+    const reordered = arrayMove(
+      images,
+      oldIndex,
+      newIndex
+    );
+
+    // optimistic update
+    setImages(reordered);
+
+    // backend sync
+    onReorder(oldIndex, newIndex, images);
   };
 
   return (

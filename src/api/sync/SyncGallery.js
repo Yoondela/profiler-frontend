@@ -48,3 +48,5 @@ export const setPrimaryGalleryImage = async (userId, photoId) => {
 
   return res.data;
 };
+
+// UPLOADS

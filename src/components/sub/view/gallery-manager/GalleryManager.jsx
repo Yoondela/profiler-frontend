@@ -7,10 +7,10 @@ import {
 } from '@/components/dropzone';
 import { useSupabaseUpload } from '@/hooks/use-supabase-upload';
 import {
-  sendGalleryUrlsToApp,
   fetchGalleryImages,
   deleteGalleryImage,
   setPrimaryGalleryImage,
+  reorderGalleryPhotos,
 } from '@/api/sync/SyncGallery';
 import { useAuth0 } from '@auth0/auth0-react';
 import { getUserID } from '@/api/sync/SyncUser';
@@ -24,9 +24,7 @@ const GalleryManager = () => {
 
   const { user, getAccessTokenSilently } = useAuth0();
 
-  const { uploadedUrls, ...props } = useSupabaseUpload({
-    bucketName: 'user-galleries',
-    path: 'providers',
+  const { uploadedGallery, ...props } = useSupabaseUpload({
     allowedMimeTypes: ['image/*'],
     maxFiles: 10,
     maxFileSize: 1000 * 1000 * 10, // 10MB,
@@ -62,44 +60,28 @@ const GalleryManager = () => {
   }, [userId, initialGalleryLoaded]);
 
   useEffect(() => {
-    if (!uploadedUrls.length) return;
-    if (!userId) return;
+    if (!uploadedGallery) return;
 
-    const syncUrls = async () => {
-      try {
-        const saved = await sendGalleryUrlsToApp(userId, uploadedUrls);
+    setGalleryImages(uploadedGallery);
+  }, [uploadedGallery]);
 
-        if (saved?.galleryPhotos) {
-          setGalleryImages(saved.galleryPhotos);
-        }
-
-        console.log('URLs sent to backend:', uploadedUrls);
-      } catch (error) {
-        console.error('Failed to sync gallery URLs', error);
-      }
-    };
-
-    syncUrls();
-  }, [uploadedUrls, userId]);
 
   const deleteImage = async (image) => {
     console.log('Deleting image:', image);
     if (!userId) return;
 
     try {
-      // 1. Delete at Supabase Storage
-      await deleteAtGallery(image.url);
+      const res = await deleteGalleryImage(
+        userId,
+        image._id
+      );
 
-      console.log('Deleted from Supabase Storage:', image.url);
-
-      // 2. Delete from backend (Mongo / API)
-      await deleteGalleryImage(userId, image._id);
+      if (res?.galleryPhotos) {
+        setGalleryImages(res.galleryPhotos);
+      }
 
       console.log('Deleted from backend API:', image._id);
-      // 3. Delete from local state (React)
-      setGalleryImages((prevImages) =>
-        prevImages.filter((img) => img._id !== image._id)
-      );
+      
     } catch (error) {
       console.error('Failed to delete gallery image', error);
     }
@@ -118,6 +100,40 @@ const GalleryManager = () => {
     }
   };
 
+  const handleReorder = async (
+    fromIndex,
+    toIndex,
+    previousImages
+  ) => {
+
+    try {
+
+      const res = await reorderGalleryPhotos(
+        userId,
+        fromIndex,
+        toIndex
+      );
+
+      if (res?.galleryPhotos) {
+        setGalleryImages(res.galleryPhotos);
+      }
+
+    } catch (err) {
+
+      console.error(
+        'Failed to reorder gallery',
+        err
+      );
+
+      // rollback
+      setGalleryImages(previousImages);
+    }
+  };
+
+  if (!userId) {
+    return null;
+  }
+
   return (
     <div className="gallery-manager">
       <div className="w-[100%] p-6">
@@ -126,13 +142,14 @@ const GalleryManager = () => {
           <DropzoneContent />
         </Dropzone>
       </div>
-      {galleryImages && (
+      {galleryImages.length > 0 && (
         <div className="px-10 mb-10">
           <GalleryGrid
             images={galleryImages}
             setImages={setGalleryImages}
             onDelete={deleteImage}
             onSetPrimary={setPrimary}
+            onReorder={handleReorder}
           />
         </div>
       )}

@@ -58,7 +58,6 @@ const DropzoneContent = ({ className }) => {
     setFiles,
     onUpload,
     loading,
-    successes,
     errors,
     maxFileSize,
     maxFiles,
@@ -94,8 +93,7 @@ const DropzoneContent = ({ className }) => {
     <div className={cn('flex flex-col', className)}>
       {files.map((file, idx) => {
         const fileError = errors.find((e) => e.name === file.name);
-        const isSuccessfullyUploaded = !!successes.find((e) => e === file.name);
-
+        
         return (
           <div
             key={`${file.name}-${idx}`}
@@ -128,17 +126,13 @@ const DropzoneContent = ({ className }) => {
                     )
                     .join(', ')}
                 </p>
-              ) : loading && !isSuccessfullyUploaded ? (
+              ) : loading ? (
                 <p className="text-xs text-muted-foreground">
                   Uploading file...
                 </p>
               ) : fileError ? (
                 <p className="text-xs text-destructive">
-                  Failed to upload: {fileError.message}
-                </p>
-              ) : isSuccessfullyUploaded ? (
-                <p className="text-xs text-primary">
-                  Successfully uploaded file
+                  Failed to upload: {fileError.error}
                 </p>
               ) : (
                 <p className="text-xs text-muted-foreground">
@@ -146,7 +140,7 @@ const DropzoneContent = ({ className }) => {
                 </p>
               )}
             </div>
-            {!loading && !isSuccessfullyUploaded && (
+            {!loading && (
               <Button
                 size="icon"
                 variant="link"

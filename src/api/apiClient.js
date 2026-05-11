@@ -27,6 +27,11 @@ apiClient.interceptors.request.use(
     // Example: attach a client-side request id, dev-only logging, etc.
     // config.headers["X-Request-Id"] = generateRequestId();
     // console.debug(`[api] ${config.method.toUpperCase()} ${config.url}`);
+
+    if (config.data instanceof FormData) {
+      delete config.headers['Content-Type'];
+    }
+
     return config;
   },
   (error) => Promise.reject(error)
