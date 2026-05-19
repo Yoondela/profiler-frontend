@@ -27,3 +27,31 @@ export const respondToInvite = async (inviteId, action) => {
   console.log('Responded to invite:', res.data);
   return res.data;
 };
+
+export const sendStaffInvite = async (
+  invitingCompany,
+  invitingUser,
+  targetUser
+) => {
+  if (!invitingCompany) throw new Error('No user email provided');
+  const res = await axios.post(
+    `${import.meta.env.VITE_API_URL}/invites/${invitingCompany}/staff/invite`,
+    {
+      targetUserId: targetUser,
+      invitedBy: invitingUser,
+    }
+  );
+  return res.data;
+};
+
+export const respondToStaffInvite = async (inviteId, action) => {
+  if (!inviteId || !action) throw new Error('Information is missing');
+  const res = await axios.patch(
+    `${import.meta.env.VITE_API_URL}/invites/staff/${inviteId}/respond`,
+    {
+      action: action,
+    }
+  );
+  console.log('Responded to invite:', res.data);
+  return res.data;
+};

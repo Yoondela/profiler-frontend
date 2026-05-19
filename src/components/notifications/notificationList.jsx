@@ -1,6 +1,6 @@
 import { useNotifications } from '@/api/context/notificationContext';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';
-import { respondToInvite } from '@/api/sync/SyncInvite';
+import { respondToInvite, respondToStaffInvite } from '@/api/sync/SyncInvite';
 
 export default function NotificationList() {
   const { notifications, loading, markAsRead } = useNotifications();
@@ -9,10 +9,20 @@ export default function NotificationList() {
 
   if (loading) return <div>Loading...</div>;
 
-  async function handleAction(nId, action) {
+  async function handleAction(nType, nId, action) {
     try {
-      await respondToInvite(nId, action);
-      markAsRead(nId);
+      switch (nType) {
+        case 'CompanyInvite':
+          await respondToInvite(nId, action);
+          markAsRead(nId);
+          break;
+        case 'CompanyStaffInvite':
+          await respondToStaffInvite(nId, action);
+          markAsRead(nId);
+          break;
+        default:
+          break;
+      }
     } catch (err) {
       console.error('Failed to respond to invite', err);
     }
@@ -45,7 +55,7 @@ export default function NotificationList() {
                     <button
                       key={idx}
                       onClick={(e) => {
-                        handleAction(n.entityId, action);
+                        handleAction(n.entityType, n.entityId, action);
                         e.stopPropagation();
                       }}
                       className="px-3 py-1 text-sm text-blue-300 hover:underline cursor-pointer"

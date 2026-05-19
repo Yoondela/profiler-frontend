@@ -12,7 +12,7 @@ export const PortfolioProvider = ({ children }) => {
     return Boolean(portfolioDataCtx?.company);
   }
 
-  const companyId = hasCompany() ? portfolioDataCtx.company._id : null;
+  const companyId = portfolioDataCtx?.portfolio.id;
 
   console.log('Company ID in Portfolio Context:', companyId);
 

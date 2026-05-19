@@ -17,39 +17,26 @@ const useSupabaseUpload = (options) => {
   const api = useApiClient();
 
   const isSuccess = useMemo(() => {
-    return (
-      !loading &&
-      errors.length === 0 &&
-      uploadedGallery !== null
-    );
+    return !loading && errors.length === 0 && uploadedGallery !== null;
   }, [loading, errors.length, uploadedGallery]);
 
   const onDrop = useCallback(
     (acceptedFiles, fileRejections) => {
       const validFiles = acceptedFiles
-        .filter(
-          (file) =>
-            !files.find((x) => x.name === file.name)
-        )
+        .filter((file) => !files.find((x) => x.name === file.name))
         .map((file) => {
           file.preview = URL.createObjectURL(file);
           file.errors = [];
           return file;
         });
 
-      const invalidFiles = fileRejections.map(
-        ({ file, errors }) => {
-          file.preview = URL.createObjectURL(file);
-          file.errors = errors;
-          return file;
-        }
-      );
+      const invalidFiles = fileRejections.map(({ file, errors }) => {
+        file.preview = URL.createObjectURL(file);
+        file.errors = errors;
+        return file;
+      });
 
-      const newFiles = [
-        ...files,
-        ...validFiles,
-        ...invalidFiles,
-      ];
+      const newFiles = [...files, ...validFiles, ...invalidFiles];
 
       setFiles(newFiles);
     },
@@ -82,21 +69,13 @@ const useSupabaseUpload = (options) => {
         formData.append('images', file);
       });
 
-      const res = await api.post(
-        '/gallery/upload',
-        formData
-      );
+      const res = await api.post('/gallery/upload', formData);
 
-      setUploadedGallery(
-        res.data.galleryPhotos
-      );
-
+      setUploadedGallery(res.data.galleryPhotos);
     } catch (err) {
       setErrors([
         {
-          error:
-            err.response?.data?.message ||
-            'Upload failed',
+          error: err.response?.data?.message || 'Upload failed',
         },
       ]);
     } finally {
@@ -113,14 +92,8 @@ const useSupabaseUpload = (options) => {
       let changed = false;
 
       const newFiles = files.map((file) => {
-        if (
-          file.errors.some(
-            (e) => e.code === 'too-many-files'
-          )
-        ) {
-          file.errors = file.errors.filter(
-            (e) => e.code !== 'too-many-files'
-          );
+        if (file.errors.some((e) => e.code === 'too-many-files')) {
+          file.errors = file.errors.filter((e) => e.code !== 'too-many-files');
 
           changed = true;
         }

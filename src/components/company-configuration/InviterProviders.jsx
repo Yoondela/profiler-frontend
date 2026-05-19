@@ -15,9 +15,7 @@ export default function InviteProviders() {
         <div className="">
           <div className="flex items-center gap-3 mb-4">
             <Users className="h-5 w-5 text-gray-700" />
-            <p className="text-sm font-medium text-gray-900">
-              Search providers
-            </p>
+            <p className="text-sm font-medium text-gray-900">Members</p>
           </div>
           <MembersList />
         </div>

@@ -13,7 +13,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 const NotificationContext = createContext(null);
 
 export function NotificationProvider({ children }) {
-  const { user } = useUserContext();
+  const { userCtx } = useUserContext();
   const { getAccessTokenSilently } = useAuth0();
   const { socket, subscribe } = useSocket();
 
@@ -23,14 +23,15 @@ export function NotificationProvider({ children }) {
 
   // Fetch notifications
   useEffect(() => {
-    if (!user?._id) return;
+    console.log("Inside of notification context effect")
+    if (!userCtx?._id) return;
 
     const fetchNotifications = async () => {
       try {
         const token = await getAccessTokenSilently();
 
         const res = await axios.get(
-          `${import.meta.env.VITE_API_URL}/notifications/${user._id}`,
+          `${import.meta.env.VITE_API_URL}/notifications/${userCtx._id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -47,7 +48,7 @@ export function NotificationProvider({ children }) {
     };
 
     fetchNotifications();
-  }, [user, getAccessTokenSilently]);
+  }, [userCtx, getAccessTokenSilently]);
 
   // Add notification (exposed function)
   const addNotification = useCallback((notification) => {

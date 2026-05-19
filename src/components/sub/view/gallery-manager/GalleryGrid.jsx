@@ -72,7 +72,13 @@ function SortableImage({ image, onDelete, onSetPrimary }) {
   );
 }
 
-export const GalleryGrid = ({ images, setImages, onDelete, onSetPrimary, onReorder }) => {
+export const GalleryGrid = ({
+  images,
+  setImages,
+  onDelete,
+  onSetPrimary,
+  onReorder,
+}) => {
   if (!images?.length) return null;
 
   const handleDragEnd = (event) => {
@@ -80,19 +86,11 @@ export const GalleryGrid = ({ images, setImages, onDelete, onSetPrimary, onReord
 
     if (!over || active.id === over.id) return;
 
-    const oldIndex = images.findIndex(
-      (i) => i._id === active.id
-    );
+    const oldIndex = images.findIndex((i) => i._id === active.id);
 
-    const newIndex = images.findIndex(
-      (i) => i._id === over.id
-    );
+    const newIndex = images.findIndex((i) => i._id === over.id);
 
-    const reordered = arrayMove(
-      images,
-      oldIndex,
-      newIndex
-    );
+    const reordered = arrayMove(images, oldIndex, newIndex);
 
     // optimistic update
     setImages(reordered);

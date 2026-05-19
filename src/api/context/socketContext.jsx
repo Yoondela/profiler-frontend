@@ -4,7 +4,7 @@ import { useUserContext } from './userContext';
 const SocketContext = createContext(null);
 
 export function SocketProvider({ children }) {
-  const { user } = useUserContext();
+  const { userCtx } = useUserContext();
   const socketRef = useRef(null);
   const listenersRef = useRef({});
 
@@ -14,13 +14,14 @@ export function SocketProvider({ children }) {
   // Prevents errors if no one is listening.
 
   useEffect(() => {
-    if (!user?._id) return;
+    console.log('about to connect to socket?????????????');
+    if (!userCtx?._id) return;
 
-    const ws = new WebSocket(`ws://localhost:4001/ws/${user._id}`);
+    const ws = new WebSocket(`ws://localhost:4001/ws/${userCtx._id}`);
     socketRef.current = ws;
 
     ws.onopen = () => {
-      console.log('Socket connected');
+      console.log('Socket connected___________________________________');
     };
 
     ws.onclose = () => {
@@ -58,7 +59,7 @@ export function SocketProvider({ children }) {
     };
 
     return () => ws.close();
-  }, [user]);
+  }, [userCtx]);
 
   const subscribe = (event, callback) => {
     if (!listenersRef.current[event]) {

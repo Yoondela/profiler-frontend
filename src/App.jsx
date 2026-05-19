@@ -5,7 +5,7 @@ import { CreateUser } from './api/sync/SyncUser';
 // import { Toaster } from 'react-hot-toast';
 import { Toaster } from '@/components/ui/sonner';
 import AppRoutes from './routes/AppRoutes';
-// import { UserProvider } from './api/context/userContext';
+import { UserProvider } from './api/context/userContext';
 import { AOS } from 'aos';
 import { SearchContextProvider } from './components/intro/context/context';
 import GoogleMapsProvider from './components/app-providers/GoogleMapsProvider';
@@ -45,22 +45,24 @@ function App() {
     <div>
       <CityProvider>
         <SocketProvider>
-          <NotificationProvider>
-            <PortfolioProvider>
-              <GoogleMapsProvider>
-                <SearchContextProvider>
-                  {isAuthenticated && !isLoading && <CreateUser />}
-                  <Navbar />
-                  <ServiceRequestWSProvider>
-                    <ServiceBookingWSProvider>
-                      <AppRoutes />
-                    </ServiceBookingWSProvider>
-                  </ServiceRequestWSProvider>
-                  <Toaster />
-                </SearchContextProvider>
-              </GoogleMapsProvider>
-            </PortfolioProvider>
-          </NotificationProvider>
+          <UserProvider>
+            <NotificationProvider>
+              <PortfolioProvider>
+                <GoogleMapsProvider>
+                  <SearchContextProvider>
+                    {isAuthenticated && !isLoading && <CreateUser />}
+                    <Navbar />
+                      <ServiceRequestWSProvider>
+                        <ServiceBookingWSProvider>
+                          <AppRoutes />
+                        </ServiceBookingWSProvider>
+                      </ServiceRequestWSProvider>
+                    <Toaster />
+                  </SearchContextProvider>
+                </GoogleMapsProvider>
+              </PortfolioProvider>
+            </NotificationProvider>
+          </UserProvider>
         </SocketProvider>
       </CityProvider>
     </div>

@@ -65,23 +65,18 @@ const GalleryManager = () => {
     setGalleryImages(uploadedGallery);
   }, [uploadedGallery]);
 
-
   const deleteImage = async (image) => {
     console.log('Deleting image:', image);
     if (!userId) return;
 
     try {
-      const res = await deleteGalleryImage(
-        userId,
-        image._id
-      );
+      const res = await deleteGalleryImage(userId, image._id);
 
       if (res?.galleryPhotos) {
         setGalleryImages(res.galleryPhotos);
       }
 
       console.log('Deleted from backend API:', image._id);
-      
     } catch (error) {
       console.error('Failed to delete gallery image', error);
     }
@@ -100,30 +95,15 @@ const GalleryManager = () => {
     }
   };
 
-  const handleReorder = async (
-    fromIndex,
-    toIndex,
-    previousImages
-  ) => {
-
+  const handleReorder = async (fromIndex, toIndex, previousImages) => {
     try {
-
-      const res = await reorderGalleryPhotos(
-        userId,
-        fromIndex,
-        toIndex
-      );
+      const res = await reorderGalleryPhotos(userId, fromIndex, toIndex);
 
       if (res?.galleryPhotos) {
         setGalleryImages(res.galleryPhotos);
       }
-
     } catch (err) {
-
-      console.error(
-        'Failed to reorder gallery',
-        err
-      );
+      console.error('Failed to reorder gallery', err);
 
       // rollback
       setGalleryImages(previousImages);

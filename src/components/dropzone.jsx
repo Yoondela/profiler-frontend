@@ -93,7 +93,7 @@ const DropzoneContent = ({ className }) => {
     <div className={cn('flex flex-col', className)}>
       {files.map((file, idx) => {
         const fileError = errors.find((e) => e.name === file.name);
-        
+
         return (
           <div
             key={`${file.name}-${idx}`}
