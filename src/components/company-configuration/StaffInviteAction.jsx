@@ -33,7 +33,7 @@ export default function StaffInviteAction({ status, targetUserId, companyId }) {
     );
   }
 
-  if (status === 'already_member') {
+  if (status === 'already_staff') {
     return (
       <span className="flex items-center gap-1 text-xs font-medium text-green-600">
         <UserCheck className="h-4 w-4" />

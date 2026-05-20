@@ -23,7 +23,7 @@ export function NotificationProvider({ children }) {
 
   // Fetch notifications
   useEffect(() => {
-    console.log("Inside of notification context effect")
+    console.log('Inside of notification context effect');
     if (!userCtx?._id) return;
 
     const fetchNotifications = async () => {

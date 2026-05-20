@@ -52,11 +52,11 @@ function App() {
                   <SearchContextProvider>
                     {isAuthenticated && !isLoading && <CreateUser />}
                     <Navbar />
-                      <ServiceRequestWSProvider>
-                        <ServiceBookingWSProvider>
-                          <AppRoutes />
-                        </ServiceBookingWSProvider>
-                      </ServiceRequestWSProvider>
+                    <ServiceRequestWSProvider>
+                      <ServiceBookingWSProvider>
+                        <AppRoutes />
+                      </ServiceBookingWSProvider>
+                    </ServiceRequestWSProvider>
                     <Toaster />
                   </SearchContextProvider>
                 </GoogleMapsProvider>
