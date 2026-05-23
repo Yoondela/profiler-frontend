@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams } from 'react-router-dom';
-import { fetchPublicPage } from '@/api/lookup/publicPageApi';
+import { fetchPublicPage, fetchAvailability } from '@/api/lookup/publicPageApi';
 import { useEffect, useState } from 'react';
 import { PageLoadingSpinner } from '../loader/page-loader';
 import { Reviews } from './Reviews';
@@ -20,6 +20,7 @@ export default function ProviderPublicPage() {
   const api = useApiClient();
   const { id } = useParams();
   const [providerData, setProviderData] = useState(null);
+  const [availability, setAvailability] = useState(null);
 
   console.log('This is the object', providerData);
 
@@ -30,6 +31,10 @@ export default function ProviderPublicPage() {
       console.log('SETTING object with', data);
 
       setProviderData(data);
+
+      const providerAvailability = await fetchAvailability(api, id);
+      console.log('availability', providerAvailability);
+      setAvailability(providerAvailability.availability);
     }
     loadData();
   }, [id]);
@@ -40,7 +45,7 @@ export default function ProviderPublicPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 py-6 px-4">
-      <PortfolioHeader provider={providerData} />
+      <PortfolioHeader provider={providerData} availability={availability} />
       <div className="flex items-start w-full">
         <div className="w-3/4 space-x-6 p-6">
           <div className="">

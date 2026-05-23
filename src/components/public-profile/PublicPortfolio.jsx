@@ -2,11 +2,17 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import PortfolioEditDialog from '@/components/sub/view/portfolio/PortfolioEditPopover';
 import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from '@/components/ui/collapsible';
+import {
   Map,
   BriefcaseBusiness,
   CircleCheckBig,
   ChartNoAxesCombined,
   CalendarDays,
+  ChevronDown,
   Pencil,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -15,6 +21,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import PortfolioGallery from '@/components/sub/view/portfolio/PortfolioGallery';
 import { fetchGalleryImages } from '@/api/sync/SyncGallery';
+import PublicOfficeHoursDisplay from './PublicOfficeHours';
 
 function BadgeVariants() {
   return (
@@ -36,6 +43,9 @@ const PublicPortfolio = ({ data }) => {
   if (data.company) {
     company = data.company;
   }
+
+  console.log('_______', portfolio.workingHours);
+
 
   console.log(portfolio);
   return (
@@ -103,6 +113,19 @@ const PublicPortfolio = ({ data }) => {
           {/* About */}
           <div className="section bio">
             <p>{portfolio?.about || 'About section is empty.'}</p>
+          </div>
+
+          {/* Working Hours */}
+          <div className='pb-12'>
+            <Collapsible defaultOpen={portfolio?.workingHours}>
+              <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg px-2 py-3 text-left text-sm font-semibold text-slate-900 cursor-pointer transition hover:bg-slate-100">
+                <span>Office hours</span>
+                <ChevronDown className="h-4 w-4 transition-transform duration-200 data-[state=open]:rotate-180" />
+              </CollapsibleTrigger>
+              <CollapsibleContent className="mt-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+                <PublicOfficeHoursDisplay workingHours={portfolio?.workingHours} />
+              </CollapsibleContent>
+            </Collapsible>
           </div>
 
           {/* Skills */}

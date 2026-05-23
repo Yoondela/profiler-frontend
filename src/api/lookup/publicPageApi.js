@@ -11,3 +11,15 @@ export const fetchPublicPage = async (api, providerId) => {
 
   return res.data;
 };
+
+export const fetchAvailability = async (api, providerId) => {
+  console.log('Fetching public availability for provider ID:', providerId);
+  console.log('API client:', api);
+
+  const res = await api.get(
+    `${import.meta.env.VITE_API_URL}/providers/${providerId}/availability`
+  );
+  console.log('found', res.data);
+
+  return res.data;
+};

@@ -5,8 +5,9 @@ import { useApiClient } from '@/api/useApiClient';
 import { createLike } from '@/api/sync/syncLikes';
 import { useState, useEffect } from 'react';
 
-export default function PortfolioHeader({ provider }) {
+export default function PortfolioHeader({ provider, availability }) {
   console.log('PortfolioHeader received provider:', provider);
+  console.log('PortfolioHeader received availability:', availability);
 
   const api = useApiClient();
   const providerId = provider?.provider?._id || provider?.provider?.id;
@@ -87,7 +88,7 @@ export default function PortfolioHeader({ provider }) {
 
         {/* Name + Rating */}
         <div className="flex flex-col pb-2">
-          <div className="flex gap-1">
+          <div className="flex gap-1 items-center flex-wrap">
             <h1 className="text-xl font-extrabold md:text-2xl leading-tight text-gray-500">
               {providerName}
             </h1>
@@ -117,7 +118,7 @@ export default function PortfolioHeader({ provider }) {
               onClick={handleCreateLike}
               value="like"
               aria-label="Like"
-              className="data-[state=on]:bg-transparent data-[state=on]:*:[svg]:fill-red-500 data-[state=on]:*:[svg]:stroke-red-500 cursor-pointer"
+              className="data-[state=on]:bg-transparent data-[state=on]:*:[svg]:fill-pink-500 data-[state=on]:*:[svg]:stroke-pink-500 cursor-pointer"
             >
               <HeartIcon />
             </ToggleGroupItem>
@@ -134,7 +135,23 @@ export default function PortfolioHeader({ provider }) {
         </div>
       </div>
 
-      <div className="h-4" />
+      <div className="h-4 p-7 ml-31">
+            {availability && (
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              <span
+                className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${
+                  availability.isCurrentlyOpen
+                    ? 'bg-emerald-100 text-emerald-800'
+                    : 'bg-rose-100 text-rose-800'
+                }`}
+              >
+                {availability.isCurrentlyOpen
+                  ? `Open until ${availability.closesAt || 'closing time'}`
+                  : 'Closed'}
+              </span>
+            </div>
+          )}
+      </div>
     </div>
   );
 }

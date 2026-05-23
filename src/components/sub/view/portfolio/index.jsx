@@ -6,11 +6,18 @@ import {
   ChartNoAxesCombined,
   CalendarDays,
   Pencil,
+  ChevronDown,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from '@/components/ui/collapsible';
 import PortfolioGallery from '@/components/sub/view/portfolio/PortfolioGallery';
 import ReviewCarousel from './ReviewCarousel';
+import WorkingHoursDisplay from '@/components/company-configuration/WorkingHoursDisplay';
 
 const PortfolioDetailsContainer = ({ provider }) => {
   const portfolio = provider?.portfolio ?? provider;
@@ -30,6 +37,11 @@ const PortfolioDetailsContainer = ({ provider }) => {
     : Array.isArray(portfolio?.reviews)
       ? portfolio.reviews
       : [];
+
+  const hasOfficeHours = Boolean(
+    portfolio?.workingHours?.weeklySchedule &&
+      Object.keys(portfolio.workingHours.weeklySchedule).length
+  );
 
   const displayName =
     company?.name ||
@@ -127,6 +139,19 @@ const PortfolioDetailsContainer = ({ provider }) => {
               {portfolio?.about || portfolio?.bio || 'About section is empty.'}
             </p>
           </div>
+
+            {/* Working Hours */}
+          <div className='pb-12'>
+          <Collapsible defaultOpen={hasOfficeHours}>
+            <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg px-2 py-3 text-left text-sm font-semibold text-slate-900 cursor-pointer transition hover:bg-slate-100">
+              <span>Office hours</span>
+              <ChevronDown className="h-4 w-4 transition-transform duration-200 data-[state=open]:rotate-180" />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="mt-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+              <WorkingHoursDisplay />
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
 
           {/* Skills */}
           <div className="section skills">

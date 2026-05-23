@@ -1,5 +1,5 @@
 import React from 'react';
-import { usePortfolioContext } from '@/api/context/portfolioContext';
+// import { usePortfolioContext } from '@/api/context/portfolioContext';
 
 const days = [
   'monday',
@@ -19,13 +19,17 @@ function formatRange(dayObj) {
   return `${start} – ${end}`;
 }
 
-export default function WorkingHoursDisplay({ className = '' }) {
-  const { getWorkingHours } = usePortfolioContext();
-  const workingHours = getWorkingHours();
+export default function PublicOfficeHoursDisplay(props) {
+//   const { getWorkingHours } = usePortfolioContext();
+//   const workingHours = getWorkingHours();
 
-  if (!workingHours) return null;
+  const { workingHours: workingHoursProp, className = '' } = props;
 
-  const { timezone, weeklySchedule = {} } = workingHours;
+  console.log('workingHoursProp', workingHoursProp);
+
+  if (!workingHoursProp) return null;
+
+  const { timezone, weeklySchedule = {} } = workingHoursProp;
 
   return (
     <div className={className}>
