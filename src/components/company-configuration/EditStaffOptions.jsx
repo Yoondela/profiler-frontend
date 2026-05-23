@@ -140,7 +140,7 @@ export default function EditStaffOptions({
     <>
       <div
         ref={menuRef}
-        className="relative inline-flex cursor-pointer!"
+        className="relative inline-flex cursor-pointer"
         onClick={(e) => e.stopPropagation()}
       >
         <Button
@@ -165,7 +165,7 @@ export default function EditStaffOptions({
             <button
               type="button"
               role="menuitem"
-              className="w-full px-3 py-2 text-left text-sm hover:bg-gray-100 disabled:opacity-50"
+              className="w-full px-3 py-2 text-left text-sm hover:bg-gray-100 cursor-pointer disabled:opacity-50"
               disabled={disabled}
               onClick={() => {
                 setMenuOpen(false);
@@ -178,7 +178,7 @@ export default function EditStaffOptions({
             <button
               type="button"
               role="menuitem"
-              className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 disabled:opacity-50"
+              className="w-full px-3 py-2 text-left text-sm cursor-pointer hover:bg-gray-100 disabled:opacity-50"
               disabled={disabled}
               onClick={() => {
                 setMenuOpen(false);

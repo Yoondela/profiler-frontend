@@ -21,3 +21,16 @@ export const updatePortfolio = async (userId, changes) => {
   );
   return res.data;
 };
+
+export const updateVisibility = async (userId, date, password) => {
+  console.log('ID', userId);
+  console.log('date', date);
+  console.log('pword', password);
+
+  if (!userId) throw new Error('No user ID provided');
+  const res = await axios.patch(
+    `${import.meta.env.VITE_API_URL}/portfolios/visibility/${userId}`,
+    { hiddenUntil: date, password }
+  );
+  return res.data;
+};

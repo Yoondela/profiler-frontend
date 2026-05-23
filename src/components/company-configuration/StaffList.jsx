@@ -113,7 +113,7 @@ export default function StaffList() {
             </div>
             <div className="flex items-center gap-3">
               <ShowRole role={person.role} />
-              <div className='flex items-center justify-center h-7 w-7 rounded-full cursor-pointer hover:bg-gray-200'>
+              <div className="flex items-center justify-center h-7 w-7 rounded-full cursor-pointer hover:bg-gray-200">
                 <EditStaffOptions
                   user={person}
                   onRemove={doRemoveStaff}
