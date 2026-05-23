@@ -34,3 +34,14 @@ export const updateVisibility = async (userId, date, password) => {
   );
   return res.data;
 };
+
+export const updateOfficeHours = async (userId, payload) => {
+  console.log('ID', userId);
+
+  if (!userId) throw new Error('No user ID provided');
+  const res = await axios.patch(
+    `${import.meta.env.VITE_API_URL}/portfolios/office/${userId}/working-hours`,
+    { payload }
+  );
+  return res.data;
+};

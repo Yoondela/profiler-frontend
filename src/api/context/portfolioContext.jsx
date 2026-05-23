@@ -12,6 +12,10 @@ export const PortfolioProvider = ({ children }) => {
     return Boolean(portfolioDataCtx?.company);
   }
 
+  function getWorkingHours() {
+    return portfolioDataCtx?.portfolio?.workingHours || null;
+  }
+
   const companyId = portfolioDataCtx?.portfolio.id;
 
   console.log('Company ID in Portfolio Context:', companyId);
@@ -19,6 +23,7 @@ export const PortfolioProvider = ({ children }) => {
   return (
     <PortfolioContext.Provider
       value={{
+        getWorkingHours,
         portfolioDataCtx,
         setPortfolioDataCtx,
         hasCompany,

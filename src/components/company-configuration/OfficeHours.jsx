@@ -1,5 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Clock8, ClockArrowDown } from 'lucide-react';
+import RequireAdminPassword from './RequireAdminPassword';
+import { updateOfficeHours } from '@/api/sync/SyncPortfolio';
+import { useUserContext } from '@/api/context/userContext';
+import { usePortfolioContext } from '@/api/context/portfolioContext';
+import { toast } from 'sonner';
 
 const days = [
   'monday',
@@ -23,7 +28,19 @@ const createInitialState = () =>
 export default function OfficeHoursSection() {
   const [hours, setHours] = useState(createInitialState());
   const [applySettings, setApplySettings] = useState(false);
+  const [showAdminPrompt, setShowAdminPrompt] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const { userCtx, appUser_ID } = useUserContext();
+  const { getWorkingHours } = usePortfolioContext();
 
+  const getLoadedWorkingHours = () => getWorkingHours && getWorkingHours();
+
+  const hasExistingWorkingHours = () => {
+    const working = getLoadedWorkingHours();
+    return Boolean(working && working.weeklySchedule && Object.keys(working.weeklySchedule).length);
+  };
+
+  console.log('Current office hours state:', getWorkingHours());
   // --- Helpers ---
 
   const minutesFromTime = (time) => {
@@ -54,6 +71,7 @@ export default function OfficeHoursSection() {
   // --- Handlers ---
 
   const toggleDay = (day) => {
+    setApplySettings(false);
     setHours((prev) => ({
       ...prev,
       [day]: {
@@ -63,7 +81,66 @@ export default function OfficeHoursSection() {
     }));
   };
 
+  const buildPayload = () => {
+    const weeklySchedule = days.reduce((acc, day) => {
+      const current = hours[day];
+      const shift = current.shifts[0];
+
+      if (current.enabled && shift.start && shift.end) {
+        acc[day] = {
+          isOpen: true,
+          opensAt: shift.start,
+          closesAt: shift.end,
+        };
+      } else {
+        acc[day] = {
+          isOpen: false,
+        };
+      }
+
+      return acc;
+    }, {});
+
+    return {
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC',
+      weeklySchedule,
+    };
+  };
+
+  const handleApplyToggle = () => {
+    if (applySettings) {
+      setApplySettings(false);
+      return;
+    }
+
+    setShowAdminPrompt(true);
+  };
+
+  const handleAdminSubmit = async (payload) => {
+    try {
+      setIsSaving(true);
+      console.log('Submit payload:', payload);
+
+      const userId = userCtx?.id || appUser_ID;
+      if (!userId) {
+        throw new Error('No user ID available from UserContext');
+      }
+
+      await updateOfficeHours(userId, payload);
+
+      toast.success('Office hours updated');
+      setApplySettings(true);
+      setShowAdminPrompt(false);
+    } catch (err) {
+      console.error('Failed to update office hours', err);
+      toast.error(err?.message || 'Failed to update office hours');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const updateTime = (day, field, value) => {
+    setApplySettings(false);
     const updatedShifts = [...hours[day].shifts];
     updatedShifts[0][field] = value;
 
@@ -92,6 +169,7 @@ export default function OfficeHoursSection() {
   };
 
   const repeatMondayToWeekdays = () => {
+    setApplySettings(false);
     const monday = hours.monday;
     const updated = { ...hours };
 
@@ -101,6 +179,45 @@ export default function OfficeHoursSection() {
 
     setHours(updated);
   };
+
+  // Initialize hours from portfolio workingHours when available
+  useEffect(() => {
+    const working = getWorkingHours && getWorkingHours();
+    if (!working) return;
+
+    const schedule = working.weeklySchedule || {};
+    const mapped = days.reduce((acc, day) => {
+      const entry = schedule[day];
+      if (entry && entry.isOpen) {
+        acc[day] = {
+          enabled: true,
+          shifts: [
+            {
+              start: entry.opensAt || '',
+              end: entry.closesAt || '',
+            },
+          ],
+        };
+      } else if (entry) {
+        // explicit entry but closed
+        acc[day] = {
+          enabled: false,
+          shifts: [
+            {
+              start: entry.opensAt || '',
+              end: entry.closesAt || '',
+            },
+          ],
+        };
+      } else {
+        acc[day] = { enabled: false, shifts: [{ start: '', end: '' }] };
+      }
+      return acc;
+    }, {});
+
+    setHours((prev) => ({ ...prev, ...mapped }));
+    setApplySettings(Boolean(Object.keys(schedule).length));
+  }, [getWorkingHours]);
 
   return (
     <div className="max-w-2xl mx-auto p-6">
@@ -124,7 +241,7 @@ export default function OfficeHoursSection() {
         <div className="flex items-center">
           <p className="mr-1">Apply</p>
           <button
-            onClick={() => setApplySettings((prev) => !prev)}
+            onClick={handleApplyToggle}
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 ${
               applySettings ? 'bg-blue-200' : 'bg-gray-200'
             }`}
@@ -199,6 +316,16 @@ export default function OfficeHoursSection() {
           );
         })}
       </div>
+
+      {showAdminPrompt && (
+        <RequireAdminPassword
+          open={showAdminPrompt}
+          payload={buildPayload()}
+          onClose={() => setShowAdminPrompt(false)}
+          onSubmit={handleAdminSubmit}
+        />
+      )}
+
       <div className="mt-6 text-sm text-gray-600">
         Total weekly hours:{' '}
         <span className="font-medium text-gray-900">
