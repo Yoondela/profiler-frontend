@@ -13,6 +13,7 @@ import Bookmarks from '@/components/sub/view/bookmarks/Bookmarks';
 import CompanyConfigurations from '@/components/company-configuration/CompanyConfigurations';
 import { useServiceWSRequest } from '@/api/context/ServiceRequestSocketContext';
 import ModalLayer from '@/components/app-modals/ModalLayer';
+import FlackApp from '@/modules/chat/flack/FlackApp';
 
 function AppRoutes() {
   // AppRouter should only route
@@ -22,6 +23,7 @@ function AppRoutes() {
       <Routes>
         {/* Home */}
         <Route path="/" element={<HomePage />} />
+        <Route path="/flack" element={<FlackApp />} />
         <Route path="/providers/:id/public" element={<ProviderPublicPage />} />
         <Route path="/search-app" element={<SearchPage />} />
         <Route path="/concern-config" element={<CompanyConfigurations />} />

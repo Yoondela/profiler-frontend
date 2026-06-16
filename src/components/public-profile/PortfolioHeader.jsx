@@ -136,21 +136,21 @@ export default function PortfolioHeader({ provider, availability }) {
       </div>
 
       <div className="h-4 p-7 ml-31">
-            {availability && (
-            <div className="mt-2 flex flex-wrap items-center gap-2">
-              <span
-                className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${
-                  availability.isCurrentlyOpen
-                    ? 'bg-emerald-100 text-emerald-800'
-                    : 'bg-rose-100 text-rose-800'
-                }`}
-              >
-                {availability.isCurrentlyOpen
-                  ? `Open until ${availability.closesAt || 'closing time'}`
-                  : 'Closed'}
-              </span>
-            </div>
-          )}
+        {availability && (
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            <span
+              className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${
+                availability.isCurrentlyOpen
+                  ? 'bg-emerald-100 text-emerald-800'
+                  : 'bg-rose-100 text-rose-800'
+              }`}
+            >
+              {availability.isCurrentlyOpen
+                ? `Open until ${availability.closesAt || 'closing time'}`
+                : 'Closed'}
+            </span>
+          </div>
+        )}
       </div>
     </div>
   );
