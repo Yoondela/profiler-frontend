@@ -46,7 +46,6 @@ const PublicPortfolio = ({ data, availability }) => {
 
   console.log('_______', portfolio.workingHours);
 
-
   console.log(portfolio);
   return (
     <div className="provider-overview-card">
@@ -116,18 +115,22 @@ const PublicPortfolio = ({ data, availability }) => {
           </div>
 
           {/* Working Hours */}
-          <div className='pb-12'>
+          <div className="pb-12">
             <Collapsible defaultOpen={portfolio?.workingHours}>
               <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg px-2 py-3 text-left text-sm font-semibold text-slate-900 cursor-pointer transition hover:bg-slate-100">
                 <span>Office hours</span>
                 <ChevronDown className="h-4 w-4 transition-transform duration-200 data-[state=open]:rotate-180" />
               </CollapsibleTrigger>
-                <div className="flex items-center justify-between rounded-md border px-4 py-2 text-sm">
-                  <span className="text-muted-foreground">{availability?.day}</span>
-                  <span className="font-medium">{availability?.time}</span>
-                </div>
+              <div className="flex items-center justify-between rounded-md border px-4 py-2 text-sm">
+                <span className="text-muted-foreground">
+                  {availability?.day}
+                </span>
+                <span className="font-medium">{availability?.time}</span>
+              </div>
               <CollapsibleContent className="mt-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-                <PublicOfficeHoursDisplay workingHours={portfolio?.workingHours} />
+                <PublicOfficeHoursDisplay
+                  workingHours={portfolio?.workingHours}
+                />
               </CollapsibleContent>
             </Collapsible>
           </div>

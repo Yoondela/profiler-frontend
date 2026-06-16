@@ -37,7 +37,11 @@ export default function OfficeHoursSection() {
 
   const hasExistingWorkingHours = () => {
     const working = getLoadedWorkingHours();
-    return Boolean(working && working.weeklySchedule && Object.keys(working.weeklySchedule).length);
+    return Boolean(
+      working &&
+        working.weeklySchedule &&
+        Object.keys(working.weeklySchedule).length
+    );
   };
 
   console.log('Current office hours state:', getWorkingHours());

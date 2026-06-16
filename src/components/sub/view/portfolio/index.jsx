@@ -140,18 +140,18 @@ const PortfolioDetailsContainer = ({ provider }) => {
             </p>
           </div>
 
-            {/* Working Hours */}
-          <div className='pb-12'>
-          <Collapsible defaultOpen={hasOfficeHours}>
-            <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg px-2 py-3 text-left text-sm font-semibold text-slate-900 cursor-pointer transition hover:bg-slate-100">
-              <span>Office hours</span>
-              <ChevronDown className="h-4 w-4 transition-transform duration-200 data-[state=open]:rotate-180" />
-            </CollapsibleTrigger>
-            <CollapsibleContent className="mt-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-              <WorkingHoursDisplay />
-            </CollapsibleContent>
-          </Collapsible>
-        </div>
+          {/* Working Hours */}
+          <div className="pb-12">
+            <Collapsible defaultOpen={hasOfficeHours}>
+              <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg px-2 py-3 text-left text-sm font-semibold text-slate-900 cursor-pointer transition hover:bg-slate-100">
+                <span>Office hours</span>
+                <ChevronDown className="h-4 w-4 transition-transform duration-200 data-[state=open]:rotate-180" />
+              </CollapsibleTrigger>
+              <CollapsibleContent className="mt-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+                <WorkingHoursDisplay />
+              </CollapsibleContent>
+            </Collapsible>
+          </div>
 
           {/* Skills */}
           <div className="section skills">

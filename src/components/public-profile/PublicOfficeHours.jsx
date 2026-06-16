@@ -20,8 +20,8 @@ function formatRange(dayObj) {
 }
 
 export default function PublicOfficeHoursDisplay(props) {
-//   const { getWorkingHours } = usePortfolioContext();
-//   const workingHours = getWorkingHours();
+  //   const { getWorkingHours } = usePortfolioContext();
+  //   const workingHours = getWorkingHours();
 
   const { workingHours: workingHoursProp, className = '' } = props;
 
@@ -33,12 +33,15 @@ export default function PublicOfficeHoursDisplay(props) {
 
   return (
     <div className={className}>
-      <div className="text-sm text-gray-500">Timezone: {timezone || 'UTC'}</div><br />
+      <div className="text-sm text-gray-500">Timezone: {timezone || 'UTC'}</div>
+      <br />
       <ul className="mt-2 space-y-1 text-sm text-gray-900">
         {days.map((d) => (
           <li key={d} className="flex justify-between">
             <span className="capitalize">{d}</span>
-            <span className="text-gray-600">{formatRange(weeklySchedule[d])}</span>
+            <span className="text-gray-600">
+              {formatRange(weeklySchedule[d])}
+            </span>
           </li>
         ))}
       </ul>

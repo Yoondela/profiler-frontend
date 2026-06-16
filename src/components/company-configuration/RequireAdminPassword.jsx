@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Shield } from 'lucide-react';
 
-export default function RequireAdminPassword({ open, payload, onClose, onSubmit }) {
+export default function RequireAdminPassword({
+  open,
+  payload,
+  onClose,
+  onSubmit,
+}) {
   const [password, setPassword] = useState('');
   const [changeWorkingHours, setChangeWorkingHours] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -42,13 +47,19 @@ export default function RequireAdminPassword({ open, payload, onClose, onSubmit 
             <Shield className="h-5 w-5" />
           </span>
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">Admin password required</h2>
-            <p className="mt-1 text-sm text-gray-500">Enter your admin password, then confirm.</p>
+            <h2 className="text-lg font-semibold text-gray-900">
+              Admin password required
+            </h2>
+            <p className="mt-1 text-sm text-gray-500">
+              Enter your admin password, then confirm.
+            </p>
           </div>
         </div>
 
         <div className="mt-6 space-y-4">
-          <label className="block text-sm font-medium text-gray-700">Password</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Password
+          </label>
           <input
             type="password"
             value={password}
@@ -67,7 +78,9 @@ export default function RequireAdminPassword({ open, payload, onClose, onSubmit 
             <span>Change working hours for company</span>
           </label>
 
-          {errorMessage ? <p className="text-sm text-red-600">{errorMessage}</p> : null}
+          {errorMessage ? (
+            <p className="text-sm text-red-600">{errorMessage}</p>
+          ) : null}
         </div>
 
         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
