@@ -35,7 +35,7 @@ function BadgeVariants() {
   );
 }
 
-const PublicPortfolio = ({ data }) => {
+const PublicPortfolio = ({ data, availability }) => {
   console.log('data inside', data);
 
   const portfolio = data.provider;
@@ -122,6 +122,10 @@ const PublicPortfolio = ({ data }) => {
                 <span>Office hours</span>
                 <ChevronDown className="h-4 w-4 transition-transform duration-200 data-[state=open]:rotate-180" />
               </CollapsibleTrigger>
+                <div className="flex items-center justify-between rounded-md border px-4 py-2 text-sm">
+                  <span className="text-muted-foreground">{availability?.day}</span>
+                  <span className="font-medium">{availability?.time}</span>
+                </div>
               <CollapsibleContent className="mt-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
                 <PublicOfficeHoursDisplay workingHours={portfolio?.workingHours} />
               </CollapsibleContent>

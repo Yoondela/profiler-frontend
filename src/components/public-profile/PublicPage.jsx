@@ -49,7 +49,7 @@ export default function ProviderPublicPage() {
       <div className="flex items-start w-full">
         <div className="w-3/4 space-x-6 p-6">
           <div className="">
-            <PortfolioDetailsContainer data={providerData} />
+            <PortfolioDetailsContainer data={providerData} availability={availability} />
             <Reviews
               providerId={
                 providerData?.provider?._id || providerData?.provider?.id || id
