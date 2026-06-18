@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import { useChatStore } from '@/modules/chat/store/chatStore';
 
 export function DMList({ onSelect }) {
@@ -15,10 +16,18 @@ export function DMList({ onSelect }) {
 
   console.log('Channels:', channels);
 
+  const dmChannels = useMemo(
+    () =>
+      channels.filter(
+        (c) => c.type === 'dm'
+      ),
+    [channels]
+  );
+
   return (
     <div className="flex flex-col">
       {/* Existing channels */}
-      {channels.map((channel) => {
+      {dmChannels.map((channel) => {
         const otherUser = channel.members.find((m) => m.userId !== userId);
 
         return (

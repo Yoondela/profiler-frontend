@@ -34,11 +34,7 @@ export const useChatStore = create((set, get) => ({
 
         case 'CHANNEL_CREATED':
           console.log('CHANNEL_CREATED received:', event.payload);
-          get().addChannel({
-            id: event.payload.id,
-            type: event.payload.type,
-            members: event.payload.members,
-          });
+          get().addChannel(event.payload);
 
           get().setActiveChannel(event.payload.id);
           break;
@@ -59,11 +55,7 @@ export const useChatStore = create((set, get) => ({
             'CHANNEL_AVAILABLE, setting alert for channel:',
             event.payload.id
           ),
-            get().addChannel({
-              id: event.payload.id,
-              type: event.payload.type,
-              members: event.payload.members,
-            }));
+            get().addChannel(event.payload));
 
           get().setChannelState(event.payload.id, 'active');
           break;
@@ -119,6 +111,17 @@ export const useChatStore = create((set, get) => ({
     set({ viewedChannelId: null });
   },
 
+  createChannel: ({ name, memberIds }) => {
+    chatSocket.send({
+      type: 'CREATE_CHANNEL',
+      payload: {
+        type: 'public',
+        name,
+        memberIds,
+      },
+    });
+  },
+
   // ✉️ SEND MESSAGE
   sendMessage: (channelId, content) => {
     chatSocket.send({
@@ -162,6 +165,7 @@ export const useChatStore = create((set, get) => ({
 
   // ➕ ADD CHANNEL
   addChannel: (channel) => {
+    console.log('Adding channel:', channel);
     set((state) => {
       const exists = state.channels.some((c) => c.id === channel.id);
       if (exists) return state;
@@ -184,6 +188,19 @@ export const useChatStore = create((set, get) => ({
     return channels.find(
       (c) =>
         c.type === 'dm' &&
+        c.members.includes(userId) &&
+        c.members.includes(self)
+    );
+  },
+
+  // 🔍 FIND PUBLIC CHANNEL
+  getPublicChannel: (userId) => {
+    const { channels, userId: self } = get();
+    if (!self) return undefined;
+
+    return channels.find(
+      (c) =>
+        c.type === 'public' &&
         c.members.includes(userId) &&
         c.members.includes(self)
     );
