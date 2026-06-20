@@ -28,7 +28,13 @@ function getChannelTitle(channel, userId) {
     });
 
     if (other) {
-      return other.username || other.displayName || other.userId || other.id || 'Direct message';
+      return (
+        other.username ||
+        other.displayName ||
+        other.userId ||
+        other.id ||
+        'Direct message'
+      );
     }
   }
 
@@ -53,7 +59,9 @@ export function ChatView() {
     [channels, activeChannelId]
   );
 
-  const channelMessages = activeChannelId ? messages[activeChannelId] ?? [] : [];
+  const channelMessages = activeChannelId
+    ? (messages[activeChannelId] ?? [])
+    : [];
   const activeAlert = activeChannelId ? channelAlerts[activeChannelId] : null;
 
   useEffect(() => {
@@ -80,7 +88,9 @@ export function ChatView() {
     <div className="flex-1 flex flex-col border-l border-zinc-900 bg-zinc-950 text-white">
       <div className="border-b border-zinc-900 bg-zinc-900 px-4 py-3 flex items-center justify-between gap-3">
         <div>
-          <p className="text-sm uppercase tracking-[0.15em] text-zinc-400">Chat</p>
+          <p className="text-sm uppercase tracking-[0.15em] text-zinc-400">
+            Chat
+          </p>
           <h2 className="mt-1 text-lg font-semibold text-white">
             {getChannelTitle(activeChannel, userId)}
           </h2>
@@ -95,9 +105,12 @@ export function ChatView() {
       {!activeChannelId ? (
         <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
           <div className="rounded-3xl border border-zinc-800 bg-zinc-900/70 p-10">
-            <p className="text-2xl font-semibold text-white mb-3">Select a chat to start messaging</p>
+            <p className="text-2xl font-semibold text-white mb-3">
+              Select a chat to start messaging
+            </p>
             <p className="text-sm leading-6 text-zinc-400 max-w-md">
-              The selected conversation will appear here. Use the channel list to pick a thread and start typing.
+              The selected conversation will appear here. Use the channel list
+              to pick a thread and start typing.
             </p>
           </div>
         </div>
@@ -106,7 +119,8 @@ export function ChatView() {
           <div className="flex-1 overflow-y-auto px-4 py-5 space-y-4">
             {channelMessages.length === 0 ? (
               <div className="flex h-full min-h-[180px] items-center justify-center rounded-3xl border border-dashed border-zinc-800 bg-zinc-950/80 px-6 py-10 text-center text-sm text-zinc-400">
-                No messages yet. Send the first message to begin the conversation.
+                No messages yet. Send the first message to begin the
+                conversation.
               </div>
             ) : (
               channelMessages.map((message) => {
@@ -121,7 +135,10 @@ export function ChatView() {
 
                 return (
                   <div
-                    key={message.id ?? `${message.channelId}-${message.createdAt}-${Math.random()}`}
+                    key={
+                      message.id ??
+                      `${message.channelId}-${message.createdAt}-${Math.random()}`
+                    }
                     className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}
                   >
                     <div className="max-w-[75%]">

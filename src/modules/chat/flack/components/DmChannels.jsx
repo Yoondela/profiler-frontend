@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import { useChatStore } from '@/modules/chat/store/chatStore';
 
-export function DMList({ onSelect }) {
+export function DmChannels() {
   const startDM = useChatStore((s) => s.startDM);
   const getDMChannel = useChatStore((s) => s.getDMChannel);
   const setActiveChannel = useChatStore((s) => s.setActiveChannel);
@@ -13,8 +13,6 @@ export function DMList({ onSelect }) {
   const userId = useChatStore((s) => s.userId);
 
   const users = ['amber', 'Yondela Sasayi', 'bonga@bones.com']; // temp
-
-  console.log('Channels:', channels);
 
   const dmChannels = useMemo(
     () => channels.filter((c) => c.type === 'dm'),
@@ -32,7 +30,6 @@ export function DMList({ onSelect }) {
             key={channel.id}
             onClick={() => {
               setActiveChannel(channel.id);
-              onSelect(channel.id);
             }}
             className="p-4 text-left hover:bg-zinc-100 flex items-start justify-between gap-3"
           >
@@ -67,28 +64,8 @@ export function DMList({ onSelect }) {
           </button>
         );
       })}
-
-      {/* Temp users list */}
-      {users.map((id) => (
-        <div key={id}>
-          <button
-            onClick={() => {
-              const existing = getDMChannel(id);
-
-              if (existing) {
-                setActiveChannel(existing.id);
-                onSelect(existing.id);
-              } else {
-                startDM(id);
-                onSelect(id);
-              }
-            }}
-            className="p-4 text-left hover:bg-zinc-100"
-          >
-            {id}
-          </button>
-        </div>
-      ))}
     </div>
   );
 }
+
+export default DmChannels;
