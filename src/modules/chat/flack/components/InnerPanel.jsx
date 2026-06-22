@@ -5,6 +5,7 @@ import { useUIStore } from '../store/uiStore.js';
 import { Home } from './Home.jsx';
 import { GroupChannels } from './GroupChannels.jsx';
 import { DmChannels } from './DmChannels.jsx';
+import SearchFlackUser from './SearchFlackUser.jsx';
 
 export function InnerPanel() {
   const { activeTab } = useUIStore();
@@ -24,14 +25,15 @@ export function InnerPanel() {
 
       {activeTab === 'channels' && (
         <>
-          <p className="text-sm text-zinc-400 mb-3">Channel list</p>
+          <p className="text-sm text-zinc-400 mb-3">Public</p>
           <GroupChannels showAddNewChannel={true} />
         </>
       )}
 
       {activeTab === 'dms' && (
         <>
-          <p className="text-sm text-zinc-400 mb-3">DM list</p>
+          <SearchFlackUser />
+          {/* <p className="text-sm text-zinc-400 mb-3">DM list</p> */}
           <DmChannels />
         </>
       )}

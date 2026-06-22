@@ -31,7 +31,7 @@ export function DmChannels() {
             onClick={() => {
               setActiveChannel(channel.id);
             }}
-            className="p-4 text-left hover:bg-zinc-100 flex items-start justify-between gap-3"
+            className="py-4 text-left hover:bg-zinc-100 flex items-start justify-between gap-3"
           >
             <div className="flex items-center gap-3">
               {/* Avatar */}

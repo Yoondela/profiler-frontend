@@ -23,7 +23,13 @@ function getChannelTitle(channel, userId) {
   const other = getOtherMember(channel, userId);
   if (!other) return channel.type === 'dm' ? 'Direct message' : channel.id;
 
-  return other.username || other.displayName || other.userId || other.id || 'Direct message';
+  return (
+    other.username ||
+    other.displayName ||
+    other.email ||
+    other.id ||
+    'Direct message'
+  );
 }
 
 function getChannelAvatar(channel, userId) {
@@ -41,16 +47,19 @@ export function Home() {
   const userId = useChatStore((s) => s.userId);
 
   const channelList = useMemo(
-    () => [...channels].sort((a, b) => {
-      const titleA = getChannelTitle(a, userId).toLowerCase();
-      const titleB = getChannelTitle(b, userId).toLowerCase();
-      return titleA.localeCompare(titleB);
-    }),
+    () =>
+      [...channels].sort((a, b) => {
+        const titleA = getChannelTitle(a, userId).toLowerCase();
+        const titleB = getChannelTitle(b, userId).toLowerCase();
+        return titleA.localeCompare(titleB);
+      }),
     [channels, userId]
   );
 
+  console.log('Home channels:', channels);
+
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col">
       {channelList.length === 0 ? (
         <div className="rounded-3xl border border-dashed border-zinc-800 bg-zinc-950/80 px-4 py-6 text-center text-sm text-zinc-400">
           No channels available.
@@ -65,9 +74,9 @@ export function Home() {
               key={channel.id}
               type="button"
               onClick={() => setActiveChannel(channel.id)}
-              className="w-full rounded-2xl px-3 py-3 text-left hover:bg-zinc-700/50 flex items-center justify-between gap-3"
+              className="w-full rounded-2xl px-0 py-3 text-left hover:bg-zinc-700/50 flex items-center justify-between gap-1"
             >
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <div className="w-10 h-10 rounded-full bg-zinc-700 overflow-hidden flex items-center justify-center text-white">
                   {avatar ? (
                     <img
