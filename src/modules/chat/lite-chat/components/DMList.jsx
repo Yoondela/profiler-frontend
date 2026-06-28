@@ -59,6 +59,14 @@ export function DMList({ onSelect }) {
                     {channelAlerts[channel.id]}
                   </span>
                 )}
+
+                {!channelAlerts[channel.id] && (
+                  <div className="text-xs text-zinc-400 truncate w-[250px]">
+                    <span className="text-xs text-white-700">
+                      {channel.lastMessage.content}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
 

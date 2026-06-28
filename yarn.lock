@@ -941,6 +941,55 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fullcalendar/daygrid@npm:^6.1.21, @fullcalendar/daygrid@npm:~6.1.21":
+  version: 6.1.21
+  resolution: "@fullcalendar/daygrid@npm:6.1.21"
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.21
+  checksum: 10c0/8e7a9e25b7390ec9c09970a729259a3882ebd4d5551084d532e330c7584d302e492dc1f15ae100c2430ae885485182dcd9fd75697962ffb1d7ac6f8f74e53407
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/interaction@npm:^6.1.21":
+  version: 6.1.21
+  resolution: "@fullcalendar/interaction@npm:6.1.21"
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.21
+  checksum: 10c0/70167d97ce97a20aca2aa2f271e2941c88a21e0b6b825d0fe8b97fb4d6f527476398cce7091c004db6a42fddc985f8806ed75ee62cf9d6683e5080cffd2e12da
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/list@npm:^6.1.21":
+  version: 6.1.21
+  resolution: "@fullcalendar/list@npm:6.1.21"
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.21
+  checksum: 10c0/4fcc33074feafe269892a17d60f1cee7402f35224aace35b8fc3c2e44c00e45bbd7263d6549d688bb96c97c67d20717231158140b18b4cd6f9ab34ccb2834000
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/react@npm:^6.1.21":
+  version: 6.1.21
+  resolution: "@fullcalendar/react@npm:6.1.21"
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.21
+    react: ^16.7.0 || ^17 || ^18 || ^19
+    react-dom: ^16.7.0 || ^17 || ^18 || ^19
+  checksum: 10c0/7103e724676ea12a43c5020e2581902394c0e3d30ace0a15319d869efc099b0a4e053aac1ab52576e8086649679f616236399996bebd5b36a131e5cb338d6ec3
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/timegrid@npm:^6.1.21":
+  version: 6.1.21
+  resolution: "@fullcalendar/timegrid@npm:6.1.21"
+  dependencies:
+    "@fullcalendar/daygrid": "npm:~6.1.21"
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.21
+  checksum: 10c0/657d3c574c2ba434fee03bfbac70ab1999778476dd8ce1b1506c229aab46f9285188e09cac5a0d036795b3c73476d3e0eaaac05a7d55c742f832668c67e92bf1
+  languageName: node
+  linkType: hard
+
 "@googlemaps/js-api-loader@npm:1.16.8":
   version: 1.16.8
   resolution: "@googlemaps/js-api-loader@npm:1.16.8"
@@ -6335,6 +6384,11 @@ __metadata:
     "@dnd-kit/core": "npm:^6.3.1"
     "@dnd-kit/sortable": "npm:^10.0.0"
     "@eslint/js": "npm:^9.29.0"
+    "@fullcalendar/daygrid": "npm:^6.1.21"
+    "@fullcalendar/interaction": "npm:^6.1.21"
+    "@fullcalendar/list": "npm:^6.1.21"
+    "@fullcalendar/react": "npm:^6.1.21"
+    "@fullcalendar/timegrid": "npm:^6.1.21"
     "@headlessui/react": "npm:^2.2.7"
     "@phosphor-icons/react": "npm:^2.1.10"
     "@radix-ui/react-aspect-ratio": "npm:^1.1.8"

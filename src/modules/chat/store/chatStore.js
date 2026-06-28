@@ -3,24 +3,80 @@ import { chatSocket } from '../socket/chatSocket';
 
 export const useChatStore = create((set, get) => ({
   userId: null,
+
+  hydrated: false,
+
   channels: [],
   activeChannelId: null,
   viewedChannelId: null,
 
-  // { [channelId]: Message[] }
   messages: {},
 
-  // { [channelId]: number }
   unreadCounts: {},
 
-  // todo: use a newChannels and channelAlerts on liteChat (to render a red badge) when a CHANNEL_AVAILABLE event is received for a channel that isn't active and also show it in the channel list. then show the allert inside the chat view when they click in. also remove the new channel alert when they click into the channel or when they receive a message in that channel (since that means they have seen it)
-  newChannels: {}, // { [channelId]: true }
+  newChannels: {},
 
-  channelAlerts: {}, // { [channelId]: string }
+  channelAlerts: {},
 
-  // 🔌 CONNECT
+  // =========================
+  // HYDRATION
+  // =========================
+
+  setChannels: (channels) => {
+    set((state) => ({
+      channels,
+      unreadCounts: channels.reduce(
+        (acc, channel) => ({
+          ...acc,
+          [channel.id]: state.unreadCounts[channel.id] || 0,
+        }),
+        {}
+      ),
+    }));
+  },
+
+  setMessages: (messages) => {
+    set({ messages });
+  },
+
+  loadInitialData: async () => {
+    try {
+      if (get().hydrated) return;
+
+      const userId = get().userId;
+
+      if (!userId) return;
+
+      console.log('Loading initial Flack data for:', userId);
+
+      const res = await fetch(`http://localhost:3001/channels/${userId}`);
+
+      if (!res.ok) {
+        throw new Error(`Failed to fetch channels: ${res.status}`);
+      }
+
+      const data = await res.json();
+
+      console.log('Initial Flack data:', data);
+
+      get().setChannels(data.channels || []);
+      get().setMessages(data.messages || {});
+
+      set({
+        hydrated: true,
+      });
+    } catch (err) {
+      console.error('Failed loading Flack data', err);
+    }
+  },
+
+  // =========================
+  // CONNECT
+  // =========================
+
   connect: (userId) => {
     console.log('@ connect with userId:', userId);
+
     set({ userId });
 
     chatSocket.onMessage((event) => {
@@ -28,53 +84,61 @@ export const useChatStore = create((set, get) => ({
         case 'MESSAGE_SENT':
         case 'MESSAGE_RECEIVED':
           console.log(event.type, 'received:', event.payload);
+
           get().addMessage(event.payload);
-          clearChannelAlert(event.payload.channelId);
+
+          get().clearChannelAlert(event.payload.channelId);
+
           break;
 
         case 'CHANNEL_CREATED':
           console.log('CHANNEL_CREATED received:', event.payload);
+
           get().addChannel(event.payload);
 
           get().setActiveChannel(event.payload.id);
+
           break;
 
         case 'CHANNEL_AVAILABLE':
           console.log('CHANNEL_AVAILABLE received:', event.payload);
+
           set((state) => ({
             newChannels: {
               ...state.newChannels,
               [event.payload.id]: true,
             },
+
             channelAlerts: {
               ...state.channelAlerts,
               [event.payload.id]: 'Communication opened',
             },
           }));
-          (console.log(
-            'CHANNEL_AVAILABLE, setting alert for channel:',
-            event.payload.id
-          ),
-            get().addChannel(event.payload));
 
-          get().setChannelState(event.payload.id, 'active');
+          get().addChannel(event.payload);
+
           break;
       }
     });
 
     chatSocket.connect(userId);
+
+    get().loadInitialData();
   },
 
-  // 📍 ACTIVE CHANNEL
+  // =========================
+  // ACTIVE CHANNEL
+  // =========================
+
   setActiveChannel: (channelId) => {
     set((state) => {
       const { [channelId]: _, ...rest } = state.newChannels;
-      // const { [channelId]: __, ...restAlerts } = state.channelAlerts;
 
       return {
         activeChannelId: channelId,
-        // channelAlerts: restAlerts,
-        newChannels: rest, // remove this channel
+
+        newChannels: rest,
+
         unreadCounts: {
           ...state.unreadCounts,
           [channelId]: 0,
@@ -88,14 +152,14 @@ export const useChatStore = create((set, get) => ({
       const { [channelId]: _, ...rest } = state.newChannels;
 
       return {
-        newChannels: rest, // remove this channel
+        newChannels: rest,
       };
     });
   },
 
   clearChannelAlert: (channelId) => {
     set((state) => {
-      const { [channelId]: __, ...restAlerts } = state.channelAlerts;
+      const { [channelId]: _, ...restAlerts } = state.channelAlerts;
 
       return {
         channelAlerts: restAlerts,
@@ -104,11 +168,15 @@ export const useChatStore = create((set, get) => ({
   },
 
   setViewedChannel: (channelId) => {
-    set({ viewedChannelId: channelId });
+    set({
+      viewedChannelId: channelId,
+    });
   },
 
   clearViewedChannel: () => {
-    set({ viewedChannelId: null });
+    set({
+      viewedChannelId: null,
+    });
   },
 
   createChannel: ({ name, memberIds }) => {
@@ -122,27 +190,46 @@ export const useChatStore = create((set, get) => ({
     });
   },
 
-  // ✉️ SEND MESSAGE
   sendMessage: (channelId, content) => {
+    console.log('Sending message to channel:', channelId, 'content:', content);
+
     chatSocket.send({
       type: 'SEND_MESSAGE',
-      payload: { channelId, content },
+      payload: {
+        channelId,
+        content,
+      },
     });
   },
 
-  // 💬 START DM
+  updateChannelLastMessage: (channelId, lastMessage) => {
+    set((state) => ({
+      channels: state.channels.map((channel) =>
+        channel.id === channelId
+          ? {
+              ...channel,
+              lastMessage,
+            }
+          : channel
+      ),
+    }));
+  },
+
   startDM: (targetUserId) => {
     console.log('Starting DM with:', targetUserId);
+
     chatSocket.send({
       type: 'START_DM',
-      payload: { targetUserId },
+      payload: {
+        targetUserId,
+      },
     });
   },
 
-  // ➕ ADD MESSAGE
   addMessage: (msg) => {
     set((state) => {
       const isViewed = state.viewedChannelId === msg.channelId;
+
       const isOwnMessage = msg.senderId === state.userId;
 
       const shouldIncrement = !isOwnMessage && !isViewed;
@@ -150,11 +237,27 @@ export const useChatStore = create((set, get) => ({
       return {
         messages: {
           ...state.messages,
+
           [msg.channelId]: [...(state.messages[msg.channelId] || []), msg],
         },
 
+        channels: state.channels.map((channel) =>
+          channel.id === msg.channelId
+            ? {
+                ...channel,
+                lastMessage: {
+                  content: msg.lastMessage.content,
+                  senderId: msg.lastMessage.senderId,
+                  senderName: msg.lastMessage.senderName,
+                  createdAt: msg.lastMessage.createdAt,
+                },
+              }
+            : channel
+        ),
+
         unreadCounts: {
           ...state.unreadCounts,
+
           [msg.channelId]: shouldIncrement
             ? (state.unreadCounts[msg.channelId] || 0) + 1
             : state.unreadCounts[msg.channelId] || 0,
@@ -163,57 +266,45 @@ export const useChatStore = create((set, get) => ({
     });
   },
 
-  // ➕ ADD CHANNEL
   addChannel: (channel) => {
-    console.log('Adding channel:', channel);
     set((state) => {
       const exists = state.channels.some((c) => c.id === channel.id);
+
       if (exists) return state;
 
       return {
         channels: [...state.channels, channel],
+
         unreadCounts: {
           ...state.unreadCounts,
-          [channel.id]: 0, // initialize
+          [channel.id]: 0,
         },
       };
     });
   },
 
-  // 🔍 FIND DM CHANNEL
   getDMChannel: (userId) => {
     const { channels, userId: self } = get();
+
     if (!self) return undefined;
 
     return channels.find(
       (c) =>
         c.type === 'dm' &&
-        c.members.includes(userId) &&
-        c.members.includes(self)
+        c.members?.some((m) => m.userId === userId) &&
+        c.members?.some((m) => m.userId === self)
     );
   },
 
-  // 🔍 FIND PUBLIC CHANNEL
-  getPublicChannel: (userId) => {
-    const { channels, userId: self } = get();
-    if (!self) return undefined;
-
-    return channels.find(
-      (c) =>
-        c.type === 'public' &&
-        c.members.includes(userId) &&
-        c.members.includes(self)
-    );
-  },
-
-  // 🔢 TOTAL UNREAD
   getTotalUnread: () => {
     const counts = get().unreadCounts;
+
     return Object.values(counts).reduce((a, b) => a + b, 0);
   },
 
   isNew: () => {
     const { activeChannelId, newChannels } = get();
+
     return !!newChannels[activeChannelId];
   },
 }));

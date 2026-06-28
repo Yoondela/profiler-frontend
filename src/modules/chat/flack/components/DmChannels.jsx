@@ -12,8 +12,6 @@ export function DmChannels() {
   const channelAlerts = useChatStore((s) => s.channelAlerts);
   const userId = useChatStore((s) => s.userId);
 
-  const users = ['amber', 'Yondela Sasayi', 'bonga@bones.com']; // temp
-
   const dmChannels = useMemo(
     () => channels.filter((c) => c.type === 'dm'),
     [channels]
@@ -55,6 +53,14 @@ export function DmChannels() {
                   <span className="text-xs text-amber-700">
                     {channelAlerts[channel.id]}
                   </span>
+                )}
+
+                {!channelAlerts[channel.id] && (
+                  <div className="text-xs text-zinc-400 truncate max-w-[150px]">
+                    <span className="text-xs text-white-700">
+                      {channel.lastMessage.content}
+                    </span>
+                  </div>
                 )}
               </div>
             </div>

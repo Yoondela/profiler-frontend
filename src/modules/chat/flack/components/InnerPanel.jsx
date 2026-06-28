@@ -6,6 +6,7 @@ import { Home } from './Home.jsx';
 import { GroupChannels } from './GroupChannels.jsx';
 import { DmChannels } from './DmChannels.jsx';
 import SearchFlackUser from './SearchFlackUser.jsx';
+import { useChatStore } from '../../store/chatStore.js';
 
 export function InnerPanel() {
   const { activeTab } = useUIStore();

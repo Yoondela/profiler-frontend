@@ -96,16 +96,15 @@ export function Home() {
                       {channelAlerts[channel.id]}
                     </div>
                   )}
+                  {!channelAlerts[channel.id] && (
+                    <div className="text-xs text-zinc-400 truncate max-w-[150px]">
+                      <span className="text-xs text-white-700">
+                        {channel.lastMessage.senderName}:{' '}
+                        {channel.lastMessage.content}
+                      </span>
+                    </div>
+                  )}
                 </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                {channel.type && (
-                  <span className="rounded-full border border-zinc-700 bg-zinc-900 px-2 py-0.5 text-[11px] uppercase tracking-[0.18em] text-zinc-400">
-                    {channel.type}
-                  </span>
-                )}
-                {newChannels[channel.id] && <span className="badge-dot" />}
               </div>
             </button>
           );

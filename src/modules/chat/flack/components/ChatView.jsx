@@ -91,7 +91,7 @@ export function ChatView() {
           <p className="text-sm uppercase tracking-[0.15em] text-zinc-400">
             Chat
           </p>
-          <h2 className="mt-1 text-lg font-semibold text-white">
+          <h2 className="mt-1 text-lg font-semibold text-white!">
             {getChannelTitle(activeChannel, userId)}
           </h2>
         </div>

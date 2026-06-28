@@ -67,6 +67,15 @@ export function GroupChannels() {
                     {channelAlerts[channel.id]}
                   </span>
                 )}
+
+                {!channelAlerts[channel.id] && (
+                  <div className="text-xs text-zinc-400 truncate max-w-[150px]">
+                    <span className="text-xs text-white-700">
+                      {channel.lastMessage.senderName}:{' '}
+                      {channel.lastMessage.content}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
 
