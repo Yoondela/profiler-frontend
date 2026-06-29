@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useChatStore } from '../../store/chatStore.js';
+import { useFlackStore } from '../../store/flackStore.js';
 
 function timeAgo(date) {
   if (!date) return '';
@@ -42,14 +42,14 @@ function getChannelTitle(channel, userId) {
 }
 
 export function ChatView() {
-  const activeChannelId = useChatStore((s) => s.activeChannelId);
-  const channels = useChatStore((s) => s.channels);
-  const messages = useChatStore((s) => s.messages);
-  const userId = useChatStore((s) => s.userId);
-  const channelAlerts = useChatStore((s) => s.channelAlerts);
-  const setViewedChannel = useChatStore((s) => s.setViewedChannel);
-  const clearViewedChannel = useChatStore((s) => s.clearViewedChannel);
-  const sendMessage = useChatStore((s) => s.sendMessage);
+  const activeChannelId = useFlackStore((s) => s.chat.activeChannelId);
+  const channels = useFlackStore((s) => s.channels);
+  const messages = useFlackStore((s) => s.messages);
+  const userId = useFlackStore((s) => s.userId);
+  const channelAlerts = useFlackStore((s) => s.channelAlerts);
+  const setViewedChannel = useFlackStore((s) => s.setViewedChannel);
+  const clearViewedChannel = useFlackStore((s) => s.clearViewedChannel);
+  const sendMessage = useFlackStore((s) => s.sendMessage);
 
   const [draft, setDraft] = useState('');
   const messageEndRef = useRef(null);

@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { Users } from 'lucide-react';
-import { useChatStore } from '@/modules/chat/store/chatStore';
+import { useFlackStore } from '@/modules/chat/store/flackStore';
 
 function getOtherMember(channel, userId) {
   if (!Array.isArray(channel.members)) return null;
@@ -40,11 +40,11 @@ function getChannelAvatar(channel, userId) {
 }
 
 export function Home() {
-  const setActiveChannel = useChatStore((s) => s.setActiveChannel);
-  const channels = useChatStore((s) => s.channels);
-  const newChannels = useChatStore((s) => s.newChannels);
-  const channelAlerts = useChatStore((s) => s.channelAlerts);
-  const userId = useChatStore((s) => s.userId);
+  const setActiveChannel = useFlackStore((s) => s.setActiveChannel);
+  const channels = useFlackStore((s) => s.channels);
+  const newChannels = useFlackStore((s) => s.newChannels);
+  const channelAlerts = useFlackStore((s) => s.channelAlerts);
+  const userId = useFlackStore((s) => s.userId);
 
   const channelList = useMemo(
     () =>

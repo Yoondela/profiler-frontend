@@ -1,14 +1,14 @@
 'use client';
 
-import { useChatStore } from '@/modules/chat/store/chatStore';
+import { useFlackStore } from '@/modules/chat/store/flackStore';
 import { useEffect } from 'react';
 
 export function LiteChatView({ userId, onBack }) {
-  const activeChannelId = useChatStore((s) => s.activeChannelId);
-  const messages = useChatStore((s) => s.messages);
-  const channelAlerts = useChatStore((s) => s.channelAlerts);
-  const setViewedChannel = useChatStore((s) => s.setViewedChannel);
-  const clearViewedChannel = useChatStore((s) => s.clearViewedChannel);
+  const activeChannelId = useFlackStore((s) => s.chat.activeChannelId);
+  const messages = useFlackStore((s) => s.messages);
+  const channelAlerts = useFlackStore((s) => s.channelAlerts);
+  const setViewedChannel = useFlackStore((s) => s.setViewedChannel);
+  const clearViewedChannel = useFlackStore((s) => s.clearViewedChannel);
 
   function timeAgo(date) {
     const now = new Date();

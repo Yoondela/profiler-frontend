@@ -1,17 +1,17 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { useChatStore } from '@/modules/chat/store/chatStore';
+import { useFlackStore } from '@/modules/chat/store/flackStore';
 import { NewChannelModal } from '../modals/NewChannelModal.jsx';
 import { Users } from 'lucide-react';
 
 export function GroupChannels() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const setActiveChannel = useChatStore((s) => s.setActiveChannel);
-  const channels = useChatStore((s) => s.channels);
-  const newChannels = useChatStore((s) => s.newChannels);
-  const channelAlerts = useChatStore((s) => s.channelAlerts);
-  const createChannel = useChatStore((s) => s.createChannel);
+  const setActiveChannel = useFlackStore((s) => s.setActiveChannel);
+  const channels = useFlackStore((s) => s.channels);
+  const newChannels = useFlackStore((s) => s.newChannels);
+  const channelAlerts = useFlackStore((s) => s.channelAlerts);
+  const createChannel = useFlackStore((s) => s.createChannel);
 
   const publicChannels = useMemo(
     () => channels.filter((c) => c.type === 'public'),
@@ -68,11 +68,11 @@ export function GroupChannels() {
                   </span>
                 )}
 
-                {!channelAlerts[channel.id] && (
+                {!channelAlerts[channel.id] && channel.lastMessage && (
                   <div className="text-xs text-zinc-400 truncate max-w-[150px]">
                     <span className="text-xs text-white-700">
-                      {channel.lastMessage.senderName}:{' '}
-                      {channel.lastMessage.content}
+                      {channel.lastMessage?.senderName}:{' '}
+                      {channel.lastMessage?.content}
                     </span>
                   </div>
                 )}

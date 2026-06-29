@@ -14,14 +14,14 @@ import { LiteChatView } from './LiteChatView';
 import { MessageInput } from './MessageInput';
 import { ExitChatView } from './ExitChatView';
 import { MessageSquareMore, MessageSquareText } from 'lucide-react';
-import { useChatStore } from '@/modules/chat/store/chatStore';
+import { useFlackStore } from '@/modules/chat/store/flackStore';
 
 export function LiteChat({ open, onOpenChange }) {
   // todo: find current user id from store and pass to ExitChatView
   const [activeChannelId, setActiveChannelId] = useState(null);
-  const totalUnread = useChatStore((s) => s.getTotalUnread());
-  const clearViewedChannel = useChatStore((s) => s.clearViewedChannel);
-  const isNew = useChatStore((s) => s.isNew());
+  const totalUnread = useFlackStore((s) => s.getTotalUnread());
+  const clearViewedChannel = useFlackStore((s) => s.clearViewedChannel);
+  const isNew = useFlackStore((s) => s.isNew());
 
   const handleBack = () => {
     clearViewedChannel();

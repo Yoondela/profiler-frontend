@@ -14,7 +14,7 @@ import { SocketProvider } from './api/context/socketContext';
 import { NotificationProvider } from './api/context/notificationContext';
 import { ServiceRequestWSProvider } from './api/context/ServiceRequestSocketContext';
 import { ServiceBookingWSProvider } from './api/context/ServiceBookingSocketContext';
-import { useChatStore } from './modules/chat/store/chatStore';
+import { useFlackStore } from './modules/chat/store/flackStore';
 import { useUserContext } from './api/context/userContext';
 import { CityProvider } from './components/city/context/cityContext';
 
@@ -30,7 +30,7 @@ function App() {
     useAuth0();
   const { flackUser_ID } = useUserContext();
 
-  const connect = useChatStore((s) => s.connect);
+  const connect = useFlackStore((s) => s.connect);
 
   useEffect(() => {
     console.log('CONNECTING TO CHAT SOCKET... with flackUserId:', flackUser_ID);

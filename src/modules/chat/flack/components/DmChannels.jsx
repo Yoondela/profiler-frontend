@@ -1,16 +1,16 @@
 'use client';
 
 import { useMemo } from 'react';
-import { useChatStore } from '@/modules/chat/store/chatStore';
+import { useFlackStore } from '@/modules/chat/store/flackStore';
 
 export function DmChannels() {
-  const startDM = useChatStore((s) => s.startDM);
-  const getDMChannel = useChatStore((s) => s.getDMChannel);
-  const setActiveChannel = useChatStore((s) => s.setActiveChannel);
-  const channels = useChatStore((s) => s.channels);
-  const newChannels = useChatStore((s) => s.newChannels);
-  const channelAlerts = useChatStore((s) => s.channelAlerts);
-  const userId = useChatStore((s) => s.userId);
+  const startDM = useFlackStore((s) => s.startDM);
+  const getDMChannel = useFlackStore((s) => s.getDMChannel);
+  const setActiveChannel = useFlackStore((s) => s.setActiveChannel);
+  const channels = useFlackStore((s) => s.channels);
+  const newChannels = useFlackStore((s) => s.newChannels);
+  const channelAlerts = useFlackStore((s) => s.channelAlerts);
+  const userId = useFlackStore((s) => s.userId);
 
   const dmChannels = useMemo(
     () => channels.filter((c) => c.type === 'dm'),

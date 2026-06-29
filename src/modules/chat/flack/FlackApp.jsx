@@ -4,15 +4,16 @@ import React, { useEffect } from 'react';
 
 import { LeftNav } from './components/LeftNav.jsx';
 import { InnerPanel } from './components/InnerPanel.jsx';
+import { MainView } from './components/MainView.jsx';
 import { ChatView } from './components/ChatView.jsx';
 
 import { useUserContext } from '@/api/context/userContext.jsx';
-import { useChatStore } from '../store/chatStore.js';
+import { useFlackStore } from '../store/flackStore.js';
 
 export function FlackApp() {
   const { flackUser_ID } = useUserContext();
 
-  const connect = useChatStore((s) => s.connect);
+  const connect = useFlackStore((s) => s.connect);
 
   useEffect(() => {
     if (!flackUser_ID) return;
@@ -24,7 +25,7 @@ export function FlackApp() {
     <div className="flex h-[calc(100vh-2.6rem)] w-full">
       <LeftNav />
       <InnerPanel />
-      <ChatView />
+      <MainView />
     </div>
   );
 }

@@ -1,13 +1,13 @@
-import { useState, useEffect, use } from 'react';
-import { useChatStore } from '@/modules/chat/store/chatStore';
+import { useState, useEffect } from 'react';
+import { useFlackStore } from '@/modules/chat/store/flackStore';
 
 export function MessageInput({ userId }) {
   const [input, setInput] = useState('');
-  const sendMessage = useChatStore((s) => s.sendMessage);
+  const sendMessage = useFlackStore((s) => s.sendMessage);
   const trimmedInput = input.trim();
   const canSend = trimmedInput.length > 0;
 
-  const activeChannelId = useChatStore((s) => s.activeChannelId);
+  const activeChannelId = useFlackStore((s) => s.chat.activeChannelId);
 
   useEffect(() => {
     if (activeChannelId) {

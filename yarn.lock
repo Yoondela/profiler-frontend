@@ -941,7 +941,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fullcalendar/daygrid@npm:^6.1.21, @fullcalendar/daygrid@npm:~6.1.21":
+"@fullcalendar/core@npm:6.1.21":
+  version: 6.1.21
+  resolution: "@fullcalendar/core@npm:6.1.21"
+  dependencies:
+    preact: "npm:~10.12.1"
+  checksum: 10c0/6856367e4b1aa7941badcd38198efc379aa03c34a1a6c6d97cd4d68fc6f99d26340cbe1007b247cab01af431abbc89ee78a3cb42d67f1e722655e8adca66692e
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/daygrid@npm:6.1.21, @fullcalendar/daygrid@npm:~6.1.21":
   version: 6.1.21
   resolution: "@fullcalendar/daygrid@npm:6.1.21"
   peerDependencies:
@@ -950,7 +959,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fullcalendar/interaction@npm:^6.1.21":
+"@fullcalendar/interaction@npm:6.1.21":
   version: 6.1.21
   resolution: "@fullcalendar/interaction@npm:6.1.21"
   peerDependencies:
@@ -959,7 +968,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fullcalendar/list@npm:^6.1.21":
+"@fullcalendar/list@npm:6.1.21":
   version: 6.1.21
   resolution: "@fullcalendar/list@npm:6.1.21"
   peerDependencies:
@@ -968,7 +977,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fullcalendar/react@npm:^6.1.21":
+"@fullcalendar/react@npm:6.1.21":
   version: 6.1.21
   resolution: "@fullcalendar/react@npm:6.1.21"
   peerDependencies:
@@ -979,7 +988,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fullcalendar/timegrid@npm:^6.1.21":
+"@fullcalendar/timegrid@npm:6.1.21":
   version: 6.1.21
   resolution: "@fullcalendar/timegrid@npm:6.1.21"
   dependencies:
@@ -6384,11 +6393,12 @@ __metadata:
     "@dnd-kit/core": "npm:^6.3.1"
     "@dnd-kit/sortable": "npm:^10.0.0"
     "@eslint/js": "npm:^9.29.0"
-    "@fullcalendar/daygrid": "npm:^6.1.21"
-    "@fullcalendar/interaction": "npm:^6.1.21"
-    "@fullcalendar/list": "npm:^6.1.21"
-    "@fullcalendar/react": "npm:^6.1.21"
-    "@fullcalendar/timegrid": "npm:^6.1.21"
+    "@fullcalendar/core": "npm:6.1.21"
+    "@fullcalendar/daygrid": "npm:6.1.21"
+    "@fullcalendar/interaction": "npm:6.1.21"
+    "@fullcalendar/list": "npm:6.1.21"
+    "@fullcalendar/react": "npm:6.1.21"
+    "@fullcalendar/timegrid": "npm:6.1.21"
     "@headlessui/react": "npm:^2.2.7"
     "@phosphor-icons/react": "npm:^2.1.10"
     "@radix-ui/react-aspect-ratio": "npm:^1.1.8"
@@ -8864,6 +8874,13 @@ __metadata:
   version: 0.1.0
   resolution: "powershell-utils@npm:0.1.0"
   checksum: 10c0/a64713cf3583259c9ed6be211c06b4b19e8608bcb0f7f6287ffac0a95b8c7582b6b662eea0e201fd659492c8e9f9c5fd0bfc4579645c5add9c1a600075621c95
+  languageName: node
+  linkType: hard
+
+"preact@npm:~10.12.1":
+  version: 10.12.1
+  resolution: "preact@npm:10.12.1"
+  checksum: 10c0/c77a55e897dcf298b7aa13637fed29744d3cf6c083f2832856e8551dbf27303c8b6946569736de16b05cba15c0e44ad404beb236ad9e36583a6fc5e2efad7777
   languageName: node
   linkType: hard
 

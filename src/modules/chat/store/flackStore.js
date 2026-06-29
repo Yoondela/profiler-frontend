@@ -1,14 +1,29 @@
 import { create } from 'zustand';
 import { chatSocket } from '../socket/chatSocket';
 
-export const useChatStore = create((set, get) => ({
+export const useFlackStore = create((set, get) => ({
   userId: null,
+
+  activeView: 'channels',
 
   hydrated: false,
 
   channels: [],
-  activeChannelId: null,
-  viewedChannelId: null,
+  chat: {
+    activeChannelId: null,
+    viewedChannelId: null,
+  },
+  calendar: {
+    activeEventId: null,
+    selectedDate: new Date(),
+    filters: {
+      bookings: true,
+      meetings: true,
+      reminders: true,
+    },
+  },
+
+  notifications: [],
 
   messages: {},
 
@@ -135,10 +150,11 @@ export const useChatStore = create((set, get) => ({
       const { [channelId]: _, ...rest } = state.newChannels;
 
       return {
-        activeChannelId: channelId,
-
+        chat: {
+          ...state.chat,
+          activeChannelId: channelId,
+        },
         newChannels: rest,
-
         unreadCounts: {
           ...state.unreadCounts,
           [channelId]: 0,
@@ -168,15 +184,51 @@ export const useChatStore = create((set, get) => ({
   },
 
   setViewedChannel: (channelId) => {
-    set({
-      viewedChannelId: channelId,
-    });
+    set((state) => ({
+      chat: {
+        ...state.chat,
+        viewedChannelId: channelId,
+      },
+    }));
   },
 
   clearViewedChannel: () => {
-    set({
-      viewedChannelId: null,
-    });
+    set((state) => ({
+      chat: {
+        ...state.chat,
+        viewedChannelId: null,
+      },
+    }));
+  },
+
+  setCalendarActiveEvent: (activeEventId) => {
+    set((state) => ({
+      calendar: {
+        ...state.calendar,
+        activeEventId,
+      },
+    }));
+  },
+
+  setCalendarSelectedDate: (selectedDate) => {
+    set((state) => ({
+      calendar: {
+        ...state.calendar,
+        selectedDate,
+      },
+    }));
+  },
+
+  setCalendarFilters: (filters) => {
+    set((state) => ({
+      calendar: {
+        ...state.calendar,
+        filters: {
+          ...state.calendar.filters,
+          ...filters,
+        },
+      },
+    }));
   },
 
   createChannel: ({ name, memberIds }) => {
@@ -228,7 +280,7 @@ export const useChatStore = create((set, get) => ({
 
   addMessage: (msg) => {
     set((state) => {
-      const isViewed = state.viewedChannelId === msg.channelId;
+      const isViewed = state.chat.viewedChannelId === msg.channelId;
 
       const isOwnMessage = msg.senderId === state.userId;
 
@@ -303,8 +355,13 @@ export const useChatStore = create((set, get) => ({
   },
 
   isNew: () => {
-    const { activeChannelId, newChannels } = get();
+    const {
+      chat: { activeChannelId },
+      newChannels,
+    } = get();
 
     return !!newChannels[activeChannelId];
   },
 }));
+
+export const useChatStore = useFlackStore;
