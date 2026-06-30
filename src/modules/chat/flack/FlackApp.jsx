@@ -5,10 +5,10 @@ import React, { useEffect } from 'react';
 import { LeftNav } from './components/LeftNav.jsx';
 import { InnerPanel } from './components/InnerPanel.jsx';
 import { MainView } from './components/MainView.jsx';
-import { ChatView } from './components/ChatView.jsx';
 
 import { useUserContext } from '@/api/context/userContext.jsx';
 import { useFlackStore } from '../store/flackStore.js';
+import { CalendarProvider } from './calendar/CalendarContext.jsx';
 
 export function FlackApp() {
   const { flackUser_ID } = useUserContext();
@@ -23,9 +23,11 @@ export function FlackApp() {
 
   return (
     <div className="flex h-[calc(100vh-2.6rem)] w-full">
-      <LeftNav />
-      <InnerPanel />
-      <MainView />
+      <CalendarProvider>
+        <LeftNav />
+        <InnerPanel />
+        <MainView />
+      </CalendarProvider>
     </div>
   );
 }
