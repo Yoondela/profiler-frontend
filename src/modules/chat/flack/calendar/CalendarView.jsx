@@ -7,6 +7,7 @@ import './cal.css';
 
 import EventModal from './EventModal';
 import { useCalendar } from './CalendarContext';
+import { updateEvent } from '@/api/sync/calendarApi';
 import { useRef, useEffect } from 'react';
 
 function CalendarView() {
@@ -30,6 +31,50 @@ function CalendarView() {
 
     api.gotoDate(selectedDate);
   }, [selectedDate]);
+
+  const handleEventDrop = async (info) => {
+    setEvents((prev) =>
+      prev.map((event) =>
+        event.id === info.event.id
+          ? {
+              ...event,
+              start: info.event.start,
+              end: info.event.end,
+            }
+          : event
+      )
+    );
+
+    await updateEvent(info.event.id, {
+      start: info.event.start,
+      end: info.event.end,
+    }).catch((err) => {
+      console.error('Failed to update event on drop:', err);
+      info.revert();
+    });
+  }
+
+  const handleEventResize = async (info) => {
+    setEvents((prev) =>
+      prev.map((event) =>
+        event.id === info.event.id
+          ? {
+              ...event,
+              start: info.event.start,
+              end: info.event.end,
+            }
+          : event
+      )
+    );
+
+    await updateEvent(info.event.id, {
+      start: info.event.start,
+      end: info.event.end,
+    }).catch((err) => {
+      console.error('Failed to update event on resize:', err);
+      info.revert();
+    });
+  }
 
   return (
     <>
@@ -103,30 +148,10 @@ function CalendarView() {
               );
             }}
             eventDrop={(info) => {
-              setEvents((prev) =>
-                prev.map((event) =>
-                  event.id === info.event.id
-                    ? {
-                        ...event,
-                        start: info.event.start,
-                        end: info.event.end,
-                      }
-                    : event
-                )
-              );
+              handleEventDrop(info);
             }}
             eventResize={(info) => {
-              setEvents((prev) =>
-                prev.map((event) =>
-                  event.id === info.event.id
-                    ? {
-                        ...event,
-                        start: info.event.start,
-                        end: info.event.end,
-                      }
-                    : event
-                )
-              );
+              handleEventResize(info);
             }}
           />
         </div>

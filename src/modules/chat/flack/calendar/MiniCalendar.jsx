@@ -30,17 +30,15 @@ function MiniCalendar() {
   };
 
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  // FIX 1: Keeping only one unified open state to drive the panel and the triggers
+  const [isOpen, setIsOpen] = useState(true);
 
   const monthStart = startOfMonth(currentMonth);
-
   const monthEnd = endOfMonth(currentMonth);
-
   const startDate = startOfWeek(monthStart);
-
   const endDate = endOfWeek(monthEnd);
 
   const rows = [];
-
   let day = startDate;
 
   while (day <= endDate) {
@@ -48,7 +46,6 @@ function MiniCalendar() {
 
     for (let i = 0; i < 7; i++) {
       const cloneDay = day;
-
       const dayEvents = getEventsForDay(day);
 
       days.push(
@@ -104,14 +101,13 @@ function MiniCalendar() {
   }
 
   return (
-    <Collapsible>
-      <CollapsibleTrigger className="w-full">
-        <div className="flex min-w-full content-between justify-between">
-          <span>Calendar</span>
-          <ChevronDown />
-        </div>
-      </CollapsibleTrigger>
-      <CollapsibleContent>
+    <Collapsible
+        open={isOpen} 
+        onOpenChange={setIsOpen}
+    >
+      <CollapsibleContent  
+        className="overflow-hidden bg-white data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up"
+      >
         <div className="rounded-xl p-0">
           <div className="mb-1 flex items-center justify-between text-black">
             <button
@@ -146,6 +142,17 @@ function MiniCalendar() {
           <div className="space-y-1">{rows}</div>
         </div>
       </CollapsibleContent>
+      
+      {/* FIX 2: CollapsibleTrigger IS the button. Removed the inner <button> tag entirely. */}
+      {/* FIX 3: Replaced conditional isExpanded variables with your clean isOpen state flag. */}
+      <CollapsibleTrigger 
+        className={`group flex h-5 w-full items-center justify-center ease-in-out bg-gray-100 shadow-xs p-0 m-0 text-sm font-medium text-gray-700 hover:bg-gray-200 cursor-pointer hover:shadow-sm transition-all
+          ${isOpen ? 'duration-200' : 'duration-700'}`}
+      >
+        <ChevronDown 
+          className="w-4 h-4 transition-transform ease-in-out group-data-[state=open]:rotate-180 duration-[1.2s] group-data-[state=closed]:duration-[1.7s]" 
+        />
+      </CollapsibleTrigger>
     </Collapsible>
   );
 }

@@ -10,6 +10,12 @@ body {
   overflow-y: scroll;
 }
 
+/* Ensure the browser evaluates the Radix content height dynamically */
+[data-radix-collapsible-content] {
+  height: var(--radix-collapsible-content-height);
+}
+
+
 @layer base {
   :root {
     --sidebar: oklch(82.846% 0.0382 196.575);
