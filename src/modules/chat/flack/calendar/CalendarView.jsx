@@ -52,7 +52,7 @@ function CalendarView() {
       console.error('Failed to update event on drop:', err);
       info.revert();
     });
-  }
+  };
 
   const handleEventResize = async (info) => {
     setEvents((prev) =>
@@ -74,7 +74,7 @@ function CalendarView() {
       console.error('Failed to update event on resize:', err);
       info.revert();
     });
-  }
+  };
 
   return (
     <>

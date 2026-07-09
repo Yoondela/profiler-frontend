@@ -7,18 +7,18 @@ module.exports = {
   theme: {
     extend: {
       keyframes: {
-        "collapsible-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-collapsible-content-height)" },
+        'collapsible-down': {
+          from: { height: '0' },
+          to: { height: 'var(--radix-collapsible-content-height)' },
         },
-        "collapsible-up": {
-          from: { height: "var(--radix-collapsible-content-height)" },
-          to: { height: "0" },
+        'collapsible-up': {
+          from: { height: 'var(--radix-collapsible-content-height)' },
+          to: { height: '0' },
         },
       },
       animation: {
-        "collapsible-down": "collapsible-down 1.2s ease-out",
-        "collapsible-up": "collapsible-up 1.7s ease-in-out", // Modified to match your 700ms request
+        'collapsible-down': 'collapsible-down 1.2s ease-out',
+        'collapsible-up': 'collapsible-up 1.7s ease-in-out', // Modified to match your 700ms request
       },
     },
     screens: {

@@ -32,7 +32,6 @@ export async function createEvent(event) {
 }
 
 export async function updateEvent(id, updates) {
-
   console.log('Updating Event:', id, updates);
   const res = await fetch(`${BASE}/${id}`, {
     method: 'PATCH',
