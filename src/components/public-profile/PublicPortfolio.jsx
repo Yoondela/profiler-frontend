@@ -20,6 +20,7 @@ import { CloudUpload } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import PortfolioGallery from '@/components/sub/view/portfolio/PortfolioGallery';
+import PublicActiveWorkers from './PublicActiveWorkers';
 import { fetchGalleryImages } from '@/api/sync/SyncGallery';
 import PublicOfficeHoursDisplay from './PublicOfficeHours';
 
@@ -37,6 +38,8 @@ function BadgeVariants() {
 
 const PublicPortfolio = ({ data, availability }) => {
   console.log('data inside', data);
+
+  const [isMiniCalendarOpen, setIsMiniCalendarOpen] = useState(false);
 
   const portfolio = data.provider;
   let company;
@@ -114,9 +117,20 @@ const PublicPortfolio = ({ data, availability }) => {
             <p>{portfolio?.about || 'About section is empty.'}</p>
           </div>
 
+          {/* Workers */}
+          {company && (
+            <div>
+              <PublicActiveWorkers members={company?.members} />
+            </div>
+          )}
+
           {/* Working Hours */}
           <div className="pb-12">
-            <Collapsible defaultOpen={portfolio?.workingHours}>
+            <Collapsible
+              defaultOpen={portfolio?.workingHours}
+              open={isMiniCalendarOpen}
+              onOpenChange={setIsMiniCalendarOpen}
+            >
               <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg px-2 py-3 text-left text-sm font-semibold text-slate-900 cursor-pointer transition hover:bg-slate-100">
                 <span>Office hours</span>
                 <ChevronDown className="h-4 w-4 transition-transform duration-200 data-[state=open]:rotate-180" />

@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import { useFlackStore } from '@/modules/chat/store/flackStore';
 
-export function DMList({ onSelect }) {
+export function DmChannels() {
   const startDM = useFlackStore((s) => s.startDM);
   const getDMChannel = useFlackStore((s) => s.getDMChannel);
   const setActiveChannel = useFlackStore((s) => s.setActiveChannel);
@@ -11,10 +11,6 @@ export function DMList({ onSelect }) {
   const newChannels = useFlackStore((s) => s.newChannels);
   const channelAlerts = useFlackStore((s) => s.channelAlerts);
   const userId = useFlackStore((s) => s.userId);
-
-  const users = ['amber', 'Yondela Sasayi', 'bonga@bones.com']; // temp
-
-  console.log('Channels:', channels);
 
   const dmChannels = useMemo(
     () => channels.filter((c) => c.type === 'dm'),
@@ -32,9 +28,8 @@ export function DMList({ onSelect }) {
             key={channel.id}
             onClick={() => {
               setActiveChannel(channel.id);
-              onSelect(channel.id);
             }}
-            className="p-4 text-left hover:bg-zinc-100 flex items-start justify-between gap-3"
+            className="py-4 text-left hover:bg-zinc-100 flex items-start justify-between gap-3"
           >
             <div className="flex items-center gap-3">
               {/* Avatar */}
@@ -61,7 +56,7 @@ export function DMList({ onSelect }) {
                 )}
 
                 {!channelAlerts[channel.id] && (
-                  <div className="text-xs text-zinc-400 truncate w-[250px]">
+                  <div className="text-xs text-zinc-400 truncate max-w-[150px]">
                     <span className="text-xs text-white-700">
                       {channel.lastMessage.content}
                     </span>
@@ -75,28 +70,8 @@ export function DMList({ onSelect }) {
           </button>
         );
       })}
-
-      {/* Temp users list */}
-      {users.map((id) => (
-        <div key={id}>
-          <button
-            onClick={() => {
-              const existing = getDMChannel(id);
-
-              if (existing) {
-                setActiveChannel(existing.id);
-                onSelect(existing.id);
-              } else {
-                startDM(id);
-                onSelect(id);
-              }
-            }}
-            className="p-4 text-left hover:bg-zinc-100"
-          >
-            {id}
-          </button>
-        </div>
-      ))}
     </div>
   );
 }
+
+export default DmChannels;

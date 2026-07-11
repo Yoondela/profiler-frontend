@@ -5,7 +5,9 @@ import { useAuth0 } from '@auth0/auth0-react';
 import UserAvatar from './common/UserAvatar';
 import CompanyMenu from './common/companyMenu';
 import NotificationContainer from '../notifications/notificationContainer';
+import { FlackContainer } from '@/modules/chat/flack/FlackContainer';
 import { LiteChat } from '@/modules/chat/lite-chat/components/LiteChat';
+import { MessageSquareMore, MessageSquareText } from 'lucide-react';
 import SearchBar from '../intro/SearchBar';
 import CitySelector from '../city/CitySelector';
 
@@ -45,6 +47,8 @@ export default function Navbar() {
           <div className="flex flex-row items-center justify-between gap-12">
             <div className="flex flex-row items-center justify-between gap-7">
               {/* <MessageContainer /> */}
+
+              <FlackContainer />
 
               <LiteChat />
 

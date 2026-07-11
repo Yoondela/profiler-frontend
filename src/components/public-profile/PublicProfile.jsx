@@ -1,7 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 
-const PublicProfile = ({ provider }) => {
+const PublicProfile = ({ onBookService, provider }) => {
+  const handleBookServiceClick = () => {
+    if (onBookService) {
+      onBookService(true);
+      document
+        .getElementById('get-service-panel')
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
   return (
     <div className="flex flex-col justify-center provider-profile py-6 max-h-[600px] sticky top-10">
       <div className="flex justify-center profile-photo border border-gray-200">
@@ -26,6 +34,7 @@ const PublicProfile = ({ provider }) => {
         <Button
           variant="primary"
           className="w-full border bg-[black] text-[white] cursor-pointer hover:bg-[var(--sidebar-primary)]"
+          onClick={handleBookServiceClick}
         >
           Get service
         </Button>

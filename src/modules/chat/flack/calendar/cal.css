@@ -1,0 +1,22 @@
+.fc .meeting-event {
+  padding-left: 4px ;
+  background: #c6d2ee;
+  border-color: #2563eb;
+  border-left: #2563eb 3px solid;
+}
+
+.fc .task-event {
+  padding-left: 4px ;
+  background: #d9f0e2;
+  border-color: #16a34a;
+  border-left: #16a34a 3px solid;
+
+}
+
+.fc .reminder-event {
+  padding-left: 4px ;
+  background: #f1c7f3;
+  border-color: #ea0cea;
+  border-left: #ea0cea 3px solid;
+  /* color: black !important; */
+}

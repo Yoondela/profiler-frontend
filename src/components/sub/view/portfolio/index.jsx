@@ -18,6 +18,7 @@ import {
 import PortfolioGallery from '@/components/sub/view/portfolio/PortfolioGallery';
 import ReviewCarousel from './ReviewCarousel';
 import WorkingHoursDisplay from '@/components/company-configuration/WorkingHoursDisplay';
+import ActiveWorkers from '@/components/sub/view/portfolio/ActiveWorkers';
 
 const PortfolioDetailsContainer = ({ provider }) => {
   const portfolio = provider?.portfolio ?? provider;
@@ -139,6 +140,8 @@ const PortfolioDetailsContainer = ({ provider }) => {
               {portfolio?.about || portfolio?.bio || 'About section is empty.'}
             </p>
           </div>
+
+          <ActiveWorkers members={company?.members ?? []} />
 
           {/* Working Hours */}
           <div className="pb-12">

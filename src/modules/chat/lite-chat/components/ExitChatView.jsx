@@ -1,10 +1,10 @@
 'use client';
 
-import { useChatStore } from '@/modules/chat/store/chatStore';
+import { useFlackStore } from '@/modules/chat/store/flackStore';
 
 export function ExitChatView({ channelId, onBack }) {
-  const channels = useChatStore((s) => s.channels);
-  const userId = useChatStore((s) => s.userId);
+  const channels = useFlackStore((s) => s.channels);
+  const userId = useFlackStore((s) => s.userId);
   const channel = channels.find((c) => c.id === channelId);
   const otherUser = channel?.members?.find((m) => m.userId !== userId);
   console.log('other user:', otherUser);

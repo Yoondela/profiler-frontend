@@ -1,9 +1,9 @@
 import { chatSocket } from './chatSocket';
-import { useChatStore } from '../store/chatStore';
+import { useFlackStore } from '../store/flackStore';
 
 export function registerChatEvents() {
   chatSocket.subscribe((event) => {
-    const store = useChatStore.getState();
+    const store = useFlackStore.getState();
 
     switch (event.type) {
       case 'CHANNEL_CREATED':
