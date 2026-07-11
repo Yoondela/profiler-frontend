@@ -17,6 +17,7 @@ import { ServiceBookingWSProvider } from './api/context/ServiceBookingSocketCont
 import { useFlackStore } from './modules/chat/store/flackStore';
 import { useUserContext } from './api/context/userContext';
 import { CityProvider } from './components/city/context/cityContext';
+import { ServiceBookingProvider } from '@/components/request/contexts/ServiceBookingContext.jsx';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -54,7 +55,9 @@ function App() {
                     <Navbar />
                     <ServiceRequestWSProvider>
                       <ServiceBookingWSProvider>
-                        <AppRoutes />
+                        <ServiceBookingProvider>
+                          <AppRoutes />
+                        </ServiceBookingProvider>
                       </ServiceBookingWSProvider>
                     </ServiceRequestWSProvider>
                     <Toaster />

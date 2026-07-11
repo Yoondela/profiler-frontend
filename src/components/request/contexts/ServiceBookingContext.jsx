@@ -10,7 +10,7 @@ export const ServiceBookingProvider = ({ children }) => {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
 
   const [userId, setUserId] = useState(null);
-
+  const [preferedProvider, setPreferedProvider] = useState(null);
   const [userDate, setUserDate] = useState('');
   const [userTime, setUserTime] = useState('');
   const [userService, setUserService] = useState('');
@@ -58,6 +58,7 @@ export const ServiceBookingProvider = ({ children }) => {
   const bookingPayload = {
     client: userId,
     service: userService,
+    preferedProvider: preferedProvider || null,
     description: JSON.stringify(serviceTasks || {}),
     forDate: userDate,
     forTime: userTime,
@@ -80,6 +81,8 @@ export const ServiceBookingProvider = ({ children }) => {
 
         userLocation,
         setUserLocation,
+
+        setPreferedProvider,
 
         subjectSize,
         setSubjectSize,

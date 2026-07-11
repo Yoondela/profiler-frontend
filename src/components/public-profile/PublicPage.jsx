@@ -15,12 +15,14 @@ import {
 import PortfolioDetailsContainer from './PublicPortfolio';
 import PublicProfile from './PublicProfile';
 import PortfolioHeader from './PortfolioHeader';
+import GetServicePanel from './GetServicePanel';
 
 export default function ProviderPublicPage() {
   const api = useApiClient();
   const { id } = useParams();
   const [providerData, setProviderData] = useState(null);
   const [availability, setAvailability] = useState(null);
+  const [openBookPanel, setOpenBookPanel] = useState(null);
 
   console.log('This is the object', providerData);
 
@@ -48,18 +50,26 @@ export default function ProviderPublicPage() {
       <PortfolioHeader provider={providerData} availability={availability} />
       <div className="flex items-start w-full">
         <div className="w-3/4 space-x-6 p-6">
-          <div className="">
-            <PortfolioDetailsContainer
-              data={providerData}
-              availability={availability}
-            />
-            <Reviews
-              providerId={
-                providerData?.provider?._id || providerData?.provider?.id || id
-              }
-              providerName={providerData?.provider?.name || 'this provider'}
-              reviews={providerData?.provider.reviews || []}
-            />
+          <div className="left-side">
+            {openBookPanel ? (
+              <GetServicePanel providerName={providerData?.provider?.name} />
+            ) : (
+              <div>
+                <PortfolioDetailsContainer
+                  data={providerData}
+                  availability={availability}
+                />
+                <Reviews
+                  providerId={
+                    providerData?.provider?._id ||
+                    providerData?.provider?.id ||
+                    id
+                  }
+                  providerName={providerData?.provider?.name || 'this provider'}
+                  reviews={providerData?.provider.reviews || []}
+                />
+              </div>
+            )}
           </div>
         </div>
 
@@ -67,7 +77,11 @@ export default function ProviderPublicPage() {
 
         <div className="w-1/4 border-s border-gray-200 p-6 sticky top-10">
           <div>
-            <PublicProfile provider={providerData} className=" px-6" />
+            <PublicProfile
+              onBookService={setOpenBookPanel}
+              provider={providerData}
+              className=" px-6"
+            />
           </div>
         </div>
       </div>
