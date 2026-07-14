@@ -1,6 +1,8 @@
 import React from 'react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
+import { usePublicPageStore } from './publicPageStore';
+
 const getInitials = (name) => {
   const parts = name.split(' ').filter(Boolean);
 
@@ -12,6 +14,10 @@ const getInitials = (name) => {
 
 const PublicActiveWorkers = ({ members = [] }) => {
   const visibleMembers = Array.isArray(members) ? members.filter(Boolean) : [];
+
+  const selectMember = usePublicPageStore((state) => state.selectMember);
+  const toggleMember = usePublicPageStore((state) => state.toggleMember);
+
 
   if (!visibleMembers.length) return null;
 
@@ -55,6 +61,7 @@ const PublicActiveWorkers = ({ members = [] }) => {
             <li
               key={member?._id || member?.user || index}
               className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm"
+              onClick={() => toggleMember(member)}
             >
               <Avatar className="h-7 w-7">
                 <AvatarImage

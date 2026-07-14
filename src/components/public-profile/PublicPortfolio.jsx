@@ -23,8 +23,11 @@ import PortfolioGallery from '@/components/sub/view/portfolio/PortfolioGallery';
 import PublicActiveWorkers from './PublicActiveWorkers';
 import { fetchGalleryImages } from '@/api/sync/SyncGallery';
 import PublicOfficeHoursDisplay from './PublicOfficeHours';
+import { usePublicPageStore } from './publicPageStore';
 
 function BadgeVariants() {
+  const selectMember = usePublicPageStore((state) => state.selectMember);
+
   return (
     <div className="flex flex-wrap gap-2">
       <Badge>Default</Badge>

@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useServiceRequest } from '../contexts/ServiceRequestContext';
 import { useServiceBooking } from '../contexts/ServiceBookingContext';
+import { usePublicPageStore } from '@/components/public-profile/publicPageStore';
 import { useApiClient } from '@/api/useApiClient';
 import { createBooking } from '@/api/sync/SyncBooking';
 import { createRequest } from '@/api/sync/SyncRequest';
@@ -19,9 +20,13 @@ import { ArrowUp } from 'lucide-react';
 export function RequestDrawer({ mode, open, onOpenChange }) {
   const bookingState = useServiceBooking();
   const requestState = useServiceRequest();
+  const selectedMember = usePublicPageStore((state) => state.selectedMember);
   const [sending, setSending] = useState(false);
   const [localNote, setLocalNote] = useState(null);
   const api = useApiClient();
+
+
+  const preferedProviderName = selectedMember?.displayName || null;
 
   // Shared state depending on mode
   const {
@@ -98,6 +103,12 @@ export function RequestDrawer({ mode, open, onOpenChange }) {
             <DrawerDescription>
               You're requesting a <strong>{userService}</strong> service for{' '}
               <strong>{userLocation?.address}</strong>.
+              {bookingPayload?.preferedProvider && (
+                <p>
+                  Your preferred provider is{' '}
+                  <strong>{preferedProviderName}</strong>.
+                </p>
+              )}
             </DrawerDescription>
           </DrawerHeader>
 
@@ -124,7 +135,6 @@ export function RequestDrawer({ mode, open, onOpenChange }) {
                 value={localNote}
                 onChange={handleNotechange}
               />
-
               <Button
                 variant="outline"
                 disabled={sending}
