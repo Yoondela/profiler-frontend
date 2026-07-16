@@ -56,12 +56,12 @@ function MiniCalendar() {
             setCurrentMonth(cloneDay);
           }}
           className={`
-            flex h-6 w-6 flex-col items-center justify-center rounded-full text-xs text-black
-            ${!isSameMonth(day, currentMonth) ? 'text-gray-300' : ''}
+            flex h-6 w-6 flex-col items-center justify-center rounded-full text-xs text-gray-100 transition
+            ${!isSameMonth(day, currentMonth) ? 'text-gray-500' : ''}
             ${
               isSameDay(day, selectedDate)
                 ? 'bg-blue-600 text-white'
-                : 'hover:bg-gray-100'
+                : 'hover:bg-gray-100 hover:text-black'
             }
           `}
         >
@@ -102,12 +102,12 @@ function MiniCalendar() {
 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-      <CollapsibleContent className="overflow-hidden bg-white data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up">
+      <CollapsibleContent className="overflow-hidden bg-[#292929] data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up">
         <div className="rounded-xl p-0">
-          <div className="mb-1 flex items-center justify-between text-black">
+          <div className="mb-1 flex items-center justify-between">
             <button
               onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
-              className="rounded p-1 hover:bg-gray-100"
+              className="rounded px-1 cursor-pointer hover:bg-gray-100"
             >
               ←
             </button>
@@ -118,13 +118,13 @@ function MiniCalendar() {
 
             <button
               onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
-              className="rounded p-2 hover:bg-gray-100"
+              className="rounded px-1 cursor-pointer hover:bg-gray-100"
             >
               →
             </button>
           </div>
 
-          <div className="mb-2 grid grid-cols-7 text-center text-xs text-gray-500">
+          <div className="mb-2 grid grid-cols-7 text-center text-xs text-gray-400">
             <div>Su</div>
             <div>Mo</div>
             <div>Tu</div>
@@ -141,10 +141,13 @@ function MiniCalendar() {
       {/* FIX 2: CollapsibleTrigger IS the button. Removed the inner <button> tag entirely. */}
       {/* FIX 3: Replaced conditional isExpanded variables with your clean isOpen state flag. */}
       <CollapsibleTrigger
-        className={`group flex h-5 w-full items-center justify-center ease-in-out bg-gray-100 shadow-xs p-0 m-0 text-sm font-medium text-gray-700 hover:bg-gray-200 cursor-pointer hover:shadow-sm transition-all
+        className={`group flex h-5 w-full items-center justify-center ease-in-out bg-gray-700 shadow-xs text-sm font-medium text-gray-700 rounded hover:bg-gray-600 cursor-pointer hover:shadow-sm transition-all
           ${isOpen ? 'duration-200' : 'duration-700'}`}
       >
-        <ChevronDown className="w-4 h-4 transition-transform ease-in-out group-data-[state=open]:rotate-180 duration-[1.2s] group-data-[state=closed]:duration-[1.7s]" />
+        <ChevronDown
+          color="white"
+          className="w-4 h-4 transition-transform ease-in-out group-data-[state=open]:rotate-180 duration-[1.2s] group-data-[state=closed]:duration-[1.7s]"
+        />
       </CollapsibleTrigger>
     </Collapsible>
   );

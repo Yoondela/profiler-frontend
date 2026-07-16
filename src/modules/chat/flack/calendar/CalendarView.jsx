@@ -78,8 +78,8 @@ function CalendarView() {
 
   return (
     <>
-      <div className="h-full w-[76%] p-3 sm:p-4 lg:p-6">
-        <div className="h-full w-full overflow-hidden bg-white">
+      <div className="h-full w-[76%] p-3 sm:p-4 lg:p-6 bg-[#292929]">
+        <div className="h-full w-full overflow-hidden">
           <FullCalendar
             ref={calendarRef}
             plugins={[

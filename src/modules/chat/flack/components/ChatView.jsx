@@ -85,8 +85,8 @@ export function ChatView() {
   };
 
   return (
-    <div className="flex-1 flex flex-col border-l border-zinc-900 bg-zinc-950 text-white">
-      <div className="border-b border-zinc-900 bg-zinc-900 px-4 py-3 flex items-center justify-between gap-3">
+    <div className="flex-1 flex flex-col border-l border-zinc-900 bg-neutral-800 text-white">
+      <div className="border-b border-gray-700 bg-[#292929] px-4 py-3 flex items-center justify-between gap-3">
         <div>
           <p className="text-sm uppercase tracking-[0.15em] text-zinc-400">
             Chat

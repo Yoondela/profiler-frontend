@@ -31,13 +31,13 @@ function CalendarSidebar() {
   };
 
   return (
-    <aside className="flex h-full w-full flex-col border-r bg-white overflow-y-auto">
+    <aside className="flex h-full w-full flex-col bg-[#292929] overflow-y-auto">
       <div className="p-4">
         <button
           onClick={handleCreateEvent}
           className="
             w-full rounded-xl
-            bg-blue-600
+            cursor-pointer
             px-4 py-3
             font-medium
             text-white
@@ -51,7 +51,7 @@ function CalendarSidebar() {
       </div>
 
       <div className="px-4 py-3">
-        <h2 className="text-lg font-semibold">Upcoming</h2>
+        <h2 className="text-lg !text-[white] font-semibold">Upcoming</h2>
       </div>
 
       <div className="flex-1 overflow-y-auto">
