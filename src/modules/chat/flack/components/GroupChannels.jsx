@@ -30,7 +30,7 @@ export function GroupChannels() {
   };
 
   return (
-    <>
+    <div className="flex flex-col gap-3">
       {publicChannels.map((channel) => {
         return (
           <button
@@ -38,9 +38,9 @@ export function GroupChannels() {
             onClick={() => {
               setActiveChannel(channel.id);
             }}
-            className="py-4 text-left hover:bg-zinc-100 flex items-start justify-between gap-3"
+            className="w-full rounded-sm p-2 py-1 text-left hover:bg-zinc-700/50 flex items-center justify-between gap-1"
           >
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               {/* Avatar */}
               <div className="w-8 h-8 rounded-lg bg-zinc-300 overflow-hidden">
                 {channel?.avatar ? (
@@ -98,7 +98,7 @@ export function GroupChannels() {
         onClose={() => setIsModalOpen(false)}
         onCreate={handleCreateChannel}
       />
-    </>
+    </div>
   );
 }
 

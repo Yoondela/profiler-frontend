@@ -18,7 +18,7 @@ export function DmChannels() {
   );
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-3">
       {/* Existing channels */}
       {dmChannels.map((channel) => {
         const otherUser = channel.members.find((m) => m.userId !== userId);
@@ -29,7 +29,7 @@ export function DmChannels() {
             onClick={() => {
               setActiveChannel(channel.id);
             }}
-            className="py-4 text-left hover:bg-zinc-100 flex items-start justify-between gap-3"
+            className="w-full rounded-sm p-2 py-1 text-left hover:bg-zinc-700/50 flex items-center justify-between gap-1"
           >
             <div className="flex items-center gap-3">
               {/* Avatar */}

@@ -59,7 +59,7 @@ export function Home() {
   console.log('Home channels:', channels);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-3">
       {channelList.length === 0 ? (
         <div className="rounded-3xl border border-dashed border-zinc-800 bg-zinc-950/80 px-4 py-6 text-center text-sm text-zinc-400">
           No channels available.
@@ -74,7 +74,7 @@ export function Home() {
               key={channel.id}
               type="button"
               onClick={() => setActiveChannel(channel.id)}
-              className="w-full rounded-2xl px-0 py-3 text-left hover:bg-zinc-700/50 flex items-center justify-between gap-1"
+              className="w-full rounded-sm p-2 py-1 text-left hover:bg-zinc-700/50 flex items-center justify-between gap-1"
             >
               <div className="flex items-center gap-2">
                 <div className="w-10 h-10 rounded-full bg-zinc-700 overflow-hidden flex items-center justify-center text-white">
