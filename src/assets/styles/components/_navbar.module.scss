@@ -1,6 +1,12 @@
 @use "sass:color";
 @use '../abstracts/variables.module';
 
+.navbar-flack {
+    background: #292929 !important;
+  border-bottom: 1px solid #404040 !important;
+
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -12,6 +18,7 @@
   z-index: 1000;
   padding: .6rem;
   background-color: color.adjust(variables.$theme-color, $lightness: 30%);
+  transition: background-color 0.25s ease;
   // border-bottom: 1px solid black;
 
   &__left {

@@ -12,9 +12,9 @@ export function InnerPanel() {
   const { activeTab } = useUIStore();
 
   return (
-    <div className="w-64 bg-white-800">
+    <div className="w-64 bg-neutral-900 border-r border-zinc-800 text-white overflow-y-auto">
       {activeTab !== 'calendar' && (
-        <h2 className="text-lg !font-semibold pl-4 pt-4 capitalize">
+        <h2 className="text-lg !font-semibold pl-4 pt-4 capitalize !text-[white]">
           {activeTab}
         </h2>
       )}

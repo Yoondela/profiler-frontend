@@ -16,7 +16,7 @@ export function LeftNav() {
   const { activeTab, setTab } = useUIStore();
 
   return (
-    <div className="w-16 bg-zinc-900 text-white flex flex-col items-center py-4 gap-4">
+    <div className="w-16 bg-[#292929] text-white flex flex-col items-center py-4 gap-4">
       {tabs.map((tab) => {
         const Icon = tab.icon;
         return (
