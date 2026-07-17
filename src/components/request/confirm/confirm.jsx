@@ -25,7 +25,6 @@ export function RequestDrawer({ mode, open, onOpenChange }) {
   const [localNote, setLocalNote] = useState(null);
   const api = useApiClient();
 
-
   const preferedProviderName = selectedMember?.displayName || null;
 
   // Shared state depending on mode

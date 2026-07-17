@@ -20,7 +20,6 @@ export const ServiceBookingProvider = ({ children }) => {
   const [userNote, setUserNote] = useState('');
 
   const selectedMember = usePublicPageStore((state) => state.selectedMember);
-  
 
   useEffect(() => {
     console.log(userLocation);

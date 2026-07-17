@@ -31,9 +31,7 @@ export default function Navbar() {
         </Link>
 
         <SearchBar />
-        {isAuthenticated && (
-          <FlackContainer />
-        )}
+        {isAuthenticated && <FlackContainer />}
       </div>
 
       {/* Right Section */}
@@ -72,33 +70,6 @@ export default function Navbar() {
           </div>
         )}
       </div>
-
-      {/* Dropdown Menu */}
-      {pageMenuOpen && (
-        <div className="absolute right-6 top-14 flex flex-col bg-white border border-gray-200 shadow-lg rounded-xl p-3 space-y-2 z-50">
-          <Link
-            to="/"
-            onClick={() => setPageMenuOpen(false)}
-            className="text-gray-700 hover:text-black transition"
-          >
-            About
-          </Link>
-          <Link
-            to="/"
-            onClick={() => setPageMenuOpen(false)}
-            className="text-gray-700 hover:text-black transition"
-          >
-            Services
-          </Link>
-          <Link
-            to="/"
-            onClick={() => setPageMenuOpen(false)}
-            className="text-gray-700 hover:text-black transition"
-          >
-            Contact
-          </Link>
-        </div>
-      )}
     </nav>
   );
 }

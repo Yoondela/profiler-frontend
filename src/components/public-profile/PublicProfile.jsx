@@ -5,7 +5,7 @@ import { usePublicPageStore } from './publicPageStore';
 const PublicProfile = ({ onBookService, provider }) => {
   const selectedMember = usePublicPageStore((state) => state.selectedMember);
 
-  console.log('selectedMember', selectedMember)
+  console.log('selectedMember', selectedMember);
 
   const isCompany = !!provider.company;
 
@@ -87,7 +87,7 @@ const PublicProfile = ({ onBookService, provider }) => {
               </li>
             ))}
           </ul>
-    
+
           <div className="profile-actions flex justify-center mt-6">
             <Button
               variant="primary"

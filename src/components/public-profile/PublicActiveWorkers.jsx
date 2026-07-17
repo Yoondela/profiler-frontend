@@ -18,7 +18,6 @@ const PublicActiveWorkers = ({ members = [] }) => {
   const selectMember = usePublicPageStore((state) => state.selectMember);
   const toggleMember = usePublicPageStore((state) => state.toggleMember);
 
-
   if (!visibleMembers.length) return null;
 
   const previewMembers = visibleMembers.slice(0, 6);

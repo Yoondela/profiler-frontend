@@ -94,9 +94,7 @@ function CalendarSidebar() {
                         font-medium
                         ${getTypeColor(event.type)}
                       `}
-                    >
-                      
-                    </span>
+                    ></span>
                   </div>
                 </button>
               );
