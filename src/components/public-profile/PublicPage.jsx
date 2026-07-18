@@ -52,7 +52,10 @@ export default function ProviderPublicPage() {
         <div className="w-3/4 space-x-6 p-6">
           <div className="left-side">
             {openBookPanel ? (
-              <GetServicePanel providerName={providerData?.provider?.name} />
+              <GetServicePanel
+                providerId={providerData?.provider?.id} 
+                providerName={providerData?.provider?.name}
+              />
             ) : (
               <div>
                 <PortfolioDetailsContainer
@@ -61,9 +64,7 @@ export default function ProviderPublicPage() {
                 />
                 <Reviews
                   providerId={
-                    providerData?.provider?._id ||
-                    providerData?.provider?.id ||
-                    id
+                    providerData?.provider?.id
                   }
                   providerName={providerData?.provider?.name || 'this provider'}
                   reviews={providerData?.provider.reviews || []}

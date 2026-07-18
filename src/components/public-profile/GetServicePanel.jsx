@@ -13,8 +13,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { useServiceBooking } from '@/components/request/contexts/ServiceBookingContext';
 import { RequestDrawer } from '@/components/request/confirm/confirm';
 
-export default function GetServicePanel({ providerName }) {
+export default function GetServicePanel({ providerId, providerName, onCancel }) {
   const {
+    setBookingType,
+    setOwner,
     setUserService,
     setUserDate,
     setUserTime,
@@ -30,6 +32,60 @@ export default function GetServicePanel({ providerName }) {
   const [description, setDescription] = useState('');
   const [note, setNoteValue] = useState('');
   const [showConfirmDrawer, setShowConfirmDrawer] = useState(false);
+
+  const MOCK_ADDRESS = {
+    address:
+      '1 Lower Long Street, Cape Town City Centre, Cape Town, 8001, South Africa',
+    placeId: 'mock-place-id-001',
+    lng: 18.4233,
+    lat: -33.9154,
+    geometry: {
+      location: {
+        lat: -33.9154,
+        lng: 18.4233
+      }
+    },
+    addressComponents: [
+      {
+        long_name: '1',
+        short_name: '1',
+        types: ['street_number'],
+      },
+      {
+        long_name: 'Lower Long Street',
+        short_name: 'Lower Long St',
+        types: ['route'],
+      },
+      {
+        long_name: 'Cape Town City Centre',
+        short_name: 'Cape Town City Centre',
+        types: ['sublocality'],
+      },
+      {
+        long_name: 'Cape Town',
+        short_name: 'Cape Town',
+        types: ['locality'],
+      },
+      {
+        long_name: 'Western Cape',
+        short_name: 'WC',
+        types: ['administrative_area_level_1'],
+      },
+      {
+        long_name: '8001',
+        short_name: '8001',
+        types: ['postal_code'],
+      },
+      {
+        long_name: 'South Africa',
+        short_name: 'ZA',
+        types: ['country'],
+      },
+    ],
+  };
+
+  setBookingType('direct');
+  setOwner(providerId);
 
   const updateServiceType = (index, value) => {
     setServiceTypes((prev) =>
@@ -53,7 +109,7 @@ export default function GetServicePanel({ providerName }) {
       .map((item) => item.trim())
       .filter(Boolean);
 
-    if (!cleanedServiceTypes.length || !date || !time || !address.trim()) {
+    if (!cleanedServiceTypes.length || !date || !time) {
       alert('Please complete all required fields before continuing.');
       return;
     }
@@ -61,11 +117,7 @@ export default function GetServicePanel({ providerName }) {
     setUserService(cleanedServiceTypes.join(', '));
     setUserDate(date);
     setUserTime(time);
-    setUserLocation({
-      address: address.trim(),
-      placeId: '',
-      addressComponents: [],
-    });
+    setUserLocation(MOCK_ADDRESS);
     setServiceTasks(
       description.trim() ? { description: description.trim() } : {}
     );
@@ -166,14 +218,15 @@ export default function GetServicePanel({ providerName }) {
           <label className="text-sm font-medium text-gray-700">
             Address <span className="text-red-500">*</span>
           </label>
-          <div className="relative">
-            <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-            <Input
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              placeholder="Enter the service address"
-              className="pl-9"
-            />
+
+          <div className="flex items-center rounded-md border bg-gray-50 px-3 py-3">
+            <MapPin className="mr-3 h-4 w-4 shrink-0 text-gray-500" />
+            <div>
+              <p className="text-sm text-gray-900">{MOCK_ADDRESS.address}</p>
+              <p className="text-xs text-gray-500">
+                Development mock address
+              </p>
+            </div>
           </div>
         </div>
 
@@ -200,13 +253,23 @@ export default function GetServicePanel({ providerName }) {
         </div>
       </div>
 
-      <Button
-        type="button"
-        className="mt-6 w-full bg-black text-white hover:bg-gray-800"
-        onClick={handleContinue}
-      >
-        Continue to confirm
-      </Button>
+      <div className="mt-6 flex justify-end gap-3">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onCancel}
+        >
+          Cancel
+        </Button>
+              
+        <Button
+          type="button"
+          className="bg-black text-white hover:bg-gray-800"
+          onClick={handleContinue}
+        >
+          Continue to confirm
+        </Button>
+      </div>
 
       <RequestDrawer
         mode="booking"

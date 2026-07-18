@@ -18,6 +18,10 @@ export const ServiceBookingProvider = ({ children }) => {
   const [subjectSize, setSubjectSize] = useState('');
   const [serviceTasks, setServiceTasks] = useState(null);
   const [userNote, setUserNote] = useState('');
+  const [bookingType, setBookingType] = useState(null);
+
+  // Set back to null in on-demand requests
+  const [owner, setOwner] = useState(null);
 
   const selectedMember = usePublicPageStore((state) => state.selectedMember);
 
@@ -54,10 +58,15 @@ export const ServiceBookingProvider = ({ children }) => {
   let address = {
     address: userLocation?.address,
     placeId: userLocation?.placeId,
+    lat: userLocation?.lat,
+    lng: userLocation?.lng,
+    geometry: userLocation?.geometry,
     addressComponents: userLocation?.addressComponents,
   };
 
   const bookingPayload = {
+    bookingType: bookingType,
+    owner,
     client: userId,
     service: userService,
     preferedProvider: selectedMember?.user?._id ?? null,
@@ -72,6 +81,11 @@ export const ServiceBookingProvider = ({ children }) => {
   return (
     <ServiceBookingContext.Provider
       value={{
+        bookingType,
+        setBookingType,
+
+        setOwner,
+
         userDate,
         setUserDate,
 
