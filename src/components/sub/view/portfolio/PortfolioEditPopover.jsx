@@ -139,7 +139,7 @@ const PortfolioEditDialog = ({ provider, children }) => {
       <DialogContent className="w-full pb-7 space-y-4 bg-[white] rounded-xl h-full mt-[3rem]">
         <DialogHeader className="p-0 m-0">
           <DialogTitle className="p-0 m-0">
-            <h3 className="text-lg font-semibold">Edit Portfolio</h3>
+            <p className="text-lg font-semibold">Edit Portfolio</p>
           </DialogTitle>
         </DialogHeader>
 
@@ -194,13 +194,13 @@ const PortfolioEditDialog = ({ provider, children }) => {
             <div className="flex flex-wrap gap-2">
               {services.map((item, index) => (
                 <Badge
-                  key={`service-${index}-${item}`}
+                  key={`service-${index}-${item._id}`}
                   className="cursor-pointer"
                   onClick={() =>
                     setServices((prev) => prev.filter((s) => s !== item))
                   }
                 >
-                  {item} ✕
+                  {item.name} ✕
                 </Badge>
               ))}
             </div>

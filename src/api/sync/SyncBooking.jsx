@@ -4,6 +4,11 @@ export async function createBooking(api, bookingData) {
   return res.data;
 }
 
+export async function createDirectBooking(api, bookingData) {
+  const res = await api.post('/bookings/direct', bookingData);
+  return res.data;
+}
+
 export async function getBookings(api, { status } = {}) {
   const params = {};
   if (status) params.status = status;

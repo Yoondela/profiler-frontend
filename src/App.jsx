@@ -10,6 +10,7 @@ import { AOS } from 'aos';
 import { SearchContextProvider } from './components/intro/context/context';
 import GoogleMapsProvider from './components/app-providers/GoogleMapsProvider';
 import { PortfolioProvider } from './api/context/portfolioContext';
+import { BookingsProvider } from './api/context/bookingsContext';
 import { SocketProvider } from './api/context/socketContext';
 import { NotificationProvider } from './api/context/notificationContext';
 import { ServiceRequestWSProvider } from './api/context/ServiceRequestSocketContext';
@@ -49,7 +50,8 @@ function App() {
           <UserProvider>
             <NotificationProvider>
               <PortfolioProvider>
-                <GoogleMapsProvider>
+                <BookingsProvider>
+                  <GoogleMapsProvider>
                   <SearchContextProvider>
                     {isAuthenticated && !isLoading && <CreateUser />}
                     <Navbar />
@@ -63,6 +65,7 @@ function App() {
                     <Toaster />
                   </SearchContextProvider>
                 </GoogleMapsProvider>
+              </BookingsProvider>
               </PortfolioProvider>
             </NotificationProvider>
           </UserProvider>

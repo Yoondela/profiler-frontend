@@ -13,7 +13,7 @@ import { useServiceRequest } from '../contexts/ServiceRequestContext';
 import { useServiceBooking } from '../contexts/ServiceBookingContext';
 import { usePublicPageStore } from '@/components/public-profile/publicPageStore';
 import { useApiClient } from '@/api/useApiClient';
-import { createBooking } from '@/api/sync/SyncBooking';
+import { createBooking, createDirectBooking } from '@/api/sync/SyncBooking';
 import { createRequest } from '@/api/sync/SyncRequest';
 import { ArrowUp } from 'lucide-react';
 
@@ -37,7 +37,7 @@ export function RequestDrawer({ mode, open, onOpenChange }) {
     note,
     bookingPayload,
     requestPayload,
-  } = mode === 'booking' ? bookingState : requestState;
+  } = mode === 'booking' || 'direct-booking' ? bookingState : requestState;
 
   const handleConfirm = () => {
     console.log(
@@ -58,7 +58,20 @@ export function RequestDrawer({ mode, open, onOpenChange }) {
               err?.data?.message || err?.message || 'Something went wrong';
             alert(`Booking failed: ${message}`);
           });
-      } else {
+      } else if (mode === 'direct-booking') {
+        // Call createDirectBooking API
+        createDirectBooking(api, bookingPayload)
+          .then((data) => {
+            console.log('✅ Booking created:', data);
+            alert('Booking successfully created!');
+          })
+          .catch((err) => {
+            console.error('❌ createBooking failed', err);
+            const message =
+              err?.data?.message || err?.message || 'Something went wrong';
+            alert(`Booking failed: ${message}`);
+          });
+      } else if (mode === 'request') {
         // Call createBooking API
         createRequest(api, requestPayload)
           .then((data) => {

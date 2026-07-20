@@ -7,6 +7,7 @@ import UserAvatar from './common/UserAvatar';
 import CompanyMenu from './common/companyMenu';
 import NotificationContainer from '../notifications/notificationContainer';
 import { FlackContainer } from '@/modules/chat/flack/FlackContainer';
+import ActionCenter from '../action-center/ActionCenter';
 import { LiteChat } from '@/modules/chat/lite-chat/components/LiteChat';
 import { MessageSquareMore, MessageSquareText } from 'lucide-react';
 import SearchBar from '../intro/SearchBar';
@@ -49,8 +50,9 @@ export default function Navbar() {
         {/* If authenticated, show avatar + optional logout */}
         {isAuthenticated && (
           <div className="flex flex-row items-center justify-between gap-20">
-            <div className="flex flex-row items-center justify-between gap-7">
+            <div className="flex flex-row-reverse items-center justify-between gap-7">
               {/* <MessageContainer /> */}
+              <ActionCenter />
 
               <LiteChat />
 

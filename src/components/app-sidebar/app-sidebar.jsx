@@ -30,6 +30,7 @@ export function AppSidebar() {
 
   const menuItems = [
     { to: '/provider-dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+    { to: '/bookings', icon: Calendar, label: 'Bookings' },
     { to: '/history', icon: History, label: 'History' },
     { to: '/user-schedule', icon: Calendar, label: 'Calendar' },
     { to: '/upcoming', icon: Clock, label: 'Upcoming' },

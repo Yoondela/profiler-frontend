@@ -272,7 +272,7 @@ export default function GetServicePanel({ providerId, providerName, onCancel }) 
       </div>
 
       <RequestDrawer
-        mode="booking"
+        mode="direct-booking"
         open={showConfirmDrawer}
         onOpenChange={setShowConfirmDrawer}
       />
