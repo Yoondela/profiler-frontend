@@ -1,5 +1,7 @@
-import { usePortfolioContext } from '@/api/context/portfolioContext';
 import { useState } from 'react';
+import { usePortfolioContext } from '@/api/context/portfolioContext';
+import { useBookings } from '@/api/context/bookingsContext';
+import { respondToBooking } from '@/api/sync/actionsApi';
 import {
   CalendarDays,
   Clock3,
@@ -10,11 +12,13 @@ import {
 
 function ProviderPicker({ booking }) {
   const { portfolioDataCtx } = usePortfolioContext();
+  const { replaceBooking } = useBookings();
 
   const members = portfolioDataCtx?.company?.members ?? [];
 
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const serviceId = booking.service._id;
 
@@ -27,6 +31,76 @@ function ProviderPicker({ booking }) {
       (s) => s._id.toString() === serviceId.toString()
     );
   });
+
+
+  const handleAccept = async () => {
+    if (!selected) {
+      alert('Please select a provider.');
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const updatedBooking = await respondToBooking(
+        booking._id,
+        'accept',
+        selected
+      );
+
+      replaceBooking(updatedBooking)
+
+      console.log('Booking accepted', updatedBooking);
+
+      // later:
+      // update booking context
+      // close drawer
+      // toast.success(...)
+    } catch (err) {
+      console.error(err);
+
+      alert(
+        err.response?.data?.message ??
+          'Unable to accept booking.'
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDecline = async () => {
+    const confirmed = window.confirm(
+      'Decline this booking?'
+    );
+
+    if (!confirmed) return;
+
+    try {
+      setLoading(true);
+
+      const updatedBooking = await respondToBooking(
+        booking._id,
+        'decline'
+      );
+
+      replaceBooking(updatedBooking)
+
+      console.log('Booking declined', updatedBooking);
+
+      // later
+      // remove booking from list
+      // toast.success(...)
+    } catch (err) {
+      console.error(err);
+
+      alert(
+        err.response?.data?.message ??
+          'Unable to decline booking.'
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const preferred = assignable.find(
     (m) => m.user?._id.toString() === booking.preferedProvider?.toString()
@@ -172,16 +246,19 @@ function ProviderPicker({ booking }) {
           <div className="mt-8 flex justify-end gap-3">
 
             <button
+              onClick={handleDecline}
+              disabled={loading}
               className="rounded-lg border px-5 py-2.5 text-sm font-medium transition hover:bg-gray-100"
             >
               Decline
             </button>
 
             <button
-              disabled={!selected}
+              onClick={handleAccept}
+              disabled={!selected || loading}
               className="rounded-lg bg-black px-5 py-2.5 text-sm font-medium text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              Accept Booking
+              {loading ? 'Assigning...' : 'Accept Booking'}
             </button>
 
           </div>

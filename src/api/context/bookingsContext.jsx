@@ -57,6 +57,20 @@ export function BookingsProvider({ children }) {
     setHasNew(true);
   }, []);
 
+  const replaceBooking = useCallback((updatedBooking) => {
+    setBookings((prev) =>
+      prev.map((booking) =>
+        booking._id === updatedBooking._id ? updatedBooking : booking
+      )
+    );
+  }, []);
+
+  const removeBooking = useCallback((bookingId) => {
+    setBookings((prev) =>
+      prev.filter((booking) => booking._id !== bookingId)
+    );
+  }, []);
+
   const clearNewFlag = () => setHasNew(false);
 
   useEffect(() => {
@@ -71,7 +85,18 @@ export function BookingsProvider({ children }) {
 
   return (
     <BookingsContext.Provider
-      value={{ bookings, invites, loading, hasNew, clearNewFlag, addBooking }}
+      value={{
+        bookings,
+        invites,
+        loading,
+      
+        hasNew,
+        clearNewFlag,
+      
+        addBooking,
+        replaceBooking,
+        removeBooking,
+      }}
     >
       {children}
     </BookingsContext.Provider>
