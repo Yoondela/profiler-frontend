@@ -38,13 +38,10 @@ export default function ActionsPage() {
             {bookings.map((b) => (
               <div key={b._id} className="mb-3 p-3 rounded">
                 <div className="flex items-center justify-between">
-                  <div className="text-sm font-medium">{b.note || 'Booking'}</div>
+                  <div className="text-sm font-medium">{b.status || 'Booking'}</div>
                   <div className="text-xs text-gray-500">{formatTimeAgo(b.createdAt)}</div>
                 </div>
-                {/* <div className="text-sm text-gray-700">For: {new Date(b.forDate).toLocaleDateString()} {b.forTime}</div> */}
-                {b.status === 'pending' && !b.provider && (
                   <ProviderPicker booking={b} />
-                )}
               </div>
             ))}
           </div>

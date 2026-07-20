@@ -102,6 +102,8 @@ function ProviderPicker({ booking }) {
     }
   };
 
+  const assignedProvider = booking?.provider?.name;
+
   const preferred = assignable.find(
     (m) => m.user?._id.toString() === booking.preferedProvider?.toString()
   );
@@ -212,7 +214,16 @@ function ProviderPicker({ booking }) {
 
           </div>
 
-          {preferred && (
+          {assignedProvider && (
+            <div>
+              <p>Assigned</p>
+              <div className="rounded-xl border border-blue-200 bg-blue-50 p-5">
+                <p className='font-semibold'>{assignedProvider}</p>
+              </div>
+            </div>
+          )}
+
+          {preferred && !assignedProvider && (
 
             <div className="rounded-xl border border-blue-200 bg-blue-50 p-5">
 
@@ -247,8 +258,8 @@ function ProviderPicker({ booking }) {
 
             <button
               onClick={handleDecline}
-              disabled={loading}
-              className="rounded-lg border px-5 py-2.5 text-sm font-medium transition hover:bg-gray-100"
+              disabled={loading || assignedProvider}
+              className="rounded-lg border px-5 py-2.5 text-sm font-medium transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
             >
               Decline
             </button>
