@@ -2,13 +2,7 @@ import { useState } from 'react';
 import { usePortfolioContext } from '@/api/context/portfolioContext';
 import { useBookings } from '@/api/context/bookingsContext';
 import { respondToBooking } from '@/api/sync/actionsApi';
-import {
-  CalendarDays,
-  Clock3,
-  MapPin,
-  Search,
-  User,
-} from 'lucide-react';
+import { CalendarDays, Clock3, MapPin, Search, User } from 'lucide-react';
 
 function ProviderPicker({ booking }) {
   const { portfolioDataCtx } = usePortfolioContext();
@@ -27,11 +21,8 @@ function ProviderPicker({ booking }) {
 
     if (services.length === 0) return true;
 
-    return services.some(
-      (s) => s._id.toString() === serviceId.toString()
-    );
+    return services.some((s) => s._id.toString() === serviceId.toString());
   });
-
 
   const handleAccept = async () => {
     if (!selected) {
@@ -48,7 +39,7 @@ function ProviderPicker({ booking }) {
         selected
       );
 
-      replaceBooking(updatedBooking)
+      replaceBooking(updatedBooking);
 
       console.log('Booking accepted', updatedBooking);
 
@@ -59,31 +50,23 @@ function ProviderPicker({ booking }) {
     } catch (err) {
       console.error(err);
 
-      alert(
-        err.response?.data?.message ??
-          'Unable to accept booking.'
-      );
+      alert(err.response?.data?.message ?? 'Unable to accept booking.');
     } finally {
       setLoading(false);
     }
   };
 
   const handleDecline = async () => {
-    const confirmed = window.confirm(
-      'Decline this booking?'
-    );
+    const confirmed = window.confirm('Decline this booking?');
 
     if (!confirmed) return;
 
     try {
       setLoading(true);
 
-      const updatedBooking = await respondToBooking(
-        booking._id,
-        'decline'
-      );
+      const updatedBooking = await respondToBooking(booking._id, 'decline');
 
-      replaceBooking(updatedBooking)
+      replaceBooking(updatedBooking);
 
       console.log('Booking declined', updatedBooking);
 
@@ -93,10 +76,7 @@ function ProviderPicker({ booking }) {
     } catch (err) {
       console.error(err);
 
-      alert(
-        err.response?.data?.message ??
-          'Unable to decline booking.'
-      );
+      alert(err.response?.data?.message ?? 'Unable to decline booking.');
     } finally {
       setLoading(false);
     }
@@ -118,13 +98,10 @@ function ProviderPicker({ booking }) {
 
   return (
     <div className="mt-4 overflow-hidden">
-
       <div className="flex flex-row-reverse">
-
         {/* LEFT PANEL */}
 
         <aside className="w-64 p-4">
-
           <h3 className="mb-3 font-semibold tracking-wide text-gray-500">
             Other Candidates
           </h3>
@@ -141,7 +118,6 @@ function ProviderPicker({ booking }) {
           </div> */}
 
           <div className="space-y-2">
-
             {filtered.map((member) => (
               <label
                 key={member._id}
@@ -156,9 +132,7 @@ function ProviderPicker({ booking }) {
                 />
 
                 <div>
-                  <p className="font-medium">
-                    {member.displayName}
-                  </p>
+                  <p className="font-medium">{member.displayName}</p>
 
                   <p className="text-xs text-gray-500">
                     {member.completedJobs} completed jobs
@@ -168,27 +142,18 @@ function ProviderPicker({ booking }) {
             ))}
 
             {filtered.length === 0 && (
-              <p className="text-sm text-gray-500">
-                No matching providers
-              </p>
+              <p className="text-sm text-gray-500">No matching providers</p>
             )}
-
           </div>
-
         </aside>
 
         {/* MAIN PANEL */}
 
         <main className="flex-1 p-6">
-
           <div className="mb-6">
-
-            <h2 className="text-xl font-semibold">
-              {booking.service.name}
-            </h2>
+            <h2 className="text-xl font-semibold">{booking.service.name}</h2>
 
             <div className="mt-2 flex flex-wrap gap-5 text-sm text-gray-600">
-
               <div className="flex items-center gap-2">
                 <User className="h-4 w-4" />
                 {booking.client.name}
@@ -209,30 +174,25 @@ function ProviderPicker({ booking }) {
                 {booking.forAddress.addressComponents.suburb ||
                   booking.forAddress.addressComponents.city}
               </div>
-
             </div>
-
           </div>
 
           {assignedProvider && (
             <div>
               <p>Assigned</p>
               <div className="rounded-xl border border-blue-200 bg-blue-50 p-5">
-                <p className='font-semibold'>{assignedProvider}</p>
+                <p className="font-semibold">{assignedProvider}</p>
               </div>
             </div>
           )}
 
           {preferred && !assignedProvider && (
-
             <div className="rounded-xl border border-blue-200 bg-blue-50 p-5">
-
               <p className="mb-2 text-xs tracking-wide text-blue-700">
                 Preferred by client
               </p>
 
               <label className="flex cursor-pointer items-center gap-3">
-
                 <input
                   type="radio"
                   name={`assign-${booking._id}`}
@@ -241,21 +201,13 @@ function ProviderPicker({ booking }) {
                 />
 
                 <div>
-
-                  <p className="font-semibold">
-                    {preferred.displayName}
-                  </p>
-
+                  <p className="font-semibold">{preferred.displayName}</p>
                 </div>
-
               </label>
-
             </div>
-
           )}
 
           <div className="mt-8 flex justify-end gap-3">
-
             <button
               onClick={handleDecline}
               disabled={loading || assignedProvider}
@@ -271,13 +223,9 @@ function ProviderPicker({ booking }) {
             >
               {loading ? 'Assigning...' : 'Accept Booking'}
             </button>
-
           </div>
-
         </main>
-
       </div>
-
     </div>
   );
 }

@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from 'react';
 import axios from 'axios';
 import { usePortfolioContext } from './portfolioContext';
 import { useSocket } from './socketContext';
@@ -16,9 +22,10 @@ export function BookingsProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [hasNew, setHasNew] = useState(false);
 
-  const businessId = portfolioDataCtx?.company?._id || portfolioDataCtx?.portfolio?.id;
+  const businessId =
+    portfolioDataCtx?.company?._id || portfolioDataCtx?.portfolio?.id;
 
-  console.log('BusinessId in booking context = ', businessId)
+  console.log('BusinessId in booking context = ', businessId);
 
   useEffect(() => {
     if (!businessId) return;
@@ -35,7 +42,7 @@ export function BookingsProvider({ children }) {
         );
 
         const data = res.data || res.body || {};
-        console.log(data)
+        console.log(data);
         setBookings(data.bookings || []);
         setInvites(data.invites || []);
       } catch (err) {
@@ -66,9 +73,7 @@ export function BookingsProvider({ children }) {
   }, []);
 
   const removeBooking = useCallback((bookingId) => {
-    setBookings((prev) =>
-      prev.filter((booking) => booking._id !== bookingId)
-    );
+    setBookings((prev) => prev.filter((booking) => booking._id !== bookingId));
   }, []);
 
   const clearNewFlag = () => setHasNew(false);
@@ -89,10 +94,10 @@ export function BookingsProvider({ children }) {
         bookings,
         invites,
         loading,
-      
+
         hasNew,
         clearNewFlag,
-      
+
         addBooking,
         replaceBooking,
         removeBooking,

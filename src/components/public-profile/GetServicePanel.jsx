@@ -13,7 +13,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { useServiceBooking } from '@/components/request/contexts/ServiceBookingContext';
 import { RequestDrawer } from '@/components/request/confirm/confirm';
 
-export default function GetServicePanel({ providerId, providerName, onCancel }) {
+export default function GetServicePanel({
+  providerId,
+  providerName,
+  onCancel,
+}) {
   const {
     setBookingType,
     setOwner,
@@ -42,8 +46,8 @@ export default function GetServicePanel({ providerId, providerName, onCancel }) 
     geometry: {
       location: {
         lat: -33.9154,
-        lng: 18.4233
-      }
+        lng: 18.4233,
+      },
     },
     addressComponents: [
       {
@@ -223,9 +227,7 @@ export default function GetServicePanel({ providerId, providerName, onCancel }) 
             <MapPin className="mr-3 h-4 w-4 shrink-0 text-gray-500" />
             <div>
               <p className="text-sm text-gray-900">{MOCK_ADDRESS.address}</p>
-              <p className="text-xs text-gray-500">
-                Development mock address
-              </p>
+              <p className="text-xs text-gray-500">Development mock address</p>
             </div>
           </div>
         </div>
@@ -254,14 +256,10 @@ export default function GetServicePanel({ providerId, providerName, onCancel }) 
       </div>
 
       <div className="mt-6 flex justify-end gap-3">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={onCancel}
-        >
+        <Button type="button" variant="outline" onClick={onCancel}>
           Cancel
         </Button>
-              
+
         <Button
           type="button"
           className="bg-black text-white hover:bg-gray-800"

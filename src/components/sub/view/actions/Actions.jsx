@@ -20,7 +20,10 @@ export default function ActionsPage() {
           onClick={() => setSelected('bookings')}
           className={`w-full text-left px-3 py-2 rounded ${selected === 'bookings' ? 'bg-gray-100' : ''}`}
         >
-          Bookings {hasNew && <span className="inline-block ml-2 h-2 w-2 rounded-full bg-red-600" />}
+          Bookings{' '}
+          {hasNew && (
+            <span className="inline-block ml-2 h-2 w-2 rounded-full bg-red-600" />
+          )}
         </button>
 
         <button
@@ -34,14 +37,20 @@ export default function ActionsPage() {
       <div className="flex-1 p-3">
         {selected === 'bookings' && (
           <div>
-            {bookings.length === 0 && <div className="text-sm text-gray-500">No bookings</div>}
+            {bookings.length === 0 && (
+              <div className="text-sm text-gray-500">No bookings</div>
+            )}
             {bookings.map((b) => (
               <div key={b._id} className="mb-3 p-3 rounded">
                 <div className="flex items-center justify-between">
-                  <div className="text-sm font-medium">{b.status || 'Booking'}</div>
-                  <div className="text-xs text-gray-500">{formatTimeAgo(b.createdAt)}</div>
+                  <div className="text-sm font-medium">
+                    {b.status || 'Booking'}
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    {formatTimeAgo(b.createdAt)}
+                  </div>
                 </div>
-                  <ProviderPicker booking={b} />
+                <ProviderPicker booking={b} />
               </div>
             ))}
           </div>
@@ -49,12 +58,16 @@ export default function ActionsPage() {
 
         {selected === 'invites' && (
           <div>
-            {invites.length === 0 && <div className="text-sm text-gray-500">No invites</div>}
+            {invites.length === 0 && (
+              <div className="text-sm text-gray-500">No invites</div>
+            )}
             {invites.map((i) => (
               <div key={i._id} className="mb-3 p-3 rounded">
                 <div className="flex items-center justify-between">
                   <div className="text-sm font-medium">Invite</div>
-                  <div className="text-xs text-gray-500">{formatTimeAgo(i.createdAt)}</div>
+                  <div className="text-xs text-gray-500">
+                    {formatTimeAgo(i.createdAt)}
+                  </div>
                 </div>
                 <div className="text-sm text-gray-700">Status: {i.status}</div>
               </div>

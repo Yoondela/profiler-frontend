@@ -52,20 +52,20 @@ function App() {
               <PortfolioProvider>
                 <BookingsProvider>
                   <GoogleMapsProvider>
-                  <SearchContextProvider>
-                    {isAuthenticated && !isLoading && <CreateUser />}
-                    <Navbar />
-                    <ServiceRequestWSProvider>
-                      <ServiceBookingWSProvider>
-                        <ServiceBookingProvider>
-                          <AppRoutes />
-                        </ServiceBookingProvider>
-                      </ServiceBookingWSProvider>
-                    </ServiceRequestWSProvider>
-                    <Toaster />
-                  </SearchContextProvider>
-                </GoogleMapsProvider>
-              </BookingsProvider>
+                    <SearchContextProvider>
+                      {isAuthenticated && !isLoading && <CreateUser />}
+                      <Navbar />
+                      <ServiceRequestWSProvider>
+                        <ServiceBookingWSProvider>
+                          <ServiceBookingProvider>
+                            <AppRoutes />
+                          </ServiceBookingProvider>
+                        </ServiceBookingWSProvider>
+                      </ServiceRequestWSProvider>
+                      <Toaster />
+                    </SearchContextProvider>
+                  </GoogleMapsProvider>
+                </BookingsProvider>
               </PortfolioProvider>
             </NotificationProvider>
           </UserProvider>
