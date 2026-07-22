@@ -34,11 +34,11 @@ export function LiteChat({ open, onOpenChange }) {
         <SheetTrigger className="group relative flex items-center justify-center transition cursor-pointer">
           <MessageSquareMore
             size={19}
-            className="group-hover:hidden mt-[4px]"
+            className="group-hover:hidden"
           />
           <MessageSquareText
             size={19}
-            className="mt-[2px] hidden group-hover:block"
+            className="mb-[2px] hidden group-hover:block"
           />
           {totalUnread > 0 && (
             <div className="absolute flex items-center justify-center top-0 right-0 block h-[13px] w-[13px] rounded-full bg-red-600">

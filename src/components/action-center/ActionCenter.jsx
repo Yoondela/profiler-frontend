@@ -20,11 +20,11 @@ export default function ActionCenter() {
       >
         <ListChevronsUpDownIcon
           size={19}
-          className="group-hover:hidden mt-[4px]"
+          className="group-hover:hidden"
         />
         <ListChevronsDownUp
           size={19}
-          className="mt-[2px] hidden group-hover:block"
+          className="mb-[2px] hidden group-hover:block"
         />
         {hasNew && (
           <span className="absolute top-0 right-0 block h-[10px] w-[10px] rounded-full bg-red-600" />

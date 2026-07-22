@@ -26,8 +26,8 @@ export default function NotificationContainer() {
         }}
       >
         <SheetTrigger className="group relative flex items-center justify-center transition cursor-pointer">
-          <Bell size={19} className="group-hover:hidden mt-[4px]" />
-          <BellRing size={19} className="mt-[2px] hidden group-hover:block" />
+          <Bell size={19} className="group-hover:hidden" />
+          <BellRing size={19} className="mb-[2px] hidden group-hover:block" />
           {hasNew && (
             <span className="absolute top-0 right-0 block h-[10px] w-[10px] rounded-full bg-red-600" />
           )}
