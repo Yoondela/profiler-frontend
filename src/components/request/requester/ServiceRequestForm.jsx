@@ -74,7 +74,7 @@ export default function ServiceRequestForm({ onEdit, setGoToReview }) {
   // RENDER
   // ---------------------------
   return (
-    <div className="service-request-wrapper container">
+    <div className="service-request-wrapper">
       <div className="service-request-container">
         <h2 className="title">Create Your Service</h2>
         <p className="paragraph">

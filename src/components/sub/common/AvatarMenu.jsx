@@ -1,29 +1,24 @@
-import { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import useProviderPortfolio from '@/hooks/useProviderPortfolio';
-import AvatarColors from '@/data/avatar-colors.json';
 import {
   User,
-  Calendar,
-  Clock,
   LogOut,
   Building2,
   HelpCircle,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-export default function UserAvatarMenu() {
+export default function UserAvatarMenu({ placement = 'desktop', onClose }) {
   const { user, logout } = useAuth0();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const { portfolio, loading, error, refetch } = useProviderPortfolio();
+  const { portfolio } = useProviderPortfolio();
 
   const companyName =
     portfolio?.company?.name || user?.name || 'Service Provider';
 
   return (
-    <div className="user-menu">
+    <div className={`user-menu user-menu--${placement}`}>
       <div className="user-menu-links">
-        <Link to="/user-profile" onClick={() => setMenuOpen(false)}>
+        <Link to="/user-profile" onClick={onClose}>
           <User size={16} style={{ marginRight: '8px' }} />
           {user?.email}
         </Link>
@@ -31,7 +26,7 @@ export default function UserAvatarMenu() {
         {portfolio && (
           <Link
             to="/provider-page"
-            onClick={() => setMenuOpen(false)}
+            onClick={onClose}
             className="user-menu-company"
           >
             <Building2 size={16} style={{ marginRight: '8px' }} />
@@ -39,9 +34,9 @@ export default function UserAvatarMenu() {
           </Link>
         )}
 
-        <Link to="/help" onClick={() => setMenuOpen(false)}>
+        <Link to="/actions" onClick={onClose}>
           <HelpCircle size={16} style={{ marginRight: '8px' }} />
-          Help
+          Actions
         </Link>
       </div>
 
@@ -49,7 +44,7 @@ export default function UserAvatarMenu() {
 
       <div
         onClick={() => {
-          setMenuOpen(false);
+          onClose?.();
           logout({ logoutParams: { returnTo: window.location.origin } });
         }}
         className="user-menu-logout"

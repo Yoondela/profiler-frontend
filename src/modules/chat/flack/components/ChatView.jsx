@@ -86,7 +86,7 @@ export function ChatView() {
 
   return (
     <div className="flex-1 flex flex-col border-l border-zinc-900 bg-neutral-800 text-white">
-      <div className="border-b border-gray-700 bg-[#292929] px-4 py-3 flex items-center justify-between gap-3">
+      <div className="border-b border-gray-700 bg-[#292929] px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <p className="text-sm uppercase tracking-[0.15em] text-zinc-400">
             Chat
@@ -116,7 +116,7 @@ export function ChatView() {
         </div>
       ) : (
         <>
-          <div className="flex-1 overflow-y-auto px-4 py-5 space-y-4">
+          <div className="flex-1 overflow-y-auto px-3 sm:px-4 py-5 space-y-4 w-full">
             {channelMessages.length === 0 ? (
               <div className="flex h-full min-h-[180px] items-center justify-center rounded-3xl border border-dashed border-zinc-800 bg-zinc-950/80 px-6 py-10 text-center text-sm text-zinc-400">
                 No messages yet. Send the first message to begin the
@@ -139,16 +139,16 @@ export function ChatView() {
                       message.id ??
                       `${message.channelId}-${message.createdAt}-${Math.random()}`
                     }
-                    className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}
+                    className={`flex w-full ${isMe ? 'justify-end' : 'justify-start'}`}
                   >
-                    <div className="max-w-[75%]">
+                    <div className="w-full max-w-full sm:max-w-[75%]">
                       {!isMe && (
                         <div className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500 mb-2">
                           {senderName}
                         </div>
                       )}
                       <div
-                        className={`rounded-3xl px-4 py-3 text-sm leading-6 shadow-sm ${
+                        className={`break-words rounded-3xl px-4 py-3 text-sm leading-6 shadow-sm ${
                           isMe
                             ? 'bg-sky-600 text-white rounded-br-none'
                             : 'bg-zinc-800 text-zinc-100 rounded-bl-none'
@@ -171,8 +171,8 @@ export function ChatView() {
             <div ref={messageEndRef} />
           </div>
 
-          <div className="border-t border-zinc-900 bg-zinc-900 px-4 py-4">
-            <form onSubmit={handleSend} className="flex items-end gap-3">
+          <div className="border-t border-zinc-900 bg-zinc-900 px-3 sm:px-4 py-4">
+            <form onSubmit={handleSend} className="flex w-full flex-col gap-3 sm:flex-row sm:items-end">
               <label className="sr-only" htmlFor="flack-message-input">
                 Type a message
               </label>
@@ -182,12 +182,12 @@ export function ChatView() {
                 value={draft}
                 onChange={(event) => setDraft(event.target.value)}
                 placeholder="Write a message..."
-                className="min-h-[44px] flex-1 resize-none rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20"
+                className="min-h-[44px] w-full flex-1 resize-none rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20"
               />
               <button
                 type="submit"
                 disabled={!draft.trim()}
-                className="inline-flex h-11 items-center rounded-2xl bg-sky-600 px-5 text-sm font-semibold text-white transition hover:bg-sky-500 disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex h-11 w-full items-center justify-center rounded-2xl bg-sky-600 px-5 text-sm font-semibold text-white transition hover:bg-sky-500 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
               >
                 Send
               </button>

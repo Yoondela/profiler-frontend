@@ -7,23 +7,24 @@ import useProviderPortfolio from '@/hooks/useProviderPortfolio';
 
 import {
   User,
+  Calendar,
   SettingsIcon,
   Settings2,
-  HelpCircle,
   ScanEye,
-  Building2,
-  MapPin,
-  Bell,
-  BriefcaseBusiness,
-  MessageCircle,
-  Settings,
-  LogOut,
 } from 'lucide-react';
 
 export default function MobileMenu({ isOpen, onClose, user, children }) {
   const [copied, setCopied] = useState(false);
 
-  const { providerId } = useProviderPortfolio;
+  const { portfolio } = useProviderPortfolio();
+  const providerId =
+    portfolio?.portfolio?.id ||
+    portfolio?.portfolio?._id ||
+    portfolio?.id ||
+    portfolio?._id;
+  const publicPageUrl = providerId
+    ? `${window.location.origin}/providers/${providerId}/public`
+    : `${window.location.origin}/`;
 
   const handleCopyPublicLink = async () => {
     try {
@@ -42,9 +43,9 @@ export default function MobileMenu({ isOpen, onClose, user, children }) {
       to: '/user-profile',
     },
     {
-      label: 'Help',
-      icon: HelpCircle,
-      to: '/help',
+      label: 'Schedule',
+      icon: Calendar,
+      to: '/user-schedule',
     },
   ];
 
@@ -57,12 +58,12 @@ export default function MobileMenu({ isOpen, onClose, user, children }) {
     {
       label: 'Manage',
       icon: Settings2,
-      to: '/concern-config',
+      to: '/provider-dashboard',
     },
     {
       label: 'Business Page',
       icon: ScanEye,
-      // to: `/providers/${providerId}/public`,
+      to: providerId ? `/providers/${providerId}/public` : '/',
       hidden: !providerId,
     },
     {
@@ -103,7 +104,7 @@ export default function MobileMenu({ isOpen, onClose, user, children }) {
           </button>
 
           <div className="flex flex-col items-center">
-            <UserAvatar user={user} />
+            <UserAvatar user={user} menuPlacement="mobile" />
 
             <h2 className="mt-3 font-semibold">{user?.name}</h2>
 

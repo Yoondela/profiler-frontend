@@ -34,7 +34,7 @@ export default function NotificationContainer() {
         </SheetTrigger>
         <SheetContent
           side="right"
-          className="border-none w-[400px] sm:w-[500px] h-[93%] bg-[white] my-[50px] gap-0"
+          className="border-none w-screen max-w-none sm:w-[400px] sm:max-w-[500px] h-[100dvh] sm:h-[93%] bg-[white] my-0 sm:my-[50px] gap-0"
         >
           <SheetHeader className="mt-7 px-2 py-0">
             <SheetTitle className="text-xl text-green-200">

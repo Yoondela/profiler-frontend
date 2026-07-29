@@ -7,14 +7,18 @@
 .service-request-wrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  gap: 3rem;
-  padding: 1.5rem;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 1.75rem;
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
 
 }
 
 .service-request-container, .booking-review-container{
+  width: 100%;
   // background-color: aqua;
 
   .title {
@@ -26,6 +30,7 @@
   .dropdown-container {
     position: relative;
     display: flex;
+    align-items: center;
     margin-top: 1rem;
     margin-bottom: 2px;
     width: 100%; /* Ensure the container takes full width */
@@ -72,6 +77,12 @@
     color: gray;
     pointer-events: none; /* Ensure the icon doesn't interfere with clicks */
   }
+
+  .dropdown-container > div {
+    flex: 1;
+    min-width: 0;
+  }
+
   .input-container {
     position: relative; /* Ensure relative positioning for any absolute children */
     display: flex;
@@ -117,19 +128,23 @@
 
   .req-bottom {
     display: flex;  
+    flex-wrap: wrap;
     justify-content: space-between;
-    margin-right: 15px;
+    gap: 0.75rem;
+    margin-right: 0;
   }
 
   .edit-tasks {
     font-size: 16px;
+    flex: 1 1 9rem;
     &:disabled {
       color: #ddd;
       cursor: not-allowed;
     }
   }
   .request-button {
-    width: 90px;
+    flex: 1 1 9rem;
+    min-width: 90px;
     padding: 0.75rem;
     background: variables.$theme-color;
     color: white;
@@ -193,9 +208,16 @@
 
 .image-container {
   width: 100%;
-  max-width: 500px;
+  max-width: none;
   display: flex;
   justify-content: center;
+
+  .service-image {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    object-fit: cover;
+  }
 }
 //   .service-image {
 //     width: 100%;
@@ -215,50 +237,41 @@
   
 }
 
-/* ≥576px */
-@media (min-width: 576px) {
+/* ≥768px */
+@media (min-width: 768px) {
   .service-request-wrapper {
-    flex-direction: row;
     gap: 2rem;
-  }
-  .image-container > .service-image {
-    border-radius: 12px;
+    padding-inline: 2rem;
   }
 }
 
-/* ≥768px */
-@media (min-width: 768px) {
-  }
-
 /* ≥992px */
 @media (min-width: 992px) {
-  .service-request-wrapper { 
-    padding: 4.5rem; // put this style at global container
+  .service-request-wrapper {
+    flex-direction: row;
+    align-items: center;
+    padding: 4.5rem 3rem;
+    gap: 3rem;
   }
   .service-request-container, .booking-review-container{
     max-width: 500px;
+  }
+  .image-container {
+    max-width: 34rem;
   }
 }
 
 /* ≥1200px */
 @media (min-width: 1200px) {
-  .service-request-wrapper { 
-    gap: 3.5rem !important;
-    padding: 0 12rem;
+  .service-request-wrapper {
+    gap: 3.5rem;
+    padding-inline: 6rem;
   }
 }
 
 /* ≥1400px */
 @media (min-width: 1400px) {
-  .service-request-wrapper { 
-    // gap: 0.5rem !important;
-    // padding: 0 47rem;
-  }
   .image-container {
-    width: 100%;
-    max-width: 400px;
-    display: flex;
-    justify-content: center;
+    max-width: 28rem;
   }
 }
-

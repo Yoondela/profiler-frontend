@@ -13,7 +13,7 @@ const Intro = ({ data }) => {
         backgroundSize: 'cover',
       }}
     >
-      <div className="intro-content-wrapper w-full hidden md:flex flex-row-reverse justify-around items-center gap-6">
+      <div className="intro-content-wrapper flex w-full flex-col items-center justify-center gap-6 px-4 md:flex-row-reverse md:justify-around md:gap-10">
         <div className="intro-content">
           {/* inspire 2026 */}
           <span className="sub-title text-lg weight-300 text-white">

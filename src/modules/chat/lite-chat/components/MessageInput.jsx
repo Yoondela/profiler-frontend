@@ -28,7 +28,7 @@ export function MessageInput({ userId }) {
 
   return (
     <form
-      className="flex items-center gap-2"
+      className="flex w-full flex-col gap-2 sm:flex-row sm:items-center"
       onSubmit={(e) => {
         e.preventDefault();
         if (!canSend) return;
@@ -40,13 +40,13 @@ export function MessageInput({ userId }) {
       <input
         type="text"
         placeholder="Type a message..."
-        className="flex-1 border rounded w-12 px-3 py-2"
+        className="w-full flex-1 border rounded px-3 py-2"
         value={input}
         onChange={(e) => setInput(e.target.value)}
       />
       <button
         type="submit"
-        className="border rounded px-3 py-2 text-sm"
+        className="w-full border rounded px-3 py-2 text-sm sm:w-auto"
         disabled={!canSend}
       >
         Send

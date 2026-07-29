@@ -29,28 +29,28 @@ export default function NotificationList() {
   }
 
   return (
-    <div className="flex flex-col divide-y">
+    <div className="flex w-full flex-col divide-y">
       {notifications.map((n) => (
         <div
           key={n.id}
           onClick={() => markAsRead(n.id)}
           className={`
-        group cursor-pointer px-4 py-4 mx-1 transition
+        group cursor-pointer px-4 py-4 transition
         border-none
         hover:bg-gray-50
         ${n.status === 'unread' ? 'bg-blue-50' : 'bg-background'}
       `}
         >
-          <div className="flex items-start">
-            <div className="flex-1">
-              <div className="flex items-center justify-between">
-                <p className="mt-0 text-sm text-muted-foreground">
+          <div className="flex w-full items-start">
+            <div className="min-w-0 flex-1">
+              <div className="flex w-full flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+                <p className="mt-0 min-w-0 break-words text-sm text-muted-foreground">
                   {n.message}
                 </p>
-                <p className="text-xs">{formatTimeAgo(n.createdAt)}</p>
+                <p className="shrink-0 text-xs text-right">{formatTimeAgo(n.createdAt)}</p>
               </div>
               {n.actions && (
-                <div className="mt-0 flex items-center gap-2">
+                <div className="mt-2 flex flex-wrap items-center gap-2">
                   {n.actions.map((action, idx) => (
                     <button
                       key={idx}

@@ -16,6 +16,8 @@ const days = [
   'sunday',
 ];
 
+const shortDayLabel = (day) => day.slice(0, 3);
+
 const createInitialState = () =>
   days.reduce((acc, day) => {
     acc[day] = {
@@ -269,9 +271,12 @@ export default function OfficeHoursSection() {
             minutesFromTime(shift.end) <= minutesFromTime(shift.start);
 
           return (
-            <div key={day} className="flex items-center justify-between">
+            <div
+              key={day}
+              className="flex flex-col gap-3 rounded-lg border border-gray-100 px-3 py-3 sm:flex-row sm:items-center sm:justify-between"
+            >
               {/* Left */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 <button
                   onClick={() => toggleDay(day)}
                   className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
@@ -285,30 +290,31 @@ export default function OfficeHoursSection() {
                   />
                 </button>
 
-                <span className="text-sm font-medium text-gray-900 capitalize">
-                  {day}
+                <span className="text-sm font-medium text-gray-900 capitalize sm:text-base">
+                  <span className="sm:hidden">{shortDayLabel(day)}</span>
+                  <span className="hidden sm:inline">{day}</span>
                 </span>
               </div>
 
               {/* Right */}
               {isEnabled ? (
-                <div className="flex items-center gap-3">
+                <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
                   <input
                     type="time"
                     value={shift.start}
                     onChange={(e) => updateTime(day, 'start', e.target.value)}
-                    className={`rounded-md border px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 ${
+                    className={`w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 sm:w-auto ${
                       isInvalid ? 'border-red-500' : 'border-gray-300'
                     }`}
                   />
 
-                  <span className="text-sm text-gray-400">–</span>
+                  <span className="hidden text-sm text-gray-400 sm:block">–</span>
 
                   <input
                     type="time"
                     value={shift.end}
                     onChange={(e) => updateTime(day, 'end', e.target.value)}
-                    className={`rounded-md border px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 ${
+                    className={`w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 sm:w-auto ${
                       isInvalid ? 'border-red-500' : 'border-gray-300'
                     }`}
                   />

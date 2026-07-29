@@ -1,25 +1,10 @@
 @use '../abstracts/variables.module';
 
-
-
-  .requester-container {
-    margin-top: 4rem;
-    // Header section
-    .requester-header {
-      text-align: center;
-
-      h2 { // Take to globals
-        font-size: 2rem;
-        color:variables.$black-333;
-        font-weight: 600;
-      }
-    }
-  }
-  
-  .component { // Globals
-    position: absolute;
-    width: 100%;
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
   
   .slide-enter {
     transform: translateX(100%);

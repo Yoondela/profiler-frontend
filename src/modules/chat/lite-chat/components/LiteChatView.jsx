@@ -46,7 +46,7 @@ export function LiteChatView({ userId, onBack }) {
         </div>
       )}
 
-      <div className="flex-1 p-4 overflow-y-auto space-y-3">
+      <div className="flex-1 w-full p-3 sm:p-4 overflow-y-auto space-y-3">
         {channelMessages.map((m) => {
           const isMe = m.sender === userId;
           console.log('message:', m);
@@ -56,9 +56,9 @@ export function LiteChatView({ userId, onBack }) {
           return (
             <div
               key={m.id}
-              className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}
+              className={`flex w-full ${isMe ? 'justify-end' : 'justify-start'}`}
             >
-              <div className="flex flex-col max-w-[70%]">
+              <div className="flex w-full flex-col max-w-full sm:max-w-[70%]">
                 {/* Username (only for others) */}
                 {!isMe && (
                   <span className="text-xs text-zinc-500 mb-1">
@@ -68,7 +68,7 @@ export function LiteChatView({ userId, onBack }) {
 
                 {/* Message bubble */}
                 <div
-                  className={`px-3 py-2 rounded-2xl text-sm ${
+                  className={`break-words px-3 py-2 rounded-2xl text-sm ${
                     isMe
                       ? 'bg-blue-600 text-white rounded-br-none'
                       : 'bg-zinc-200 text-zinc-900 rounded-bl-none'

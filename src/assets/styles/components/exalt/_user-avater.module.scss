@@ -1,6 +1,12 @@
 .user-avatar-container {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-avatar-container--mobile {
+  align-items: center;
 }
 
 .user-avatar {
@@ -14,6 +20,24 @@
   align-items: center;
   cursor: pointer;
   user-select: none;
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.user-avatar-toggle {
+  margin-top: 0.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: #555;
+  cursor: pointer;
+}
+
+.user-avatar-toggle:hover {
+  color: #111;
 }
 
 .user-menu {
@@ -28,6 +52,14 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   z-index: 99;
   overflow: visible;
+}
+
+.user-menu--mobile {
+  left: 50%;
+  right: auto;
+  top: calc(100% + 12px);
+  transform: translateX(-50%);
+  min-width: min(260px, calc(100vw - 2rem));
 }
 
 .user-menu-links a {
@@ -90,6 +122,23 @@
   cursor: pointer;
   font-size: 0.9rem;
   font-weight: 500;
+}
+
+.user-menu--mobile .user-menu-links a,
+.user-menu--mobile .user-menu-logout {
+  justify-content: center;
+  padding-left: 0;
+  text-align: center;
+}
+
+.user-menu--mobile .user-menu-links a {
+  padding-inline: 1rem;
+}
+
+.user-menu--mobile .user-menu-company,
+.user-menu--mobile .user-menu-company-container {
+  justify-content: center;
+  text-align: center;
 }
 
 // Side menu for company options

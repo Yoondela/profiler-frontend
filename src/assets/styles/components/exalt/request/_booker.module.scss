@@ -1,12 +1,12 @@
 @use '../../../abstracts/variables.module';
 
 .booker-container {
-  padding: 0 1.5rem;
+  padding: 0 1.25rem;
 
   // Header section
   .booker-header {
     text-align: center;
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.75rem;
 
     h2 {
       font-size: 1.5rem;
@@ -18,8 +18,9 @@
 
 .booker-child-container {
   width: 100%;
-  max-width: 100%;
-  margin: 0 auto 5rem;
+  max-width: 72rem;
+  margin: 0 auto 3rem;
+  padding-bottom: 1rem;
   height: fit-content;
 
   .booker {
@@ -29,7 +30,8 @@
 
     .booker-left {
       width: 100%;
-      height: 300px;
+      min-height: 18rem;
+      padding: 1.25rem;
       background-color: variables.$theme-color1;
       border-radius: 13px;
       display: flex;
@@ -129,7 +131,7 @@
       gap: 2rem;
 
       .booker-left {
-        height: 400px;
+        min-height: 24rem;
       }
 
       .booker-right .booker-terms {
@@ -145,7 +147,7 @@
   /* -------- Desktop breakpoint (≥992px) -------- */
   @media (min-width: 992px) {
     max-width: 80%;
-    margin-bottom: 10rem;
+    margin-bottom: 6rem;
 
     .booker {
       flex-direction: row; // side-by-side
@@ -158,7 +160,7 @@
         border-bottom-left-radius: 13px;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
-        height: 500px;
+        min-height: 31rem;
       }
 
       .booker-right {
@@ -170,7 +172,7 @@
           border-bottom-left-radius: 0;
           border-top-right-radius: 13px;
           border-bottom-right-radius: 13px;
-          height: 500px;
+          min-height: 31rem;
         }
       }
     }
