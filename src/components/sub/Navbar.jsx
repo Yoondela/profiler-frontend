@@ -26,7 +26,7 @@ export default function Navbar() {
   useEffect(() => {
     document.body.style.overflow = pageMenuOpen ? 'hidden' : '';
   }, [pageMenuOpen]);
-  
+
   return (
     <nav className={`navbar ${isFlack ? 'navbar-flack' : ''}`}>
       {searchOpen && (
@@ -93,9 +93,12 @@ export default function Navbar() {
                 </div>
 
                 {/* <div className="md:hidden"> */}
-                  <button onClick={() => setPageMenuOpen(true)} className="md:hidden">
-                    <Menu size={24} />
-                  </button>
+                <button
+                  onClick={() => setPageMenuOpen(true)}
+                  className="md:hidden"
+                >
+                  <Menu size={24} />
+                </button>
                 {/* </div> */}
 
                 <div className="flex flex-row items-center justify-between gap-3 hidden md:flex">
@@ -107,14 +110,14 @@ export default function Navbar() {
                   </div>
                 </div>
                 {/* <div className="md:hidden"> */}
-                  <MobileMenu
-                    isOpen={pageMenuOpen}
-                    onClose={() => setPageMenuOpen(false)}
-                    user={user}
-                    className="md:hidden"
-                    >
-                    <p>Menu coming soon...</p>
-                  </MobileMenu>
+                <MobileMenu
+                  isOpen={pageMenuOpen}
+                  onClose={() => setPageMenuOpen(false)}
+                  user={user}
+                  className="md:hidden"
+                >
+                  <p>Menu</p>
+                </MobileMenu>
                 {/* </div> */}
               </div>
             )}

@@ -18,10 +18,7 @@ export default function ActionCenter() {
         to={'/actions'}
         className="group relative flex items-center justify-center text-current! transition cursor-pointer"
       >
-        <ListChevronsUpDownIcon
-          size={19}
-          className="group-hover:hidden"
-        />
+        <ListChevronsUpDownIcon size={19} className="group-hover:hidden" />
         <ListChevronsDownUp
           size={19}
           className="mb-[2px] hidden group-hover:block"

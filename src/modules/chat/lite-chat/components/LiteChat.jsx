@@ -32,10 +32,7 @@ export function LiteChat({ open, onOpenChange }) {
     <div className="flex flex-wrap">
       <Sheet modal={false} open={open} onOpenChange={onOpenChange}>
         <SheetTrigger className="group relative flex items-center justify-center transition cursor-pointer">
-          <MessageSquareMore
-            size={19}
-            className="group-hover:hidden"
-          />
+          <MessageSquareMore size={19} className="group-hover:hidden" />
           <MessageSquareText
             size={19}
             className="mb-[2px] hidden group-hover:block"
