@@ -1,33 +1,24 @@
-import { useState, useEffect } from 'react';
-import { format } from 'date-fns';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import TimeAndDate from './TimeAndDate';
 import ServiceAndAddress from './ServiceAndAddress';
-import BookingReview from './Review';
 
 import CancelIcon from '../../../assets/icons/booker-icons/cancel.svg?react';
 import BellIcon from '../../../assets/icons/booker-icons/bell.svg?react';
 import CalendarIcon from '../../../assets/icons/booker-icons/calendar.svg?react';
 
-const BookerSlide = ({ handleEdit, setPanelClose, panelClose }) => {
+const BookerSlide = () => {
   const [showSecond, setShowSecond] = useState(false);
-  const [showReview, setShowReview] = useState(false);
 
   const handleNext = () => setShowSecond(true);
-  const handleBack = () => {
-    setShowSecond(false);
-    if (panelClose) setPanelClose(false);
-  };
-
-  const handleToReview = () => setShowReview(false);
-  const handleFromReview = () => setShowReview(false);
+  const handleBack = () => setShowSecond(false);
 
   return (
     <div className="booker-child-container">
       <div className="booker">
         <div className="booker-left">
           <AnimatePresence mode="wait">
-            {showSecond || panelClose ? (
+            {showSecond ? (
               <motion.div
                 key="second"
                 initial={{ x: 50, opacity: 0 }}
@@ -35,11 +26,7 @@ const BookerSlide = ({ handleEdit, setPanelClose, panelClose }) => {
                 exit={{ x: -50, opacity: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <ServiceAndAddress
-                  onNext={handleToReview}
-                  onBack={handleBack}
-                  onEdit={handleEdit}
-                />
+                <ServiceAndAddress onBack={handleBack} />
               </motion.div>
             ) : (
               <motion.div
