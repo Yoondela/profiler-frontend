@@ -1,0 +1,82 @@
+@use '../abstracts/variables.module';
+
+.home-default-wrapper {
+  --homepage-ink: #18333a;
+  --homepage-muted: #557077;
+  --homepage-primary: #2f7f8c;
+  --homepage-primary-hover: #246b76;
+  --homepage-accent: #{variables.$theme-color};
+  --homepage-surface: #ffffff;
+  --homepage-surface-muted: #eef7f8;
+  --homepage-border: #d7e8eb;
+  --homepage-shadow: 0 18px 45px rgba(24, 51, 58, 0.08);
+  --homepage-radius-sm: 0.75rem;
+  --homepage-radius: 1.25rem;
+  --homepage-radius-lg: 1.75rem;
+  --homepage-content-width: 75rem;
+  --homepage-page-gutter: 1.25rem;
+
+  min-height: 100%;
+  background: var(--homepage-surface-muted);
+  color: var(--homepage-ink);
+  isolation: isolate;
+
+  &,
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  .header-intro-wrapper,
+  .requester-shell,
+  .sumed-benefits-container,
+  .booker-container {
+    position: relative;
+  }
+
+  .homepage-section {
+    width: 100%;
+    padding-block: 3.5rem;
+  }
+
+  .homepage-section__inner {
+    width: min(100% - (var(--homepage-page-gutter) * 2), var(--homepage-content-width));
+    margin-inline: auto;
+  }
+
+  .homepage-surface {
+    background: var(--homepage-surface);
+    border: 1px solid var(--homepage-border);
+    border-radius: var(--homepage-radius);
+    box-shadow: var(--homepage-shadow);
+  }
+
+  .homepage-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--homepage-primary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+}
+
+@media (min-width: 768px) {
+  .home-default-wrapper {
+    --homepage-page-gutter: 2rem;
+
+    .homepage-section {
+      padding-block: 5rem;
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .home-default-wrapper {
+    --homepage-page-gutter: 3rem;
+  }
+}
