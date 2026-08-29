@@ -4,6 +4,7 @@ import SEO from '../components/sub/seo/seo.jsx';
 import Layout from '../layouts/layout.jsx';
 // import Header from './header/index.jsx';
 import IntroContainer from '../containers/home/intro/intro-container.jsx';
+import ServiceDiscovery from '../components/intro/ServiceDiscovery.jsx';
 import { ServiceRequestProvider } from '../components/request/contexts/ServiceRequestContext.jsx';
 import SumedBenefits from '../components/sumed-benefits/benefits.jsx';
 // import { ServiceBookingProvider } from '@/components/request/contexts/ServiceBookingContext.jsx';
@@ -22,6 +23,7 @@ const HomePage = () => {
               <IntroContainer />
             </div>
           </div>
+          <ServiceDiscovery />
           <ServiceRequestProvider>
             <Requester />
           </ServiceRequestProvider>

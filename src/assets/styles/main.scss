@@ -6,13 +6,17 @@
 @use './components/navbar.module';
 @use './components/sidebar.module';
 @use './pages/profile-page.module';
+@use './pages/homepage.module';
 @use './components/exalt/intro.module';
+@use './components/exalt/service-discovery.module';
 @use './components/exalt/request/request.module';
 @use './components/exalt/request/requester-slide.module';
+@use './components/exalt/request/request-now.module';
 @use './components/exalt/request/req-popup.module';
 @use './components/exalt/request/tasks-popup.module';
 @use './components/exalt/benefits.module';
 @use './components/exalt/request/booker.module';
+@use './components/exalt/request/schedule-ahead.module';
 @use './components/exalt/request/req-review.module';
 @use './components/provider-dash.module';
 @use './components/exalt/user-avater.module';
@@ -115,4 +119,3 @@ h4 {
   box-shadow: 0 4px 12px rgba(0,0,0,0.5);
   border-color: #74f9e7; /* theme */
 }
-

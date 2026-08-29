@@ -1,43 +1,59 @@
-import PropTypes from 'prop-types';
-import SearchProvider from './IntroSearch';
+import {
+  Camera,
+  CarFront,
+  House,
+  PartyPopper,
+  Sparkles,
+  Waves,
+} from 'lucide-react';
 
-const PUBLIC_URL = import.meta.env.VITE_PUBLIC_URL || ''; // Default to empty if not defined
-
-const Intro = ({ data }) => {
+const Intro = () => {
   return (
-    <div
-      className="intro-section section"
-      style={{
-        backgroundImage: `url(${PUBLIC_URL + data.backgroundImage})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-      }}
-    >
-      <div className="intro-content-wrapper flex w-full flex-col items-center justify-center gap-6 px-4 md:flex-row-reverse md:justify-around md:gap-10">
+    <section className="intro-section">
+      <div className="intro-content-wrapper">
         <div className="intro-content">
-          {/* inspire 2026 */}
-          <span className="sub-title text-lg weight-300 text-white">
-            {data.subTitle}
-          </span>
-          {/* what we do */}
-          <h2 className="title !text-lg weight-300 !text-gray-900">
-            {data.title}
-          </h2>
-          {/* smaller text */}
-          <div className="desc text-lg text-white">
-            <p>{data.desc}</p>
+          <p className="intro-eyebrow">Trusted local professionals</p>
+          <h1 className="title">Local services, all in one place.</h1>
+          <div className="desc">
+            <p>
+              Find reliable help for your home, vehicle, and every occasion —
+              from routine care to memorable events.
+            </p>
+          </div>
+          <div className="intro-service-list" aria-label="Service groups">
+            <span>Home care</span>
+            <span>Vehicle care</span>
+            <span>Events &amp; lifestyle</span>
           </div>
         </div>
-        <div className="relative">
-          <SearchProvider />
+        <div className="intro-visual" aria-hidden="true">
+          <div className="intro-orb intro-orb--large"></div>
+          <div className="intro-orb intro-orb--small"></div>
+          <div className="intro-card intro-card--home">
+            <House strokeWidth={1.8} />
+          </div>
+          <div className="intro-card intro-card--pool">
+            <Waves strokeWidth={1.8} />
+          </div>
+          <div className="intro-card intro-card--car">
+            <CarFront strokeWidth={1.8} />
+          </div>
+          <div className="intro-card intro-card--camera">
+            <Camera strokeWidth={1.8} />
+          </div>
+          <div className="intro-card intro-card--event">
+            <PartyPopper strokeWidth={1.8} />
+          </div>
+          <div className="intro-sparkle intro-sparkle--one">
+            <Sparkles strokeWidth={1.6} />
+          </div>
+          <div className="intro-sparkle intro-sparkle--two">
+            <Sparkles strokeWidth={1.6} />
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
-};
-
-Intro.propTypes = {
-  data: PropTypes.object,
 };
 
 export default Intro;

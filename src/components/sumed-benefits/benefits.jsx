@@ -1,60 +1,79 @@
 import React from 'react';
-import CompanyMenu from '../sub/common/companyMenu';
 
 const SumedBenefits = () => {
   return (
-    <div className="sumed-benefits-container">
-      <div className="benefits-header">
-        <h2>Changing how the cities hires</h2>
-      </div>
-      <div className="benefits-content container">
+    <section className="sumed-benefits-container homepage-section">
+      <div className="homepage-section__inner benefits-content">
         <div className="benefits-list">
+          <div className="benefits-header">
+            <p className="homepage-eyebrow">Why choose Exalt</p>
+            <h2>Practical help, made simple.</h2>
+            <p>
+              Find the right local professional for the task at hand, whether
+              you need help today or want to plan ahead.
+            </p>
+          </div>
           <div className="benefit">
-            <div className="number">
-              <strong>1</strong>
+            <div className="benefit-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M12 3 5.5 6v5c0 4.2 2.8 8.1 6.5 10 3.7-1.9 6.5-5.8 6.5-10V6L12 3Z" />
+                <path d="m9.3 12 1.8 1.8 3.8-4" />
+              </svg>
             </div>
             <div className="content">
-              <b>Convenient hiring</b>
+              <h3>Verified professionals</h3>
               <p>
-                A seamless way to find and book skilled service providers at
-                your preferred time and location, saving you time and effort.
+                Connect with trusted service professionals for the work you need
+                done.
               </p>
             </div>
           </div>
-          <div className="benefit-left">
-            <div className="number">
-              <strong>2</strong>
+          <div className="benefit">
+            <div className="benefit-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <circle cx="12" cy="12" r="8.5" />
+                <path d="M12 7.5V12l3 2" />
+              </svg>
             </div>
             <div className="content">
-              <b>Verified service</b>
+              <h3>Flexible scheduling</h3>
               <p>
-                A network of trusted, vetted professionals with proven
-                expertise, ensuring quality and reliability for every job.
+                Request help when it is urgent, or schedule a service for a time
+                that suits you.
               </p>
             </div>
           </div>
-          <CompanyMenu />
           <div className="benefit">
-            <div className="number">
-              <strong>3</strong>
+            <div className="benefit-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M20 10.5c0 5.2-8 10-8 10s-8-4.8-8-10a8 8 0 1 1 16 0Z" />
+                <circle cx="12" cy="10.5" r="2.5" />
+              </svg>
             </div>
             <div className="content">
-              <b>Digital transformation</b>
+              <h3>Discover local services</h3>
               <p>
-                A modern approach to traditional service industries, bringing
-                efficiency and innovation to both providers and clients.
+                Explore a growing range of services from professionals in your
+                area.
               </p>
             </div>
           </div>
         </div>
-        <div className="benefits-right">
-          <img
-            src="img/homepage/lady-on-smartphone.jpg"
-            alt="lady on smart phone"
-          />
-        </div>
+        <aside className="provider-callout">
+          <div className="provider-callout__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M12 3v18M3 12h18" />
+            </svg>
+          </div>
+          <p className="homepage-eyebrow">For professionals</p>
+          <h2>Offer your services on Exalt.</h2>
+          <p>
+            Join a local marketplace built to help people discover the services
+            you provide.
+          </p>
+        </aside>
       </div>
-    </div>
+    </section>
   );
 };
 

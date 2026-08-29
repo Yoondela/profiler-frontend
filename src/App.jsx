@@ -20,10 +20,6 @@ import { useUserContext } from './api/context/userContext';
 import { CityProvider } from './components/city/context/cityContext';
 import { ServiceBookingProvider } from '@/components/request/contexts/ServiceBookingContext.jsx';
 
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/effect-fade';
-
 import './assets/css/animate.css';
 import './assets/css/globals.css';
 

@@ -5,7 +5,9 @@ const Booker = () => {
   return (
     <div className="booker-container">
       <div className="booker-header">
-        <h2 className="header">Book for a future date</h2>
+        <p className="homepage-eyebrow">Schedule ahead</p>
+        <h2 className="header">Planning ahead?</h2>
+        <p>Choose a date and time that works best for you.</p>
       </div>
       <div>
         <AnimatePresence mode="wait">
