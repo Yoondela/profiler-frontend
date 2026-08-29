@@ -9,6 +9,7 @@ import {
   format,
   isSameDay,
   isSameMonth,
+  isToday,
 } from 'date-fns';
 
 import {
@@ -20,7 +21,7 @@ import {
 import { useState } from 'react';
 import { useCalendar } from './CalendarContext';
 
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 
 function MiniCalendar() {
   const { events, selectedDate, setSelectedDate } = useCalendar();
@@ -30,7 +31,6 @@ function MiniCalendar() {
   };
 
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  // FIX 1: Keeping only one unified open state to drive the panel and the triggers
   const [isOpen, setIsOpen] = useState(true);
 
   const monthStart = startOfMonth(currentMonth);
@@ -47,42 +47,46 @@ function MiniCalendar() {
     for (let i = 0; i < 7; i++) {
       const cloneDay = day;
       const dayEvents = getEventsForDay(day);
+      const isSelected = isSameDay(day, selectedDate);
+      const isCurrentDay = isToday(day);
 
       days.push(
         <button
+          type="button"
           key={day.toString()}
+          aria-label={format(day, 'EEEE, MMMM d, yyyy')}
+          aria-pressed={isSelected}
           onClick={() => {
             setSelectedDate(cloneDay);
             setCurrentMonth(cloneDay);
           }}
           className={`
-            flex h-6 w-6 flex-col items-center justify-center rounded-full text-xs text-gray-100 transition
-            ${!isSameMonth(day, currentMonth) ? 'text-gray-500' : ''}
+            relative flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-transparent
+            text-[11px] font-medium text-[#bdc1c6] transition-colors
+            ${!isSameMonth(day, currentMonth) ? 'text-[#5f6368]' : ''}
             ${
-              isSameDay(day, selectedDate)
-                ? 'bg-blue-600 text-white'
-                : 'hover:bg-gray-100 hover:text-black'
+              isSelected
+                ? 'border-[#8ab4f8] bg-[#8ab4f8] !text-[#202124] hover:bg-[#aecbfa]'
+                : isCurrentDay
+                  ? 'border-[#8ab4f8] !text-[#8ab4f8] hover:bg-[#3c4043]'
+                  : 'hover:bg-[#3c4043] hover:text-[#e8eaed]'
             }
           `}
         >
           <span>{format(day, 'd')}</span>
 
           {dayEvents.length > 0 && (
-            <div className="mt-0.5 flex gap-[2px]">
+            <span className="absolute bottom-[2px] flex gap-[2px]">
               {dayEvents.slice(0, 3).map((_, index) => (
                 <span
                   key={index}
                   className={`
-                      h-1.5 w-1.5 rounded-full
-                      ${
-                        isSameDay(day, selectedDate)
-                          ? 'bg-white'
-                          : 'bg-blue-500'
-                      }
+                    h-0.5 w-0.5 rounded-full
+                    ${isSelected ? 'bg-[#202124]' : 'bg-[#8ab4f8]'}
                     `}
                 />
               ))}
-            </div>
+            </span>
           )}
         </button>
       );
@@ -102,52 +106,54 @@ function MiniCalendar() {
 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-      <CollapsibleContent className="overflow-hidden bg-[#292929] data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up">
-        <div className="rounded-xl p-0">
-          <div className="mb-1 flex items-center justify-between">
-            <button
-              onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
-              className="rounded px-1 cursor-pointer hover:bg-gray-100"
-            >
-              ←
-            </button>
-
-            <div className="font-medium">
+      <CollapsibleContent className="overflow-hidden bg-[#292929] px-2 pb-3 pt-2 data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up">
+        <div>
+          <div className="mb-3 flex items-center justify-between px-1">
+            <div className="text-sm font-medium text-[#e8eaed]">
               {format(currentMonth, 'MMMM yyyy')}
             </div>
 
-            <button
-              onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
-              className="rounded px-1 cursor-pointer hover:bg-gray-100"
-            >
-              →
-            </button>
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                aria-label="Previous month"
+                onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
+                className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-full text-[#bdc1c6] transition-colors hover:bg-[#3c4043] hover:text-[#e8eaed]"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+
+              <button
+                type="button"
+                aria-label="Next month"
+                onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
+                className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-full text-[#bdc1c6] transition-colors hover:bg-[#3c4043] hover:text-[#e8eaed]"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
           </div>
 
-          <div className="mb-2 grid grid-cols-7 text-center text-xs text-gray-400">
-            <div>Su</div>
-            <div>Mo</div>
-            <div>Tu</div>
-            <div>We</div>
-            <div>Th</div>
-            <div>Fr</div>
-            <div>Sa</div>
+          <div className="mb-1 grid grid-cols-7 text-center text-[10px] font-medium text-[#9aa0a6]">
+            <div>S</div>
+            <div>M</div>
+            <div>T</div>
+            <div>W</div>
+            <div>T</div>
+            <div>F</div>
+            <div>S</div>
           </div>
 
-          <div className="space-y-1">{rows}</div>
+          <div className="space-y-0.5">{rows}</div>
         </div>
       </CollapsibleContent>
 
-      {/* FIX 2: CollapsibleTrigger IS the button. Removed the inner <button> tag entirely. */}
-      {/* FIX 3: Replaced conditional isExpanded variables with your clean isOpen state flag. */}
       <CollapsibleTrigger
-        className={`group flex h-5 w-full items-center justify-center ease-in-out bg-gray-700 shadow-xs text-sm font-medium text-gray-700 rounded hover:bg-gray-600 cursor-pointer hover:shadow-sm transition-all
+        aria-label={isOpen ? 'Collapse mini calendar' : 'Expand mini calendar'}
+        className={`group flex h-7 w-full cursor-pointer items-center justify-center rounded-b-lg border-t border-[#3c4043] bg-[#292929] text-[#9aa0a6] transition-colors hover:bg-[#303134] hover:text-[#e8eaed]
           ${isOpen ? 'duration-200' : 'duration-700'}`}
       >
-        <ChevronDown
-          color="white"
-          className="w-4 h-4 transition-transform ease-in-out group-data-[state=open]:rotate-180 duration-[1.2s] group-data-[state=closed]:duration-[1.7s]"
-        />
+        <ChevronDown className="h-4 w-4 transition-transform duration-300 ease-in-out group-data-[state=open]:rotate-180" />
       </CollapsibleTrigger>
     </Collapsible>
   );

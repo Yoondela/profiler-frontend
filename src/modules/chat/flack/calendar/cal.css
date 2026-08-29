@@ -1,121 +1,198 @@
-.fc {
+.google-calendar .fc {
   background: #292929;
   color: #f5f5f5;
+  font-family: Arial, sans-serif;
 }
 
-.fc-scrollgrid-section {
-  border: 1px solid #404040;
+.google-calendar .fc-scrollgrid {
+  border: 1px solid #3c4043;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-/* .fc-theme-stadard .fc-scrollgrid {
-  background: pink;
-  color: #f5f5f5;
-  border-color: #404040;
-} */
-
-.fc-theme-standard td,
-.fc-theme-standard th {
-  border-color: #404040;
+.google-calendar .fc-theme-standard td,
+.google-calendar .fc-theme-standard th {
+  border-color: #3c4043;
 }
 
-.fc-scrollgrid {
-  border-color: #404040;
+.google-calendar .fc .fc-toolbar {
+  gap: 12px;
+  margin-bottom: 18px;
 }
 
-.fc-toolbar {
-  margin-bottom: 1rem;
+.google-calendar .fc .fc-toolbar-chunk {
+  align-items: center;
+  display: flex;
 }
 
-.fc-toolbar-title {
-  color: white;
-  font-size: 1.8rem;
+.google-calendar .fc .fc-toolbar-title {
+  color: #e8eaed;
+  font-size: 1.35rem;
   font-weight: 400;
+  margin-left: 12px;
+  white-space: nowrap;
 }
 
-.fc-button {
-  background: #262626 !important;
-  border: 1px solid #404040 !important;
-  color: white !important;
-
-  transition: .2s;
+.google-calendar .fc .fc-button-primary {
+  background: transparent;
+  border-color: #5f6368;
+  border-radius: 4px;
+  box-shadow: none;
+  color: #e8eaed;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.55rem 0.8rem;
+  text-transform: capitalize;
+  transition: background-color 120ms ease;
 }
 
-.fc-button:hover {
-  background: #3a3a3a !important;
-}
-
-.fc-button-active {
-  background: #2563eb !important;
-  border-color: #2563eb !important;
-}
-
-.fc-col-header-cell {
-  background: #1f1f1f;
-}
-
-.fc-col-header-cell-cushion {
-  color: #d4d4d4;
-  font-weight: 100;
-  text-decoration: none;
-}
-
-.fc-daygrid-day-number {
-  color: #e5e5e5;
-  text-decoration: none;
-}
-
-/* .fc-daygrid-day {
-  background: #171717;
-} */
-
-.fc-day-today {
-  background: rgba(37, 99, 235, 0.15) !important;
-}
-
-.fc-timegrid-slot {
-  border-color: #333;
-}
-
-.fc-timegrid-axis {
-  color: #a3a3a3;
-}
-
-.fc-daygrid-day:hover {
-  background: #202020;
-}
-
-.fc-event:focus {
+.google-calendar .fc .fc-button-primary:hover,
+.google-calendar .fc .fc-button-primary:focus {
+  background: #3c4043;
+  border-color: #74787d;
   box-shadow: none;
 }
 
-.fc .meeting-event {
-  padding-left: 4px ;
-  background: #c6d2ee;
-  border-color: #2563eb;
-  border-left: #2563eb 3px solid;
+.google-calendar .fc .fc-button-primary:not(:disabled).fc-button-active {
+  background: #394457;
+  border-color: #8ab4f8;
+  color: #8ab4f8;
 }
 
-.fc .task-event {
-  padding-left: 4px ;
-  background: #d9f0e2;
-  border-color: #16a34a;
-  border-left: #16a34a 3px solid;
-
+.google-calendar .fc .fc-prev-button,
+.google-calendar .fc .fc-next-button {
+  border-color: transparent;
+  border-radius: 50%;
+  padding: 0.5rem;
 }
 
-.fc .reminder-event {
-  padding-left: 4px ;
-  background: #f1c7f3;
-  border-color: #ea0cea;
-  border-left: #ea0cea 3px solid;
-  /* color: black !important; */
+.google-calendar .fc .fc-prev-button {
+  margin-left: 8px;
 }
 
-.fc-scroller::-webkit-scrollbar {
-  width: 0px;
+.google-calendar .fc .fc-col-header-cell {
+  background: #292929;
+  border-bottom: 1px solid #3c4043;
 }
 
-/* .fc-scroller::-webkit-scrollbar-thumb {
-  background: #555;
+.google-calendar .fc .fc-col-header-cell-cushion {
+  color: #9aa0a6;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 11px 4px 9px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.google-calendar .fc .fc-daygrid-day-number {
+  align-items: center;
+  color: #bdc1c6;
+  display: flex;
+  font-size: 0.75rem;
+  height: 24px;
+  justify-content: center;
+  margin: 4px 4px 2px 0;
+  min-width: 24px;
+  padding: 0;
+  text-decoration: none;
+}
+
+.google-calendar .fc .fc-day-today {
+  background: transparent;
+}
+
+.google-calendar .fc .fc-day-today .fc-daygrid-day-number {
+  background: #8ab4f8;
+  border-radius: 50%;
+  color: #202124;
+  font-weight: 600;
+}
+
+.google-calendar .fc .fc-timegrid-col.fc-day-today {
+  background: rgba(138, 180, 248, 0.06);
+}
+
+.google-calendar .fc .fc-timegrid-slot {
+  border-color: #3c4043;
+  height: 3rem;
+}
+
+.google-calendar .fc .fc-timegrid-axis,
+.google-calendar .fc .fc-timegrid-slot-label-cushion {
+  color: #9aa0a6;
+  font-size: 0.68rem;
+}
+
+.google-calendar .fc .fc-daygrid-day:hover {
+  background: #303134;
+}
+
+.google-calendar .fc .fc-event {
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 1px 3px;
+  padding: 2px 5px;
+}
+
+.google-calendar .fc .fc-event:focus {
+  box-shadow: none;
+}
+
+.google-calendar .fc .meeting-event {
+  background: #1a73e8;
+  color: #fff;
+}
+
+.google-calendar .fc .task-event {
+  background: #188038;
+  color: #fff;
+}
+
+.google-calendar .fc .reminder-event {
+  background: #a142f4;
+  color: #fff;
+}
+
+.google-calendar .fc .fc-list {
+  border-color: #3c4043;
+}
+
+.google-calendar .fc .fc-list-day-cushion {
+  background: #303134;
+}
+
+.google-calendar .fc .fc-list-event:hover td {
+  background: #3c4043;
+}
+
+.google-calendar .fc .fc-now-indicator-line {
+  border-color: #ea4335;
+}
+
+.google-calendar .fc .fc-now-indicator-arrow {
+  border-left-color: #ea4335;
+  border-right-color: #ea4335;
+}
+
+.google-calendar .fc-scroller::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.google-calendar .fc-scroller::-webkit-scrollbar-thumb {
+  background: #5f6368;
   border-radius: 999px;
-} */
+}
+
+@media (max-width: 900px) {
+  .google-calendar .fc .fc-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .google-calendar .fc .fc-toolbar-title {
+    font-size: 1.1rem;
+  }
+}

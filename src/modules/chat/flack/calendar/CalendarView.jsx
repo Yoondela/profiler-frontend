@@ -75,10 +75,9 @@ function CalendarView() {
       info.revert();
     });
   };
-
   return (
     <>
-      <div className="h-full w-[76%] p-3 sm:p-4 lg:p-6 bg-[#292929]">
+      <div className="google-calendar h-full w-[76%] bg-[#292929] p-3 sm:p-4 lg:p-6">
         <div className="h-full w-full overflow-hidden">
           <FullCalendar
             ref={calendarRef}
@@ -90,10 +89,27 @@ function CalendarView() {
             ]}
             initialView="dayGridMonth"
             height="100%"
+            expandRows
+            nowIndicator
+            dayMaxEvents
+            fixedWeekCount={false}
             headerToolbar={{
-              left: 'prev,next today',
-              center: 'title',
+              left: 'today prev,next title',
+              center: '',
               right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
+            }}
+            buttonText={{
+              today: 'Today',
+              month: 'Month',
+              week: 'Week',
+              day: 'Day',
+              list: 'Schedule',
+            }}
+            dayHeaderFormat={{ weekday: 'short' }}
+            eventTimeFormat={{
+              hour: 'numeric',
+              minute: '2-digit',
+              meridiem: 'short',
             }}
             events={events}
             selectable
@@ -140,10 +156,15 @@ function CalendarView() {
             }}
             eventContent={(info) => {
               return (
-                <div className="overflow-hidden">
-                  <div className="truncate font-medium">{info.event.title}</div>
-
-                  <div className="text-xs opacity-80">{info.timeText}</div>
+                <div className="flex min-w-0 items-center gap-1 overflow-hidden">
+                  {info.timeText && (
+                    <span className="shrink-0 text-[11px] opacity-80">
+                      {info.timeText}
+                    </span>
+                  )}
+                  <span className="truncate text-xs font-medium">
+                    {info.event.title}
+                  </span>
                 </div>
               );
             }}
