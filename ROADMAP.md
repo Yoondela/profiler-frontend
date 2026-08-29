@@ -36,7 +36,8 @@
   - ✅ Do not introduce provider signup routes or interactions.
 
 - 1.7 Verification and polish — **current**
-  - Complete responsive layout, focus-state, contrast, and section-spacing polish.
-  - Verify navbar search, service requests, and scheduled bookings work unchanged.
-  - Confirm no orphaned hero-search UI or styles remain.
-  - Run lint and a production build.
+  - ✅ Complete responsive layout, focus-state, contrast, and section-spacing polish.
+  - ✅ Verify navbar search, service requests, and scheduled bookings work unchanged.
+  - ✅ Confirm no orphaned hero-search UI or styles remain.
+  - Run lint.
+  - Run a production build.

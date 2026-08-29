@@ -23,8 +23,8 @@ const SumedBenefits = () => {
             <div className="content">
               <h3>Verified professionals</h3>
               <p>
-                Connect with trusted service professionals for the work you
-                need done.
+                Connect with trusted service professionals for the work you need
+                done.
               </p>
             </div>
           </div>
@@ -38,8 +38,8 @@ const SumedBenefits = () => {
             <div className="content">
               <h3>Flexible scheduling</h3>
               <p>
-                Request help when it is urgent, or schedule a service for a
-                time that suits you.
+                Request help when it is urgent, or schedule a service for a time
+                that suits you.
               </p>
             </div>
           </div>
@@ -68,8 +68,8 @@ const SumedBenefits = () => {
           <p className="homepage-eyebrow">For professionals</p>
           <h2>Offer your services on Exalt.</h2>
           <p>
-            Join a local marketplace built to help people discover the
-            services you provide.
+            Join a local marketplace built to help people discover the services
+            you provide.
           </p>
         </aside>
       </div>

@@ -39,7 +39,10 @@ const serviceGroups = [
 
 export default function ServiceDiscovery() {
   return (
-    <section className="service-discovery homepage-section" aria-labelledby="services-heading">
+    <section
+      className="service-discovery homepage-section"
+      aria-labelledby="services-heading"
+    >
       <div className="homepage-section__inner">
         <div className="service-discovery__heading">
           <p className="homepage-eyebrow">Explore services</p>
@@ -52,7 +55,11 @@ export default function ServiceDiscovery() {
 
         <div className="service-discovery__groups">
           {serviceGroups.map((group) => (
-            <section key={group.title} className="service-group" aria-labelledby={`${group.title}-heading`}>
+            <section
+              key={group.title}
+              className="service-group"
+              aria-labelledby={`${group.title}-heading`}
+            >
               <h3 id={`${group.title}-heading`}>{group.title}</h3>
               <ul className="service-group__list">
                 {group.services.map(({ name, Icon }) => (
