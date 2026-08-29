@@ -13,14 +13,14 @@
   - ✅ Keep navbar search as the only global search entry point.
   - ✅ Use copy that positions Exalt as a broad local-services marketplace.
 
-- 1.3 Service discovery presentation — **current**
-  - Add a responsive, visual-only “Explore services” category grid.
-  - Present Home & outdoor: Cleaning, Gardening, Pool Cleaning, and Roof Cleaning.
-  - Present Vehicle care: Car Wash.
-  - Present Events & lifestyle: Photography, Makeup, Décor, and Catering.
-  - Use existing or code-native blue icons; do not add navigation, prefill, or request behaviour.
+- 1.3 Service discovery presentation ✅
+  - ✅ Add a responsive, visual-only “Explore services” category grid.
+  - ✅ Present Home & outdoor: Cleaning, Gardening, Pool Cleaning, and Roof Cleaning.
+  - ✅ Present Vehicle care: Car Wash.
+  - ✅ Present Events & lifestyle: Photography, Makeup, Décor, and Catering.
+  - ✅ Use existing or code-native blue icons; do not add navigation, prefill, or request behaviour.
 
-- 1.4 Request-now presentation
+- 1.4 Request-now presentation — **current**
   - Restyle the existing service-request section as “Need help today?”.
   - Preserve all request fields, autocomplete, confirmation drawer, validation, and submission behaviour.
   - Apply only homepage presentation changes around the existing form.
