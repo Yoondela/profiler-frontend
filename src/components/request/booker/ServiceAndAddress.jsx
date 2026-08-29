@@ -115,8 +115,8 @@ export default function ServiceAndAddress({ onBack }) {
   return (
     <div className="booker-form-container">
       <div className="service-request-container">
-        <h2 className="title">Service And Address</h2>
-        <p className="paragraph">What service do you require?</p>
+        <h2 className="title">Service and location</h2>
+        <p className="paragraph">Choose the service and where you need it.</p>
 
         {/* SERVICE FIELD */}
         <ServiceField mode="booking" />
@@ -163,7 +163,7 @@ export default function ServiceAndAddress({ onBack }) {
               onClick={handleNext}
               disabled={isNextDisabled}
             >
-              Next
+              Continue
             </button>
           </div>
 

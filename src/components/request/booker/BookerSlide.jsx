@@ -44,10 +44,11 @@ const BookerSlide = () => {
 
         <div className="booker-right">
           <div className="booker-terms">
-            <h2>Note</h2>
+            <p className="booker-terms__eyebrow">Book with confidence</p>
+            <h2>Your booking, your schedule.</h2>
             <ul>
               <li>
-                <CancelIcon /> Free cancelation within 8 hours
+                <CancelIcon /> Free cancellation within 8 hours
               </li>
               <li>
                 <CalendarIcon /> Book up to 3 months in advance

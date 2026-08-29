@@ -20,22 +20,22 @@
   - ✅ Present Events & lifestyle: Photography, Makeup, Décor, and Catering.
   - ✅ Use existing or code-native blue icons; do not add navigation, prefill, or request behaviour.
 
-- 1.4 Request-now presentation — **current**
-  - Restyle the existing service-request section as “Need help today?”.
-  - Preserve all request fields, autocomplete, confirmation drawer, validation, and submission behaviour.
-  - Apply only homepage presentation changes around the existing form.
+- 1.4 Request-now presentation ✅
+  - ✅ Restyle the existing service-request section as “Need help today?”.
+  - ✅ Preserve all request fields, autocomplete, confirmation drawer, validation, and submission behaviour.
+  - ✅ Apply only homepage presentation changes around the existing form.
 
-- 1.5 Schedule-ahead presentation
-  - Restyle the existing booking section as “Planning ahead?”.
-  - Preserve existing date/time selection, service/address details, notification content, and booking behaviour.
-  - Match the request-now section’s visual treatment.
+- 1.5 Schedule-ahead presentation ✅
+  - ✅ Restyle the existing booking section as “Planning ahead?”.
+  - ✅ Preserve existing date/time selection, service/address details, notification content, and booking behaviour.
+  - ✅ Match the request-now section’s visual treatment.
 
-- 1.6 Trust and provider presentation
-  - Replace the benefits composition with concise trust signals for verified professionals, flexible scheduling, and local discovery.
-  - Add a presentational provider callout: “Offer your services on Exalt.”
-  - Do not introduce provider signup routes or interactions.
+- 1.6 Trust and provider presentation ✅
+  - ✅ Replace the benefits composition with concise trust signals for verified professionals, flexible scheduling, and local discovery.
+  - ✅ Add a presentational provider callout: “Offer your services on Exalt.”
+  - ✅ Do not introduce provider signup routes or interactions.
 
-- 1.7 Verification and polish
+- 1.7 Verification and polish — **current**
   - Complete responsive layout, focus-state, contrast, and section-spacing polish.
   - Verify navbar search, service requests, and scheduled bookings work unchanged.
   - Confirm no orphaned hero-search UI or styles remain.

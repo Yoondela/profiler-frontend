@@ -1,0 +1,223 @@
+.booker-container {
+  padding: 3.5rem var(--homepage-page-gutter, 1.25rem);
+  background: var(--homepage-surface, #ffffff);
+
+  .booker-header {
+    max-width: 40rem;
+    margin: 0 auto 2.5rem;
+    text-align: center;
+
+    h2 {
+      margin: 0.75rem 0 0.9rem;
+      color: var(--homepage-ink, #18333a);
+      font-size: clamp(2rem, 6vw, 3.25rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.08;
+    }
+
+    > p:last-child {
+      color: var(--homepage-muted, #557077);
+      line-height: 1.7;
+    }
+  }
+}
+
+.booker-container .booker-child-container {
+  width: min(100%, var(--homepage-content-width, 75rem));
+  max-width: none;
+  margin: 0 auto;
+  padding: 0;
+
+  .booker {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .booker-left,
+  .booker-right {
+    width: 100%;
+  }
+
+  .booker-left {
+    display: flex;
+    align-items: center;
+    min-height: 20rem;
+    padding: 1.75rem;
+    border: 1px solid var(--homepage-border, #d7e8eb);
+    border-radius: var(--homepage-radius-lg, 1.75rem);
+    background: var(--homepage-surface-muted, #eef7f8);
+  }
+
+  .booker-form-container {
+    width: 100%;
+  }
+
+  .service-request-container {
+    width: 100%;
+    max-width: none;
+
+    .title {
+      margin-bottom: 0.5rem;
+      color: var(--homepage-ink, #18333a);
+      font-size: 1.5rem;
+      letter-spacing: -0.03em;
+    }
+
+    .paragraph {
+      margin-bottom: 1.5rem;
+      color: var(--homepage-muted, #557077);
+      line-height: 1.6;
+    }
+
+    .dropdown-container,
+    .input-container {
+      min-height: 3.5rem;
+      margin-bottom: 0.75rem;
+      border: 1px solid var(--homepage-border, #d7e8eb);
+      border-radius: var(--homepage-radius-sm, 0.75rem);
+      background: #ffffff;
+      box-shadow: none;
+    }
+
+    .dropdown-container:focus-within,
+    .input-container:focus-within {
+      border: 1px solid var(--homepage-primary, #2f7f8c);
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(47, 127, 140, 0.12);
+    }
+
+    .dropdown,
+    .location-input,
+    .time-picker,
+    .date-picker {
+      color: var(--homepage-ink, #18333a);
+    }
+
+    .request-button {
+      min-height: 3.25rem;
+      border-radius: var(--homepage-radius-sm, 0.75rem);
+      background: var(--homepage-primary, #2f7f8c);
+      font-weight: 700;
+
+      &:hover:not(:disabled) {
+        background: var(--homepage-primary-hover, #246b76);
+      }
+
+      &:focus-visible {
+        outline: 3px solid rgba(47, 127, 140, 0.32);
+        outline-offset: 3px;
+      }
+    }
+
+    .slider-btns {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+
+      .right-btn {
+        display: block;
+        width: auto;
+      }
+
+      .small-btn {
+        width: auto;
+        height: auto;
+        padding: 0.7rem 1rem;
+        border: 1px solid var(--homepage-border, #d7e8eb);
+        border-radius: var(--homepage-radius-sm, 0.75rem);
+        background: #ffffff;
+        color: var(--homepage-primary, #2f7f8c);
+        font-weight: 700;
+      }
+    }
+  }
+
+  .booker-right .booker-terms {
+    height: 100%;
+    max-height: none;
+    min-height: 20rem;
+    padding: 1.75rem;
+    overflow: visible;
+    border: 0;
+    border-radius: var(--homepage-radius-lg, 1.75rem);
+    background:
+      radial-gradient(circle at 82% 14%, rgba(172, 233, 240, 0.32), transparent 34%),
+      linear-gradient(145deg, #1c5965, #2f7f8c);
+    color: #ffffff;
+    font-family: inherit;
+
+    .booker-terms__eyebrow {
+      margin-bottom: 0.8rem;
+      color: #c9f1f5;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      max-width: 16rem;
+      margin-bottom: 1.5rem;
+      color: inherit;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    ul {
+      display: grid;
+      gap: 1rem;
+      margin: 0;
+
+      li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.65rem;
+        margin: 0;
+        padding: 0;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.88rem;
+        line-height: 1.45;
+
+        &::before {
+          content: none;
+        }
+
+        > svg {
+          flex: 0 0 auto;
+          width: 1.1rem;
+          height: 1.1rem;
+          margin-top: 0.1rem;
+        }
+
+        ol {
+          display: grid;
+          gap: 0.2rem;
+          margin: 0.4rem 0 0;
+          padding-left: 1rem;
+
+          li {
+            display: list-item;
+            color: rgba(255, 255, 255, 0.78);
+            font-size: inherit;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .booker-container {
+    padding-block: 5rem;
+  }
+
+  .booker-container .booker-child-container .booker {
+    grid-template-columns: minmax(0, 1.1fr) minmax(16rem, 0.9fr);
+    gap: 2rem;
+    align-items: stretch;
+  }
+}

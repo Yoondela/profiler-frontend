@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { X } from 'lucide-react';
+import { Clock, MapPin, ShieldCheck, X } from 'lucide-react';
 
 import { Input } from '@/components/ui/input';
 import { useServiceRequest } from '../contexts/ServiceRequestContext';
@@ -114,10 +114,9 @@ export default function ServiceRequestForm() {
   return (
     <div className="service-request-wrapper">
       <div className="service-request-container">
-        <h2 className="title">Create Your Service</h2>
+        <h2 className="title">Tell us what you need</h2>
         <p className="paragraph">
-          Discover the convenience of Exalt. Request a service now, or schedule
-          one for later directly from your browser.
+          Choose a service and confirm your location to begin your request.
         </p>
 
         {/* SERVICE SELECT */}
@@ -175,18 +174,27 @@ export default function ServiceRequestForm() {
             onClick={handleContinue}
             disabled={!userService}
           >
-            Get
+            Continue
           </button>
         </div>
       </div>
 
-      {/* RIGHT IMAGE */}
-      <div className="image-container">
-        <img
-          src="img/homepage/oomakayoza.jpg"
-          alt="Service"
-          className="service-image"
-        />
+      <div className="image-container service-request-aside">
+        <div className="service-request-aside__icon" aria-hidden="true">
+          <ShieldCheck strokeWidth={1.8} />
+        </div>
+        <p className="service-request-aside__eyebrow">How it works</p>
+        <h3>Get help without the back-and-forth.</h3>
+        <ul>
+          <li>
+            <MapPin strokeWidth={1.8} />
+            <span>Share the address where you need help.</span>
+          </li>
+          <li>
+            <Clock strokeWidth={1.8} />
+            <span>Start a request for the service you need today.</span>
+          </li>
+        </ul>
       </div>
 
       <RequestDrawer

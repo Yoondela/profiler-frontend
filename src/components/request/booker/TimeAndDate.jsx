@@ -38,9 +38,9 @@ export default function TimeAndDate({ onNext }) {
   return (
     <div className="booker-form-container">
       <div className="service-request-container">
-        <h2 className="title">Date And Time</h2>
+        <h2 className="title">Choose a date and time</h2>
         <p className="paragraph">
-          What day and hour would you like to book for?
+          Select when you would like your service to take place.
         </p>
 
         <div className="input-container">
@@ -78,7 +78,7 @@ export default function TimeAndDate({ onNext }) {
           onClick={onNext}
           disabled={!userDate || !userTime}
         >
-          Next
+          Continue
         </button>
       </div>
     </div>
