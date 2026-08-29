@@ -4,9 +4,16 @@ import { Briefcase, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import BriefcaseIcon from '@/assets/icons/other/briefcase.svg?react';
 import { useServiceRequest } from '../contexts/ServiceRequestContext';
+import { useServiceBooking } from '../contexts/ServiceBookingContext';
 
-export default function ServiceField() {
-  const { userService, setUserService } = useServiceRequest();
+export default function ServiceField({ mode }) {
+  // choose the correct context based on mode
+  const ctx =
+    mode === 'booking' || mode === 'direct-booking'
+      ? useServiceBooking()
+      : useServiceRequest();
+
+  const { userService, setUserService } = ctx;
 
   const [suggestions, setSuggestions] = useState([]);
   const [open, setOpen] = useState(false);

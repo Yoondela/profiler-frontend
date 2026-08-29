@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react';
-import { FaChevronDown } from 'react-icons/fa';
 import { Input } from '@/components/ui/input';
-import BriefcaseIcon from '../../../assets/icons/other/briefcase.svg?react';
+import ServiceField from '../formField/ServiceField';
 import LocationIcon from '../../../assets/icons/other/location.svg?react';
 import { useServiceBooking } from '../contexts/ServiceBookingContext';
 import { RequestDrawer } from '../confirm/confirm';
@@ -97,7 +96,13 @@ export default function ServiceAndAddress({ onBack }) {
 
   const handleNext = () => {
     if (!userService) return;
-    if (!userLocation?.address) setUserLocation(MOCK_ADDRESS);
+    if (!userLocation?.address) {
+      setUserLocation(MOCK_ADDRESS);
+      // ensure state is applied before opening drawer
+      setTimeout(() => setShowDrawer(true), 0);
+      return;
+    }
+
     setShowDrawer(true);
   };
 
@@ -113,27 +118,8 @@ export default function ServiceAndAddress({ onBack }) {
         <h2 className="title">Service And Address</h2>
         <p className="paragraph">What service do you require?</p>
 
-        {/* SERVICE DROPDOWN */}
-
-        <div className="dropdown-container">
-          <BriefcaseIcon width="20" height="20" className="briefcase-icon" />
-
-          <select
-            className="dropdown"
-            value={userService}
-            onChange={handleServiceChange}
-          >
-            <option value="" disabled>
-              Select a service
-            </option>
-
-            <option value="Cleaning">Cleaning</option>
-            <option value="Car Wash">Car Wash</option>
-            <option value="Gardening">Gardening</option>
-          </select>
-
-          <FaChevronDown className="dropdown-icon" />
-        </div>
+        {/* SERVICE FIELD */}
+        <ServiceField mode="booking" />
 
         {/* LOCATION INPUT */}
 

@@ -18,6 +18,7 @@ import { createRequest } from '@/api/sync/SyncRequest';
 import { ArrowUp } from 'lucide-react';
 
 export function RequestDrawer({ mode, open, onOpenChange }) {
+  console.log('RequestDrawer mode:', mode);
   const bookingState = useServiceBooking();
   const requestState = useServiceRequest();
   const selectedMember = usePublicPageStore((state) => state.selectedMember);
@@ -37,12 +38,22 @@ export function RequestDrawer({ mode, open, onOpenChange }) {
     note,
     bookingPayload,
     requestPayload,
-  } = mode === 'booking' || 'direct-booking' ? bookingState : requestState;
+  } = mode === 'booking' || mode === 'direct-booking' ? bookingState : requestState;
+
+  console.log('RequestDrawer state:', {
+    userService,
+    userLocation,
+    subjectSize,
+    serviceTasks,
+    note,
+    bookingPayload,
+    requestPayload,
+  });
 
   const handleConfirm = () => {
     console.log(
       'Confirming with payload:',
-      mode === 'booking' ? bookingPayload : requestPayload
+      requestPayload 
     );
     try {
       if (mode === 'booking') {

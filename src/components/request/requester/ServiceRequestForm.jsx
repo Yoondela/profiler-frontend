@@ -98,7 +98,13 @@ export default function ServiceRequestForm() {
 
   const handleContinue = () => {
     if (!userService) return;
-    if (!userLocation?.address) setUserLocation(MOCK_ADDRESS);
+    if (!userLocation?.address) {
+      setUserLocation(MOCK_ADDRESS);
+      // ensure state is applied before opening drawer
+      setTimeout(() => setShowConfirmDrawer(true), 0);
+      return;
+    }
+
     setShowConfirmDrawer(true);
   };
 
@@ -116,7 +122,7 @@ export default function ServiceRequestForm() {
 
         {/* SERVICE SELECT */}
 
-        <ServiceField handleServiceChange={handleServiceChange} />
+        <ServiceField mode={'request'} />
 
         {/* LOCATION INPUT */}
         <div className="input-container">
@@ -184,7 +190,7 @@ export default function ServiceRequestForm() {
       </div>
 
       <RequestDrawer
-        mode="request"
+        mode={'request'}
         open={showConfirmDrawer}
         onOpenChange={setShowConfirmDrawer}
       />
