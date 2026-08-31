@@ -41,6 +41,7 @@ function BadgeVariants() {
 
 const PublicPortfolio = ({ data, availability }) => {
   console.log('data inside', data);
+  console.log('avialability inside', availability);
 
   const [isMiniCalendarOpen, setIsMiniCalendarOpen] = useState(false);
 
