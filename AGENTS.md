@@ -74,6 +74,9 @@ For each file, include:
 
 # Exalt implementation rules
 
+## Do not
+- Edit components in src/components/ui/
+
 ## Preserve existing behaviour
 
 * Refactoring must preserve existing behaviour unless the task explicitly requires a behavioural change.

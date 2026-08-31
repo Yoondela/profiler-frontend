@@ -15,6 +15,11 @@ body {
   height: var(--radix-collapsible-content-height);
 }
 
+[data-sidebar='sidebar'][data-mobile='true'] {
+  background-color: white;
+  width: 12rem;
+}
+
 
 @layer base {
   :root {

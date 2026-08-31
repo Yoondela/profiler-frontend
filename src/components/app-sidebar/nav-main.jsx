@@ -10,7 +10,7 @@ import { useSidebar } from '@/components/ui/sidebar';
 import { useBookings } from '@/api/context/bookingsContext';
 
 export function NavMain({ menuItems }) {
-  const { state } = useSidebar();
+  const { state, isMobile, setOpenMobile } = useSidebar();
   let hasBookingNew = false;
   try {
     const b = useBookings();
@@ -18,9 +18,16 @@ export function NavMain({ menuItems }) {
   } catch (e) {
     // provider not present
   }
+
+  const handleNavigation = () => {
+    if (isMobile) setOpenMobile(false);
+  };
+
   return (
-    <SidebarGroup>
-      <SidebarGroupLabel className="text-[var(--sidebar-foreground)]/70">
+    <SidebarGroup className={isMobile ? 'p-1' : undefined}>
+      <SidebarGroupLabel
+        className={`text-[var(--sidebar-foreground)]/70 ${isMobile ? 'sr-only' : ''}`}
+      >
         Menu
       </SidebarGroupLabel>
 
@@ -29,9 +36,11 @@ export function NavMain({ menuItems }) {
           <SidebarMenuItem key={to}>
             <NavLink
               to={to}
+              onClick={handleNavigation}
+              aria-label={label}
               className={({ isActive }) =>
                 ` w-full
-                flex items-center gap-2 rounded-lg 
+                flex items-center gap-2 rounded-lg
                 transition-all duration-200! 
                 text-[var(--sidebar-foreground)]! 
                 hover:bg-[var(--sidebar-accent)]! 

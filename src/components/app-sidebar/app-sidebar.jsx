@@ -25,7 +25,7 @@ import { useState } from 'react';
 
 export function AppSidebar() {
   const { user } = useAuth0();
-  const { state } = useSidebar();
+  const { state, isMobile } = useSidebar();
   const { portfolio, loading, error } = useProviderPortfolio();
 
   const menuItems = [
@@ -49,19 +49,21 @@ export function AppSidebar() {
       >
         <SidebarTrigger className="cursor-pointer" />
       </div>
-      {portfolio && !error && (
+      {!isMobile && portfolio && !error && (
         <SidebarHeader className="p-1">
           <CompanyAvatar />
         </SidebarHeader>
       )}
 
-      <SidebarContent>
+      <SidebarContent classname="bg-[white]">
         <NavMain menuItems={menuItems} />
       </SidebarContent>
 
-      <SidebarFooter className="p-1">
-        <AppUserAvatar />
-      </SidebarFooter>
+      {!isMobile && (
+        <SidebarFooter className="p-1">
+          <AppUserAvatar />
+        </SidebarFooter>
+      )}
     </Sidebar>
   );
 }
