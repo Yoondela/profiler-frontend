@@ -1,6 +1,7 @@
 .requester-shell {
   padding: 3.5rem 0;
-  background: var(--homepage-surface-muted, #eef7f8);
+  background: #fafefe;
+  // background: var(--homepage-surface-muted, #ffffff);
 }
 
 .requester-container {
@@ -35,7 +36,7 @@
     margin-top: 2.5rem;
     padding: 1.25rem;
     border: 1px solid var(--homepage-border, #d7e8eb);
-    border-radius: var(--homepage-radius-lg, 1.75rem);
+    // border-radius: var(--homepage-radius-lg, 1.75rem);
     background: var(--homepage-surface, #ffffff);
     box-shadow: var(--homepage-shadow, 0 18px 45px rgba(24, 51, 58, 0.08));
   }
@@ -83,7 +84,8 @@
     .request-button {
       min-height: 3.25rem;
       border-radius: var(--homepage-radius-sm, 0.75rem);
-      background: var(--homepage-primary, #2f7f8c);
+      // background: var(--homepage-primary, #2f7f8c);
+      background: #111;
       font-weight: 700;
 
       &:hover:not(:disabled) {
@@ -98,76 +100,6 @@
   }
 }
 
-.service-request-aside {
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-end;
-  min-height: 18rem;
-  padding: 1.75rem;
-  border-radius: var(--homepage-radius, 1.25rem);
-  background:
-    radial-gradient(circle at 80% 15%, rgba(172, 233, 240, 0.35), transparent 34%),
-    linear-gradient(145deg, #1c5965, #2f7f8c);
-  color: #ffffff;
-
-  h3 {
-    max-width: 18rem;
-    margin: 0.8rem 0 1.5rem;
-    color: inherit;
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    line-height: 1.15;
-  }
-
-  ul {
-    display: grid;
-    gap: 0.85rem;
-    width: 100%;
-    margin: 0;
-  }
-
-  li {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.65rem;
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 0.88rem;
-    line-height: 1.45;
-
-    svg {
-      flex: 0 0 auto;
-      width: 1.1rem;
-      height: 1.1rem;
-      margin-top: 0.1rem;
-    }
-  }
-}
-
-.service-request-aside__icon {
-  display: grid;
-  width: 2.75rem;
-  aspect-ratio: 1;
-  place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 0.85rem;
-  background: rgba(255, 255, 255, 0.12);
-
-  svg {
-    width: 1.4rem;
-    height: 1.4rem;
-  }
-}
-
-.service-request-aside__eyebrow {
-  margin-top: 1.5rem;
-  color: #c9f1f5;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
 @media (min-width: 768px) {
   .requester-shell {
     padding-block: 5rem;
@@ -179,7 +111,4 @@
     padding: 2rem;
   }
 
-  .service-request-aside {
-    min-height: 100%;
-  }
 }
