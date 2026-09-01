@@ -12,6 +12,9 @@ import { useRef, useEffect } from 'react';
 
 function CalendarView() {
   const calendarRef = useRef(null);
+  const currentTime = new Date(Date.now() - 90 * 60 * 1000)
+    .toTimeString()
+    .slice(0, 8);
 
   const {
     events,
@@ -88,6 +91,10 @@ function CalendarView() {
               listPlugin,
             ]}
             initialView="dayGridMonth"
+            views={{
+              timeGridWeek: { allDaySlot: false, scrollTime: currentTime },
+              timeGridDay: { allDaySlot: false, scrollTime: currentTime },
+            }}
             height="100%"
             expandRows
             nowIndicator
