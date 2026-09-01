@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Clock, MapPin, ShieldCheck, X } from 'lucide-react';
+import { X } from 'lucide-react';
 
 import { Input } from '@/components/ui/input';
 import { useServiceRequest } from '../contexts/ServiceRequestContext';
@@ -179,22 +179,13 @@ export default function ServiceRequestForm() {
         </div>
       </div>
 
-      <div className="image-container service-request-aside">
-        <div className="service-request-aside__icon" aria-hidden="true">
-          <ShieldCheck strokeWidth={1.8} />
-        </div>
-        <p className="service-request-aside__eyebrow">How it works</p>
-        <h3>Get help without the back-and-forth.</h3>
-        <ul>
-          <li>
-            <MapPin strokeWidth={1.8} />
-            <span>Share the address where you need help.</span>
-          </li>
-          <li>
-            <Clock strokeWidth={1.8} />
-            <span>Start a request for the service you need today.</span>
-          </li>
-        </ul>
+      <div className="image-container">
+        <img
+          className="service-image"
+          src="public/map2.png"
+          alt={`Map of ${userLocation?.address || city?.name || 'South Africa'}`}
+          loading="lazy"
+        />
       </div>
 
       <RequestDrawer
