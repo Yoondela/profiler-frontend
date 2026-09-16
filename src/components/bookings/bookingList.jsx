@@ -14,14 +14,14 @@ function ProviderPicker({ booking }) {
   const [selected, setSelected] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const serviceId = booking.service._id;
+  const serviceId = booking?.service?._id;
 
   const assignable = members.filter((member) => {
     const services = member.servicesOffered ?? [];
 
     if (services.length === 0) return true;
 
-    return services.some((s) => s._id.toString() === serviceId.toString());
+    return services.some((s) => s._id.toString() === serviceId?.toString());
   });
 
   const handleAccept = async () => {
@@ -151,7 +151,7 @@ function ProviderPicker({ booking }) {
 
         <main className="flex-1 p-6">
           <div className="mb-6">
-            <h2 className="text-xl font-semibold">{booking.service.name}</h2>
+            <h2 className="text-xl font-semibold">{booking?.service?.name}</h2>
 
             <div className="mt-2 flex flex-wrap gap-5 text-sm text-gray-600">
               <div className="flex items-center gap-2">
