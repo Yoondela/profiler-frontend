@@ -4,10 +4,13 @@ import { useMemo, useState } from 'react';
 import { useFlackStore } from '@/modules/chat/store/flackStore';
 import { NewChannelModal } from '../modals/NewChannelModal.jsx';
 import { Users } from 'lucide-react';
+import { useUIStore } from '../store/uiStore.js';
 
 export function GroupChannels() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const setActiveChannel = useFlackStore((s) => s.setActiveChannel);
+  const selectedChatId = useUIStore((s) => s.selectedChatId);
+  const setSelectedChat = useUIStore((s) => s.setSelectedChat);
   const channels = useFlackStore((s) => s.channels);
   const newChannels = useFlackStore((s) => s.newChannels);
   const channelAlerts = useFlackStore((s) => s.channelAlerts);
@@ -32,13 +35,22 @@ export function GroupChannels() {
   return (
     <div className="flex flex-col gap-3">
       {publicChannels.map((channel) => {
+        const isSelected = selectedChatId === channel.id;
+
         return (
           <button
             key={channel.id}
+            type="button"
             onClick={() => {
+              setSelectedChat(channel.id);
               setActiveChannel(channel.id);
             }}
-            className="w-full rounded-sm p-2 py-1 text-left hover:bg-zinc-700/50 flex items-center justify-between gap-1"
+            aria-pressed={isSelected}
+            className={`w-full rounded-md border-l-2 p-2 py-1 text-left flex items-center justify-between gap-1 transition-colors ${
+              isSelected
+                ? 'border-zinc-500 bg-zinc-700/70'
+                : 'border-transparent hover:bg-zinc-700/50'
+            }`}
           >
             <div className="flex items-center gap-2">
               {/* Avatar */}

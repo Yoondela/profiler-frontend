@@ -2,13 +2,13 @@
 
 import React from 'react';
 import { useUIStore } from '../store/uiStore.js';
-import { Home, Hash, MessageCircle, Activity, Calendar } from 'lucide-react';
+import { Home, Network, MessageCircle, Bell, Calendar } from 'lucide-react';
 
 const tabs = [
   { id: 'home', icon: Home },
-  { id: 'channels', icon: Hash },
+  { id: 'channels', icon: Network },
   { id: 'dms', icon: MessageCircle },
-  { id: 'activity', icon: Activity },
+  { id: 'activity', icon: Bell },
   { id: 'calendar', icon: Calendar },
 ];
 

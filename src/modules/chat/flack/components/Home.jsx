@@ -3,6 +3,7 @@
 import { useMemo } from 'react';
 import { Users } from 'lucide-react';
 import { useFlackStore } from '@/modules/chat/store/flackStore';
+import { useUIStore } from '../store/uiStore.js';
 
 function getOtherMember(channel, userId) {
   if (!Array.isArray(channel.members)) return null;
@@ -41,6 +42,8 @@ function getChannelAvatar(channel, userId) {
 
 export function Home() {
   const setActiveChannel = useFlackStore((s) => s.setActiveChannel);
+  const selectedChatId = useUIStore((s) => s.selectedChatId);
+  const setSelectedChat = useUIStore((s) => s.setSelectedChat);
   const channels = useFlackStore((s) => s.channels);
   const newChannels = useFlackStore((s) => s.newChannels);
   const channelAlerts = useFlackStore((s) => s.channelAlerts);
@@ -68,13 +71,22 @@ export function Home() {
         channelList.map((channel) => {
           const title = getChannelTitle(channel, userId);
           const avatar = getChannelAvatar(channel, userId);
+          const isSelected = selectedChatId === channel.id;
 
           return (
             <button
               key={channel.id}
               type="button"
-              onClick={() => setActiveChannel(channel.id)}
-              className="w-full rounded-sm p-2 py-1 text-left hover:bg-zinc-700/50 flex items-center justify-between gap-1"
+              onClick={() => {
+                setSelectedChat(channel.id);
+                setActiveChannel(channel.id);
+              }}
+              aria-pressed={isSelected}
+              className={`w-full rounded-md border-l-2 p-2 py-1 text-left flex items-center justify-between gap-1 transition-colors ${
+                isSelected
+                  ? 'border-zinc-500 bg-zinc-700/70'
+                  : 'border-transparent hover:bg-zinc-700/50'
+              }`}
             >
               <div className="flex items-center gap-2">
                 <div className="w-10 h-10 rounded-full bg-zinc-700 overflow-hidden flex items-center justify-center text-white">

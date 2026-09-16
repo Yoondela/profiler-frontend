@@ -14,19 +14,19 @@ function CalendarSidebar() {
   const getTypeColor = (type) => {
     switch (type) {
       case 'meeting':
-        return 'bg-blue-700';
+        return 'bg-blue-500/60';
 
       case 'task':
-        return 'bg-green-700';
+        return 'bg-green-500/60';
 
       case 'reminder':
-        return 'bg-orange-700';
+        return 'bg-orange-500/60';
 
       case 'booking':
-        return 'bg-purple-700';
+        return 'bg-purple-500/60';
 
       default:
-        return 'bg-gray-700';
+        return 'bg-gray-500/60';
     }
   };
 
