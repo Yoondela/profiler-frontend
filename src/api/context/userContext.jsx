@@ -14,14 +14,44 @@ export const UserProvider = ({ children }) => {
   const [isProviderCtx, setIsProviderCtx] = useState(false);
   const [logoUrlCtx, setLogoUrlCtx] = useState(null);
   const [bannerUrlCtx, setBannerUrlCtx] = useState(null);
+  const [bootstrapStatus, setBootstrapStatus] = useState('authenticating');
 
-  const { isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
+  const { isAuthenticated, isLoading, user, getAccessTokenSilently } =
+    useAuth0();
 
   useEffect(() => {
     let cancelled = false;
 
+    const clearApplicationUser = () => {
+      setAppUser_ID(null);
+      setFlackUser_ID(null);
+      setAvatarUrlCtx(null);
+      setUserCtx(null);
+      setProfileCtx(null);
+      setUserAccountCtx(null);
+      setIsProviderCtx(false);
+      setLogoUrlCtx(null);
+      setBannerUrlCtx(null);
+    };
+
+    if (isLoading) {
+      setBootstrapStatus('authenticating');
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    if (!isAuthenticated) {
+      clearApplicationUser();
+      setBootstrapStatus('anonymous');
+      return () => {
+        cancelled = true;
+      };
+    }
+
     const provisionUser = async () => {
-      if (!isAuthenticated || isLoading) return;
+      clearApplicationUser();
+      setBootstrapStatus('provisioning');
 
       try {
         const token = await getAccessTokenSilently({
@@ -43,14 +73,24 @@ export const UserProvider = ({ children }) => {
         if (!cancelled) {
           const { newUser, profile } = res.data;
 
+          if (!newUser || !profile) {
+            throw new Error('Provisioning response is incomplete.');
+          }
+
           setUserCtx(newUser);
           setAppUser_ID(newUser._id);
           setProfileCtx(profile);
           setUserAccountCtx({ user: newUser, profile });
           setAvatarUrlCtx(profile?.avatarUrl || null);
+          setBootstrapStatus('ready');
         }
       } catch (err) {
         console.error('Failed to provision user', err);
+        if (!cancelled) {
+          setBootstrapStatus(
+            err.response?.status === 409 ? 'conflict' : 'failure'
+          );
+        }
       }
     };
 
@@ -59,16 +99,13 @@ export const UserProvider = ({ children }) => {
     return () => {
       cancelled = true;
     };
-  }, [isAuthenticated, isLoading, getAccessTokenSilently]);
+  }, [isAuthenticated, isLoading, user?.sub, getAccessTokenSilently]);
 
   console.log('User Context Data__________________:', userCtx);
 
   useEffect(() => {
     setFlackUser_ID(userCtx?.flackUserId || null);
-    console.log('Updated flackUser_ID is now:', flackUser_ID);
-    if (userCtx?.roles) {
-      setIsProviderCtx(userCtx.roles.includes('provider'));
-    }
+    setIsProviderCtx(Boolean(userCtx?.roles?.includes('provider')));
   }, [userCtx]);
 
   return (
@@ -91,6 +128,7 @@ export const UserProvider = ({ children }) => {
         bannerUrlCtx,
         setBannerUrlCtx,
         flackUser_ID,
+        bootstrapStatus,
       }}
     >
       {children}

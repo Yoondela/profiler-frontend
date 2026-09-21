@@ -17,25 +17,34 @@ import { useFlackStore } from './modules/chat/store/flackStore';
 import { useUserContext } from './api/context/userContext';
 import { CityProvider } from './components/city/context/cityContext';
 import { ServiceBookingProvider } from '@/components/request/contexts/ServiceBookingContext.jsx';
+import { SigningInLoader } from '@/components/loader/sign-in-loader';
 
 import './assets/css/animate.css';
 import './assets/css/globals.css';
 
 function App() {
-  const { isLoading, isAuthenticated, user, getAccessTokenSilently } =
-    useAuth0();
-  const { flackUser_ID } = useUserContext();
+  const { isLoading, isAuthenticated } = useAuth0();
+  const { bootstrapStatus, flackUser_ID } = useUserContext();
 
   const connect = useFlackStore((s) => s.connect);
 
   useEffect(() => {
     console.log('CONNECTING TO CHAT SOCKET... with flackUserId:', flackUser_ID);
 
-    if (!isLoading && isAuthenticated && user && flackUser_ID) {
+    if (
+      !isLoading &&
+      isAuthenticated &&
+      bootstrapStatus === 'ready' &&
+      flackUser_ID
+    ) {
       if (!flackUser_ID) return;
       connect(flackUser_ID); // replace with real user later
     }
-  }, [isLoading, isAuthenticated, connect, flackUser_ID]);
+  }, [isLoading, isAuthenticated, bootstrapStatus, connect, flackUser_ID]);
+
+  if (isLoading || (isAuthenticated && bootstrapStatus !== 'ready')) {
+    return <SigningInLoader />;
+  }
 
   return (
     <div>
