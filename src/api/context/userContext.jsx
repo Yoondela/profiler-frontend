@@ -18,25 +18,47 @@ export const UserProvider = ({ children }) => {
   const { isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
-    const fetchUser = async () => {
+    let cancelled = false;
+
+    const provisionUser = async () => {
       if (!isAuthenticated || isLoading) return;
 
       try {
-        const token = await getAccessTokenSilently();
-
-        const res = await axios.get(`http://localhost:3000/api/users/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        const token = await getAccessTokenSilently({
+          audience: import.meta.env.VITE_AUTH0_AUDIENCE,
         });
+        const apiUrl =
+          import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
-        setUserCtx(res.data);
+        const res = await axios.post(
+          `${apiUrl}/users`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!cancelled) {
+          const { newUser, profile } = res.data;
+
+          setUserCtx(newUser);
+          setAppUser_ID(newUser._id);
+          setProfileCtx(profile);
+          setUserAccountCtx({ user: newUser, profile });
+          setAvatarUrlCtx(profile?.avatarUrl || null);
+        }
       } catch (err) {
-        console.error('Failed to fetch user', err);
+        console.error('Failed to provision user', err);
       }
     };
 
-    fetchUser();
+    provisionUser();
+
+    return () => {
+      cancelled = true;
+    };
   }, [isAuthenticated, isLoading, getAccessTokenSilently]);
 
   console.log('User Context Data__________________:', userCtx);
