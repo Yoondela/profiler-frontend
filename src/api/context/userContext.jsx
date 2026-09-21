@@ -15,6 +15,8 @@ export const UserProvider = ({ children }) => {
   const [logoUrlCtx, setLogoUrlCtx] = useState(null);
   const [bannerUrlCtx, setBannerUrlCtx] = useState(null);
   const [bootstrapStatus, setBootstrapStatus] = useState('authenticating');
+  const [provisioningError, setProvisioningError] = useState(null);
+  const [provisioningAttempt, setProvisioningAttempt] = useState(0);
 
   const { isAuthenticated, isLoading, user, getAccessTokenSilently } =
     useAuth0();
@@ -36,6 +38,7 @@ export const UserProvider = ({ children }) => {
 
     if (isLoading) {
       setBootstrapStatus('authenticating');
+      setProvisioningError(null);
       return () => {
         cancelled = true;
       };
@@ -44,6 +47,7 @@ export const UserProvider = ({ children }) => {
     if (!isAuthenticated) {
       clearApplicationUser();
       setBootstrapStatus('anonymous');
+      setProvisioningError(null);
       return () => {
         cancelled = true;
       };
@@ -52,6 +56,7 @@ export const UserProvider = ({ children }) => {
     const provisionUser = async () => {
       clearApplicationUser();
       setBootstrapStatus('provisioning');
+      setProvisioningError(null);
 
       try {
         const token = await getAccessTokenSilently({
@@ -87,8 +92,14 @@ export const UserProvider = ({ children }) => {
       } catch (err) {
         console.error('Failed to provision user', err);
         if (!cancelled) {
+          const status = err.response?.status || null;
+          const code = err.response?.data?.code || null;
+
+          setProvisioningError({ status, code });
           setBootstrapStatus(
-            err.response?.status === 409 ? 'conflict' : 'failure'
+            status === 409 || code === 'ACCOUNT_IDENTITY_CONFLICT'
+              ? 'conflict'
+              : 'failure'
           );
         }
       }
@@ -99,7 +110,13 @@ export const UserProvider = ({ children }) => {
     return () => {
       cancelled = true;
     };
-  }, [isAuthenticated, isLoading, user?.sub, getAccessTokenSilently]);
+  }, [
+    isAuthenticated,
+    isLoading,
+    user?.sub,
+    getAccessTokenSilently,
+    provisioningAttempt,
+  ]);
 
   console.log('User Context Data__________________:', userCtx);
 
@@ -129,6 +146,10 @@ export const UserProvider = ({ children }) => {
         setBannerUrlCtx,
         flackUser_ID,
         bootstrapStatus,
+        provisioningError,
+        retryProvisioning: () => {
+          setProvisioningAttempt((attempt) => attempt + 1);
+        },
       }}
     >
       {children}

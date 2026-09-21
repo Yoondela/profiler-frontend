@@ -18,13 +18,19 @@ import { useUserContext } from './api/context/userContext';
 import { CityProvider } from './components/city/context/cityContext';
 import { ServiceBookingProvider } from '@/components/request/contexts/ServiceBookingContext.jsx';
 import { SigningInLoader } from '@/components/loader/sign-in-loader';
+import ProvisioningRecovery from '@/components/auth/ProvisioningRecovery';
 
 import './assets/css/animate.css';
 import './assets/css/globals.css';
 
 function App() {
-  const { isLoading, isAuthenticated } = useAuth0();
-  const { bootstrapStatus, flackUser_ID } = useUserContext();
+  const { isLoading, isAuthenticated, logout } = useAuth0();
+  const {
+    bootstrapStatus,
+    flackUser_ID,
+    provisioningError,
+    retryProvisioning,
+  } = useUserContext();
 
   const connect = useFlackStore((s) => s.connect);
 
@@ -42,8 +48,25 @@ function App() {
     }
   }, [isLoading, isAuthenticated, bootstrapStatus, connect, flackUser_ID]);
 
-  if (isLoading || (isAuthenticated && bootstrapStatus !== 'ready')) {
+  if (
+    isLoading ||
+    (isAuthenticated &&
+      ['authenticating', 'provisioning'].includes(bootstrapStatus))
+  ) {
     return <SigningInLoader />;
+  }
+
+  if (isAuthenticated && bootstrapStatus !== 'ready') {
+    return (
+      <ProvisioningRecovery
+        bootstrapStatus={bootstrapStatus}
+        provisioningError={provisioningError}
+        onRetry={retryProvisioning}
+        onSignOut={() =>
+          logout({ logoutParams: { returnTo: window.location.origin } })
+        }
+      />
+    );
   }
 
   return (
