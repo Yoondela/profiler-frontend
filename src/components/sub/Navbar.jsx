@@ -20,8 +20,8 @@ export default function Navbar() {
 
   const location = useLocation();
   const isFlack = location.pathname.startsWith('/flack');
-  const { loginWithRedirect, logout, isAuthenticated, isLoading, user } =
-    useAuth0();
+  const { loginWithRedirect, isAuthenticated, isLoading, user } = useAuth0();
+  const returnTo = `${location.pathname}${location.search}${location.hash}`;
 
   useEffect(() => {
     document.body.style.overflow = pageMenuOpen ? 'hidden' : '';
@@ -68,12 +68,25 @@ export default function Navbar() {
           <div className="flex items-center gap-4">
             {/* If not authenticated, show Login button */}
             {!isAuthenticated && !isLoading && (
-              <button
-                onClick={() => loginWithRedirect()}
-                className="px-4 py-2 bg-black text-white text-sm rounded-xl hover:bg-gray-800 transition font-medium"
-              >
-                Sign in
-              </button>
+              <>
+                <button
+                  onClick={() => loginWithRedirect({ appState: { returnTo } })}
+                  className="px-4 py-2 bg-black text-white text-sm rounded-xl hover:bg-gray-800 transition font-medium"
+                >
+                  Sign in
+                </button>
+                <button
+                  onClick={() =>
+                    loginWithRedirect({
+                      authorizationParams: { screen_hint: 'signup' },
+                      appState: { returnTo },
+                    })
+                  }
+                  className="text-sm font-medium hover:text-gray-600 transition"
+                >
+                  Create account
+                </button>
+              </>
             )}
 
             {/* If authenticated, show avatar + optional logout */}
