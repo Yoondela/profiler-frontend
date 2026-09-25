@@ -1,5 +1,6 @@
 import { use, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useLocation } from 'react-router-dom';
 import Navbar from './components/sub/Navbar';
 // import { Toaster } from 'react-hot-toast';
 import { Toaster } from '@/components/ui/sonner';
@@ -25,6 +26,7 @@ import './assets/css/globals.css';
 
 function App() {
   const { isLoading, isAuthenticated, logout } = useAuth0();
+  const location = useLocation();
   const {
     bootstrapStatus,
     flackUser_ID,
@@ -33,6 +35,8 @@ function App() {
   } = useUserContext();
 
   const connect = useFlackStore((s) => s.connect);
+  const isCreateAccountPreview =
+    location.pathname === '/create-account-preview';
 
   useEffect(() => {
     console.log('CONNECTING TO CHAT SOCKET... with flackUserId:', flackUser_ID);
@@ -78,7 +82,7 @@ function App() {
               <BookingsProvider>
                 <GoogleMapsProvider>
                   <SearchContextProvider>
-                    <Navbar />
+                    {!isCreateAccountPreview && <Navbar />}
                     <ServiceRequestWSProvider>
                       <ServiceBookingWSProvider>
                         <ServiceBookingProvider>

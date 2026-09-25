@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import AuthCallback from '@/pages/AuthCallsback';
+import CreateAccountPreview from '@/pages/CreateAccountPreview';
 import HomePage from '../pages/home';
 import UserProfile from '../components/sub/view/UserProfileView';
 import UserSchedule from '../components/sub/view/UserScheduleView';
@@ -30,6 +31,10 @@ function AppRoutes() {
         <Route path="/search-app" element={<SearchPage />} />
         <Route path="/concern-config" element={<CompanyConfigurations />} />
         <Route path="/callback" element={<AuthCallback />} />
+        <Route
+          path="/create-account-preview"
+          element={<CreateAccountPreview />}
+        />
         <Route path="/actions" element={<ActionsPage />} />
 
         {/* All routes that use Sidebar */}
