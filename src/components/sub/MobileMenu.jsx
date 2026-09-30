@@ -11,6 +11,7 @@ import {
   SettingsIcon,
   Settings2,
   ScanEye,
+  KeyRound,
 } from 'lucide-react';
 
 export default function MobileMenu({ isOpen, onClose, user, children }) {
@@ -46,6 +47,12 @@ export default function MobileMenu({ isOpen, onClose, user, children }) {
       label: 'Schedule',
       icon: Calendar,
       to: '/user-schedule',
+    },
+    {
+      label: 'Sign-in methods',
+      icon: KeyRound,
+      to: '/sign-in-methods',
+      hidden: import.meta.env.VITE_ACCOUNT_LINKING_ENABLED !== 'true',
     },
   ];
 

@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import AuthCallback from '@/pages/AuthCallsback';
+import SignInMethodsPage from '@/pages/SignInMethodsPage';
 import HomePage from '../pages/home';
 import UserProfile from '../components/sub/view/UserProfileView';
 import UserSchedule from '../components/sub/view/UserScheduleView';
@@ -18,6 +19,8 @@ import ModalLayer from '@/components/app-modals/ModalLayer';
 import FlackApp from '@/modules/chat/flack/FlackApp';
 
 function AppRoutes() {
+  const linkingEnabled =
+    import.meta.env.VITE_ACCOUNT_LINKING_ENABLED === 'true';
   // AppRouter should only route
   // Place Context, Routes, ModalLayer, etc in root
   return (
@@ -36,6 +39,9 @@ function AppRoutes() {
         <Route element={<SidebarLayout />}>
           <Route path="/provider-dashboard" element={<ProviderDashboard />} />
           <Route path="/user-profile" element={<UserProfile />} />
+          {linkingEnabled && (
+            <Route path="/sign-in-methods" element={<SignInMethodsPage />} />
+          )}
           <Route path="/provider-page" element={<PortfolioLayout />} />
           <Route path="/user-schedule" element={<UserSchedule />} />
           <Route path="/user-gallery" element={<GalleryManager />} />
