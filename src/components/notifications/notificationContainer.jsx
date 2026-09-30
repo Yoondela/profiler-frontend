@@ -34,14 +34,14 @@ export default function NotificationContainer() {
         </SheetTrigger>
         <SheetContent
           side="right"
-          className="border-none w-screen max-w-none sm:w-[400px] sm:max-w-[500px] h-[100dvh] sm:h-[93%] bg-[white] my-0 sm:my-[50px] gap-0"
+          className="my-[50px] h-[93%] w-[400px] border-none bg-white gap-0 sm:w-[500px]"
         >
           <SheetHeader className="mt-7 px-2 py-0">
             <SheetTitle className="text-xl text-green-200">
               Notifications
             </SheetTitle>
           </SheetHeader>
-          <div className="overflow-y-auto m-0 p-0">
+          <div className="m-0 min-h-0 flex-1 overflow-y-auto p-0">
             <NotificationList />
           </div>
         </SheetContent>
