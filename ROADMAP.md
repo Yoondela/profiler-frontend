@@ -121,6 +121,19 @@ and a safe recovery action.
 **Done when:** the backend provisioning contract is exercised end to end and
 the frontend never silently enters a partial signed-in state.
 
+### Recorded follow-up: replace legacy email-derived application-user lookups
+
+- `getUserID` in `src/api/sync/SyncUser.jsx` receives the Auth0 browser email
+  and calls `GET /api/users/email/:email`. It is actively used by provider
+  portfolio, bookings, gallery, service request/booking, review, company, and
+  staff-invite flows.
+- `UserProfileView` also fetches the signed-in account by Auth0 browser email.
+  `useUserByEmail` remains available from the same sync module.
+- Plan a coordinated backend/frontend transition to use the provisioned
+  application-user ID and profile already held by `UserProvider`. Preserve any
+  legitimate public or administrative email lookup separately; do not change
+  this endpoint or its consumers as part of the authentication bootstrap work.
+
 ## Backlog
 
 ### Responsive sidebar routes
