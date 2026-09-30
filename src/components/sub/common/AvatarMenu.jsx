@@ -1,11 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import useProviderPortfolio from '@/hooks/useProviderPortfolio';
-import {
-  User,
-  LogOut,
-  Building2,
-  HelpCircle,
-} from 'lucide-react';
+import { User, LogOut, Building2, HelpCircle, KeyRound } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function UserAvatarMenu({ placement = 'desktop', onClose }) {
@@ -14,6 +9,8 @@ export default function UserAvatarMenu({ placement = 'desktop', onClose }) {
 
   const companyName =
     portfolio?.company?.name || user?.name || 'Service Provider';
+  const linkingEnabled =
+    import.meta.env.VITE_ACCOUNT_LINKING_ENABLED === 'true';
 
   return (
     <div className={`user-menu user-menu--${placement}`}>
@@ -22,6 +19,13 @@ export default function UserAvatarMenu({ placement = 'desktop', onClose }) {
           <User size={16} style={{ marginRight: '8px' }} />
           {user?.email}
         </Link>
+
+        {linkingEnabled && (
+          <Link to="/sign-in-methods" onClick={onClose}>
+            <KeyRound size={16} style={{ marginRight: '8px' }} />
+            Sign-in methods
+          </Link>
+        )}
 
         {portfolio && (
           <Link
