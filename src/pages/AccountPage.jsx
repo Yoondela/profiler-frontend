@@ -46,6 +46,10 @@ export default function AccountPage() {
     status: 'loading',
     data: null,
   });
+  const [emailAction, setEmailAction] = useState({
+    status: 'idle',
+    error: null,
+  });
 
   useEffect(() => {
     if (authLoading || !isAuthenticated) return undefined;
@@ -73,6 +77,33 @@ export default function AccountPage() {
   if (!isAuthenticated) {
     return <main className="p-6">Sign in to manage your account.</main>;
   }
+
+  const requestEmailVerification = async () => {
+    setEmailAction({ status: 'sending', error: null });
+
+    try {
+      await api.post('/users/me/account-verification/email/resend');
+      setEmailAction({ status: 'sent', error: null });
+    } catch (error) {
+      if (error.data?.code === 'EMAIL_ALREADY_VERIFIED') {
+        try {
+          const response = await api.get('/users/me/account-verification');
+          setVerification({ status: 'ready', data: response.data });
+          setEmailAction({ status: 'idle', error: null });
+          return;
+        } catch {
+          // Keep the verification resend error visible when the refresh fails.
+        }
+      }
+
+      setEmailAction({
+        status: 'error',
+        error:
+          error.data?.message ||
+          'We couldn’t send a verification email. Please try again later.',
+      });
+    }
+  };
 
   return (
     <main className="mx-auto max-w-3xl p-4 sm:p-6">
@@ -107,6 +138,40 @@ export default function AccountPage() {
               status={verification.data.email?.status || 'unknown'}
               checkedAt={verification.data.email?.checkedAt}
             />
+            {verification.data.email?.status === 'unverified' && (
+              <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+                <p className="text-sm text-amber-900">
+                  Verify this email address to confirm you can receive account
+                  messages.
+                </p>
+                <button
+                  type="button"
+                  className="mt-3 rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+                  disabled={
+                    emailAction.status === 'sending' ||
+                    emailAction.status === 'sent'
+                  }
+                  onClick={requestEmailVerification}
+                >
+                  {emailAction.status === 'sending'
+                    ? 'Sending…'
+                    : emailAction.status === 'sent'
+                      ? 'Sent'
+                      : 'Verify email'}
+                </button>
+                {emailAction.status === 'sent' && (
+                  <p className="mt-3 text-sm text-green-700" role="status">
+                    Verification email sent. Open the link, then sign in again
+                    to refresh your status.
+                  </p>
+                )}
+                {emailAction.status === 'error' && (
+                  <p className="mt-3 text-sm text-red-600" role="alert">
+                    {emailAction.error}
+                  </p>
+                )}
+              </div>
+            )}
             <VerificationRow
               label="Cell number"
               detail={verification.data.phone?.value}
