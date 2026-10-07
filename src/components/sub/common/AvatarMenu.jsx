@@ -9,8 +9,6 @@ export default function UserAvatarMenu({ placement = 'desktop', onClose }) {
 
   const companyName =
     portfolio?.company?.name || user?.name || 'Service Provider';
-  const linkingEnabled =
-    import.meta.env.VITE_ACCOUNT_LINKING_ENABLED === 'true';
 
   return (
     <div className={`user-menu user-menu--${placement}`}>
@@ -20,12 +18,10 @@ export default function UserAvatarMenu({ placement = 'desktop', onClose }) {
           {user?.email}
         </Link>
 
-        {linkingEnabled && (
-          <Link to="/sign-in-methods" onClick={onClose}>
-            <KeyRound size={16} style={{ marginRight: '8px' }} />
-            Sign-in methods
-          </Link>
-        )}
+        <Link to="/account" onClick={onClose}>
+          <KeyRound size={16} style={{ marginRight: '8px' }} />
+          Account
+        </Link>
 
         {portfolio && (
           <Link
