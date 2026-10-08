@@ -50,6 +50,12 @@ export default function AccountPage() {
     status: 'idle',
     error: null,
   });
+  const [emailResendSeconds, setEmailResendSeconds] = useState(0);
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneAction, setPhoneAction] = useState({
+    status: 'idle',
+    error: null,
+  });
 
   useEffect(() => {
     if (authLoading || !isAuthenticated) return undefined;
@@ -70,6 +76,16 @@ export default function AccountPage() {
     };
   }, [api, authLoading, isAuthenticated]);
 
+  useEffect(() => {
+    if (emailResendSeconds === 0) return undefined;
+
+    const timeout = window.setTimeout(() => {
+      setEmailResendSeconds((seconds) => Math.max(seconds - 1, 0));
+    }, 1000);
+
+    return () => window.clearTimeout(timeout);
+  }, [emailResendSeconds]);
+
   if (authLoading) {
     return <main className="p-6">Loading account…</main>;
   }
@@ -84,6 +100,7 @@ export default function AccountPage() {
     try {
       await api.post('/users/me/account-verification/email/resend');
       setEmailAction({ status: 'sent', error: null });
+      setEmailResendSeconds(30);
     } catch (error) {
       if (error.data?.code === 'EMAIL_ALREADY_VERIFIED') {
         try {
@@ -101,6 +118,32 @@ export default function AccountPage() {
         error:
           error.data?.message ||
           'We couldn’t send a verification email. Please try again later.',
+      });
+    }
+  };
+
+  const savePhoneNumber = async (event) => {
+    event.preventDefault();
+    setPhoneAction({ status: 'saving', error: null });
+
+    try {
+      const response = await api.put('/users/me/account-verification/phone', {
+        phoneNumber,
+      });
+      setVerification((current) => ({
+        status: 'ready',
+        data: {
+          ...current.data,
+          phone: response.data.phone,
+        },
+      }));
+      setPhoneAction({ status: 'saved', error: null });
+    } catch (error) {
+      setPhoneAction({
+        status: 'error',
+        error:
+          error.data?.message ||
+          'We couldn’t save your cell number. Please try again later.',
       });
     }
   };
@@ -148,15 +191,16 @@ export default function AccountPage() {
                   type="button"
                   className="mt-3 rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
                   disabled={
-                    emailAction.status === 'sending' ||
-                    emailAction.status === 'sent'
+                    emailAction.status === 'sending' || emailResendSeconds > 0
                   }
                   onClick={requestEmailVerification}
                 >
                   {emailAction.status === 'sending'
                     ? 'Sending…'
+                    : emailResendSeconds > 0
+                      ? `Resend email (${emailResendSeconds}s)`
                     : emailAction.status === 'sent'
-                      ? 'Sent'
+                      ? 'Resend email'
                       : 'Verify email'}
                 </button>
                 {emailAction.status === 'sent' && (
@@ -177,6 +221,55 @@ export default function AccountPage() {
               detail={verification.data.phone?.value}
               status={verification.data.phone?.status || 'not_provided'}
             />
+            {(verification.data.phone?.status || 'not_provided') ===
+              'not_provided' && (
+              <form
+                className="rounded-lg border border-gray-200 bg-white p-4"
+                onSubmit={savePhoneNumber}
+              >
+                <label
+                  htmlFor="account-phone-number"
+                  className="block text-sm font-medium text-gray-900"
+                >
+                  Cell number
+                </label>
+                <p className="mt-1 text-sm text-gray-600">
+                  Use a South African mobile number. We’ll save it before
+                  asking you to verify it.
+                </p>
+                <input
+                  id="account-phone-number"
+                  type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
+                  className="mt-3 w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900"
+                  placeholder="+27 72 123 4567"
+                  value={phoneNumber}
+                  onChange={(event) => setPhoneNumber(event.target.value)}
+                  required
+                />
+                <button
+                  type="submit"
+                  className="mt-3 rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+                  disabled={phoneAction.status === 'saving'}
+                >
+                  {phoneAction.status === 'saving'
+                    ? 'Saving…'
+                    : 'Save phone number'}
+                </button>
+                {phoneAction.status === 'error' && (
+                  <p className="mt-3 text-sm text-red-600" role="alert">
+                    {phoneAction.error}
+                  </p>
+                )}
+              </form>
+            )}
+            {phoneAction.status === 'saved' && (
+              <p className="text-sm text-green-700" role="status">
+                Phone number saved. Phone verification will be available in a
+                later step.
+              </p>
+            )}
             <VerificationRow
               label="Physical address"
               detail={verification.data.address?.value}

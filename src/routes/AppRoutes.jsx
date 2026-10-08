@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import AuthCallback from '@/pages/AuthCallsback';
 import AccountPage from '@/pages/AccountPage';
+import EmailVerifiedPage from '@/pages/EmailVerifiedPage';
 import CreateAccountPreview from '@/pages/CreateAccountPreview';
 import HomePage from '../pages/home';
 import UserProfile from '../components/sub/view/UserProfileView';
@@ -32,6 +33,7 @@ function AppRoutes() {
         <Route path="/search-app" element={<SearchPage />} />
         <Route path="/concern-config" element={<CompanyConfigurations />} />
         <Route path="/callback" element={<AuthCallback />} />
+        <Route path="/email-verified" element={<EmailVerifiedPage />} />
         <Route
           path="/create-account-preview"
           element={<CreateAccountPreview />}
