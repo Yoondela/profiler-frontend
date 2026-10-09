@@ -2,20 +2,31 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { usePortfolioContext } from '@/api/context/portfolioContext';
 import { useFlackStore } from '@/modules/chat/store/flackStore';
+import { useUIStore } from '../store/uiStore.js';
 
 export default function SearchFlackUser() {
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [pendingDmId, setPendingDmId] = useState(null);
   const { companyId } = usePortfolioContext();
 
   const startDM = useFlackStore((s) => s.startDM);
   const getDMChannel = useFlackStore((s) => s.getDMChannel);
   const setActiveChannel = useFlackStore((s) => s.setActiveChannel);
   const channels = useFlackStore((s) => s.channels);
-  const newChannels = useFlackStore((s) => s.newChannels);
-  const channelAlerts = useFlackStore((s) => s.channelAlerts);
-  const userId = useFlackStore((s) => s.userId);
+  const openConversation = useUIStore((s) => s.openConversation);
+
+  useEffect(() => {
+    if (!pendingDmId) return;
+
+    const channel = getDMChannel(pendingDmId);
+    if (!channel) return;
+
+    setActiveChannel(channel.id);
+    openConversation(channel.id);
+    setPendingDmId(null);
+  }, [channels, getDMChannel, openConversation, pendingDmId, setActiveChannel]);
 
   useEffect(() => {
     if (!companyId || !searchQuery.trim()) {
@@ -98,39 +109,42 @@ export default function SearchFlackUser() {
         )}
 
         {searchResults.map((person) => (
-          <div
+          <button
+            type="button"
             key={person._id}
-            className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 hover:bg-gray-100 cursor-pointer transition-colors"
-          >
-            <div
-              className="flex items-center gap-3"
-              onClick={() => {
-                const existing = getDMChannel(person.flackId);
+            className="flex min-h-11 w-full min-w-0 items-center justify-between gap-3 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-left transition-colors hover:bg-gray-100"
+            onClick={() => {
+              const existing = getDMChannel(person.flackId);
 
-                if (existing) {
-                  setActiveChannel(existing.id);
-                } else {
-                  startDM(person.flackId);
-                }
-              }}
-            >
+              if (existing) {
+                setActiveChannel(existing.id);
+                openConversation(existing.id);
+              } else {
+                setPendingDmId(person.flackId);
+                startDM(person.flackId);
+              }
+            }}
+          >
+            <div className="flex min-w-0 flex-1 items-center gap-3">
               <img
                 src={person.avatarUrl || '/avatar-placeholder.png'}
                 alt={person.name}
-                className="h-8 w-8 rounded-full object-cover"
+                className="h-9 w-9 shrink-0 rounded-full object-cover"
               />
 
-              <div className="flex flex-col">
-                <span className="text-sm font-medium text-gray-900">
+              <div className="min-w-0 flex-1">
+                <span className="block truncate text-sm font-medium text-gray-900">
                   {person.name}
                 </span>
                 {person.email && (
-                  <span className="text-xs text-gray-500">{person.email}</span>
+                  <span className="block truncate text-xs text-gray-500">
+                    {person.email}
+                  </span>
                 )}
               </div>
             </div>
             <ShowRole role={person.role} />
-          </div>
+          </button>
         ))}
       </div>
     </div>

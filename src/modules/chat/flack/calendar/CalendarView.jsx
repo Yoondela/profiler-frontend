@@ -9,9 +9,12 @@ import EventModal from './EventModal';
 import { useCalendar } from './CalendarContext';
 import { updateEvent } from '@/api/sync/calendarApi';
 import { useRef, useEffect } from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 function CalendarView() {
   const calendarRef = useRef(null);
+  const visibleRangeRef = useRef(null);
+  const isMobile = useIsMobile();
   const currentTime = new Date(Date.now() - 90 * 60 * 1000)
     .toTimeString()
     .slice(0, 8);
@@ -19,10 +22,13 @@ function CalendarView() {
   const {
     events,
     setEvents,
-    setSelectedDates,
-    setEditingEvent,
-    setIsModalOpen,
+    isLoadingEvents,
+    rangeError,
     selectedDate,
+    handleCreateEvent,
+    handleSelectEvent,
+    handleSelectDates,
+    loadEvents,
   } = useCalendar();
 
   useEffect(() => {
@@ -34,6 +40,38 @@ function CalendarView() {
 
     api.gotoDate(selectedDate);
   }, [selectedDate]);
+
+  useEffect(() => {
+    if (!calendarRef.current) return;
+
+    calendarRef.current
+      .getApi()
+      .changeView(isMobile ? 'listWeek' : 'dayGridMonth');
+  }, [isMobile]);
+
+  useEffect(() => {
+    const range = visibleRangeRef.current;
+    if (range) {
+      loadEvents(range.start, range.end);
+    }
+  }, [loadEvents]);
+
+  const handleDatesSet = (dateInfo) => {
+    const range = {
+      start: dateInfo.start,
+      end: dateInfo.end,
+    };
+
+    visibleRangeRef.current = range;
+    loadEvents(range.start, range.end);
+  };
+
+  const retryVisibleRange = () => {
+    const range = visibleRangeRef.current;
+    if (range) {
+      loadEvents(range.start, range.end);
+    }
+  };
 
   const handleEventDrop = async (info) => {
     setEvents((prev) =>
@@ -80,8 +118,42 @@ function CalendarView() {
   };
   return (
     <>
-      <div className="google-calendar h-full w-[76%] bg-[#292929] p-3 sm:p-4 lg:p-6">
-        <div className="h-full w-full overflow-hidden">
+      <div className="google-calendar flex h-full min-h-0 w-full flex-col bg-[#292929] p-2 sm:p-4 md:w-[76%] lg:p-6">
+        {isMobile && (
+          <div className="mb-2 flex shrink-0 items-center justify-between gap-3">
+            <h1 className="text-base font-semibold text-white">Calendar</h1>
+            <button
+              type="button"
+              onClick={handleCreateEvent}
+              className="min-h-11 rounded-lg bg-[#8ab4f8] px-4 text-sm font-medium text-[#202124]"
+            >
+              + New event
+            </button>
+          </div>
+        )}
+        {(isLoadingEvents || rangeError) && (
+          <div
+            className={`mb-2 flex min-h-10 shrink-0 items-center justify-between gap-3 rounded-lg border px-3 py-2 text-sm ${
+              rangeError
+                ? 'border-red-400/40 bg-red-500/10 text-red-100'
+                : 'border-zinc-700 bg-zinc-800/70 text-zinc-300'
+            }`}
+            role={rangeError ? 'alert' : 'status'}
+            aria-live="polite"
+          >
+            <span>{rangeError || 'Loading events…'}</span>
+            {rangeError && (
+              <button
+                type="button"
+                onClick={retryVisibleRange}
+                className="min-h-9 shrink-0 rounded-md border border-red-300/50 px-3 font-medium text-red-50 transition hover:bg-red-400/10"
+              >
+                Retry
+              </button>
+            )}
+          </div>
+        )}
+        <div className="min-h-0 w-full flex-1 overflow-hidden">
           <FullCalendar
             ref={calendarRef}
             plugins={[
@@ -90,7 +162,7 @@ function CalendarView() {
               interactionPlugin,
               listPlugin,
             ]}
-            initialView="dayGridMonth"
+            initialView={isMobile ? 'listWeek' : 'dayGridMonth'}
             views={{
               timeGridWeek: { allDaySlot: false, scrollTime: currentTime },
               timeGridDay: { allDaySlot: false, scrollTime: currentTime },
@@ -100,11 +172,28 @@ function CalendarView() {
             nowIndicator
             dayMaxEvents
             fixedWeekCount={false}
-            headerToolbar={{
-              left: 'today prev,next title',
-              center: '',
-              right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
-            }}
+            headerToolbar={
+              isMobile
+                ? {
+                    left: 'prev,next',
+                    center: 'title',
+                    right: 'today',
+                  }
+                : {
+                    left: 'today prev,next title',
+                    center: '',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
+                  }
+            }
+            footerToolbar={
+              isMobile
+                ? {
+                    left: '',
+                    center: 'listWeek,timeGridDay,dayGridMonth',
+                    right: '',
+                  }
+                : false
+            }
             buttonText={{
               today: 'Today',
               month: 'Month',
@@ -119,19 +208,17 @@ function CalendarView() {
               meridiem: 'short',
             }}
             events={events}
+            datesSet={handleDatesSet}
             selectable
             editable
             select={(info) => {
-              setSelectedDates({
+              handleSelectDates({
                 start: info.start,
                 end: info.end,
               });
-
-              setEditingEvent(null);
-              setIsModalOpen(true);
             }}
             eventClick={(info) => {
-              setEditingEvent({
+              handleSelectEvent({
                 id: info.event.id,
                 title: info.event.title,
                 start: info.event.start,
@@ -141,8 +228,6 @@ function CalendarView() {
                 location: info.event.extendedProps.location,
                 description: info.event.extendedProps.description,
               });
-
-              setIsModalOpen(true);
             }}
             eventClassNames={(arg) => {
               const type = arg.event.extendedProps.type;

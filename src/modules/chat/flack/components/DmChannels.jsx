@@ -9,7 +9,7 @@ export function DmChannels() {
   const getDMChannel = useFlackStore((s) => s.getDMChannel);
   const setActiveChannel = useFlackStore((s) => s.setActiveChannel);
   const selectedChatId = useUIStore((s) => s.selectedChatId);
-  const setSelectedChat = useUIStore((s) => s.setSelectedChat);
+  const openConversation = useUIStore((s) => s.openConversation);
   const channels = useFlackStore((s) => s.channels);
   const newChannels = useFlackStore((s) => s.newChannels);
   const channelAlerts = useFlackStore((s) => s.channelAlerts);
@@ -32,7 +32,7 @@ export function DmChannels() {
             key={channel.id}
             type="button"
             onClick={() => {
-              setSelectedChat(channel.id);
+              openConversation(channel.id);
               setActiveChannel(channel.id);
             }}
             aria-pressed={isSelected}
@@ -42,9 +42,9 @@ export function DmChannels() {
                 : 'border-transparent hover:bg-zinc-700/50'
             }`}
           >
-            <div className="flex items-center gap-3">
+            <div className="flex min-w-0 items-center gap-3">
               {/* Avatar */}
-              <div className="w-8 h-8 rounded-full bg-zinc-300 overflow-hidden">
+              <div className="h-11 w-11 shrink-0 overflow-hidden rounded-full bg-zinc-300 md:h-8 md:w-8">
                 {otherUser?.avatar && (
                   <img
                     src={otherUser.avatar}
@@ -55,8 +55,8 @@ export function DmChannels() {
               </div>
 
               {/* Username + alert */}
-              <div className="flex flex-col">
-                <span className="truncate max-w-[150px]">
+              <div className="flex min-w-0 flex-col">
+                <span className="max-w-[calc(100vw-7rem)] truncate md:max-w-[150px]">
                   {otherUser?.username || 'Unknown User'}
                 </span>
 

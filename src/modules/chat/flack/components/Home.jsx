@@ -43,7 +43,7 @@ function getChannelAvatar(channel, userId) {
 export function Home() {
   const setActiveChannel = useFlackStore((s) => s.setActiveChannel);
   const selectedChatId = useUIStore((s) => s.selectedChatId);
-  const setSelectedChat = useUIStore((s) => s.setSelectedChat);
+  const openConversation = useUIStore((s) => s.openConversation);
   const channels = useFlackStore((s) => s.channels);
   const newChannels = useFlackStore((s) => s.newChannels);
   const channelAlerts = useFlackStore((s) => s.channelAlerts);
@@ -78,7 +78,7 @@ export function Home() {
               key={channel.id}
               type="button"
               onClick={() => {
-                setSelectedChat(channel.id);
+                openConversation(channel.id);
                 setActiveChannel(channel.id);
               }}
               aria-pressed={isSelected}
@@ -88,8 +88,8 @@ export function Home() {
                   : 'border-transparent hover:bg-zinc-700/50'
               }`}
             >
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-full bg-zinc-700 overflow-hidden flex items-center justify-center text-white">
+              <div className="flex min-w-0 items-center gap-2">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-zinc-700 text-white md:h-10 md:w-10">
                   {avatar ? (
                     <img
                       src={avatar}
@@ -101,7 +101,7 @@ export function Home() {
                   )}
                 </div>
 
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <div className="truncate font-medium text-white">{title}</div>
                   {channelAlerts[channel.id] && (
                     <div className="text-xs text-amber-300">
@@ -109,7 +109,7 @@ export function Home() {
                     </div>
                   )}
                   {!channelAlerts[channel.id] && (
-                    <div className="text-xs text-zinc-400 truncate max-w-[150px]">
+                    <div className="max-w-[calc(100vw-6rem)] truncate text-xs text-zinc-400 md:max-w-[150px]">
                       <span className="text-xs text-white-700">
                         {channel.lastMessage.senderName}:{' '}
                         {channel.lastMessage.content}

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import { Menu, X, Search, ArrowLeft } from 'lucide-react';
+import { Menu, Search, ArrowLeft } from 'lucide-react';
 import { useAuth0 } from '@auth0/auth0-react';
 import UserAvatar from './common/UserAvatar';
 import CompanyMenu from './common/companyMenu';
@@ -9,7 +9,6 @@ import NotificationContainer from '../notifications/notificationContainer';
 import { FlackContainer } from '@/modules/chat/flack/FlackContainer';
 import ActionCenter from '../action-center/ActionCenter';
 import { LiteChat } from '@/modules/chat/lite-chat/components/LiteChat';
-import { MessageSquareMore, MessageSquareText } from 'lucide-react';
 import SearchBar from '../intro/SearchBar';
 import CitySelector from '../city/CitySelector';
 import MobileMenu from './MobileMenu';
@@ -25,11 +24,49 @@ export default function Navbar() {
 
   useEffect(() => {
     document.body.style.overflow = pageMenuOpen ? 'hidden' : '';
+
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [pageMenuOpen]);
 
   return (
     <nav className={`navbar ${isFlack ? 'navbar-flack' : ''}`}>
-      {searchOpen && (
+      {isFlack && (
+        <div className="flex w-full items-center justify-between text-white md:hidden">
+          <Link
+            to="/"
+            aria-label="Leave Flack and return home"
+            className="flex min-h-11 items-center gap-2 rounded-lg pr-2 font-semibold"
+          >
+            <ArrowLeft size={21} />
+            <span>Flack</span>
+          </Link>
+
+          {isAuthenticated ? (
+            <button
+              type="button"
+              onClick={() => setPageMenuOpen(true)}
+              aria-label="Open account menu"
+              className="flex h-11 w-11 items-center justify-center rounded-lg"
+            >
+              <Menu size={22} />
+            </button>
+          ) : (
+            !isLoading && (
+              <button
+                type="button"
+                onClick={() => loginWithRedirect({ appState: { returnTo } })}
+                className="rounded-lg bg-white px-3 py-1.5 text-sm font-medium text-zinc-900"
+              >
+                Sign in
+              </button>
+            )
+          )}
+        </div>
+      )}
+
+      {!isFlack && searchOpen && (
         <div className="flex items-center gap-3 w-full md:hidden">
           <button onClick={() => setSearchOpen(false)}>
             <ArrowLeft size={22} />
@@ -40,8 +77,12 @@ export default function Navbar() {
           </div>
         </div>
       )}
-      {!searchOpen && (
-        <>
+      {(!searchOpen || isFlack) && (
+        <div
+          className={`w-full items-center justify-between ${
+            isFlack ? 'hidden md:flex' : 'flex'
+          }`}
+        >
           {/* Left Section */}
           <div className="flex items-center gap-3 md:gap-[2rem] lg:gap-[3.5rem]">
             <Link
@@ -105,14 +146,13 @@ export default function Navbar() {
                   <CitySelector />
                 </div>
 
-                {/* <div className="md:hidden"> */}
                 <button
                   onClick={() => setPageMenuOpen(true)}
                   className="md:hidden"
+                  aria-label="Open account menu"
                 >
                   <Menu size={24} />
                 </button>
-                {/* </div> */}
 
                 <div className="flex flex-row items-center justify-between gap-3 hidden md:flex">
                   <div className="flex items-center mt-[1px]">
@@ -122,20 +162,20 @@ export default function Navbar() {
                     <UserAvatar user={user} />
                   </div>
                 </div>
-                {/* <div className="md:hidden"> */}
-                <MobileMenu
-                  isOpen={pageMenuOpen}
-                  onClose={() => setPageMenuOpen(false)}
-                  user={user}
-                  className="md:hidden"
-                >
-                  <p>Menu</p>
-                </MobileMenu>
-                {/* </div> */}
               </div>
             )}
           </div>
-        </>
+        </div>
+      )}
+
+      {isAuthenticated && (
+        <MobileMenu
+          isOpen={pageMenuOpen}
+          onClose={() => setPageMenuOpen(false)}
+          user={user}
+        >
+          <p>Menu</p>
+        </MobileMenu>
       )}
     </nav>
   );

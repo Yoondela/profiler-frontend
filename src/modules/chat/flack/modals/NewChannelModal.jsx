@@ -98,11 +98,19 @@ export function NewChannelModal({ open, onClose, onCreate }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-      <div className="w-full max-w-md rounded-3xl border border-zinc-700 bg-white p-6 shadow-2xl shadow-black/40">
+    <div className="fixed inset-0 z-[1100] flex items-center justify-center bg-black/60 p-0 sm:p-4">
+      <div
+        className="h-[100dvh] w-full max-w-md overflow-y-auto border border-zinc-700 bg-white p-4 shadow-2xl shadow-black/40 sm:h-auto sm:max-h-[90dvh] sm:rounded-3xl sm:p-6"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="new-channel-title"
+      >
         <div className="flex items-center justify-between gap-4 pb-4">
           <div>
-            <h2 className="text-xl font-semibold text-zinc-900">
+            <h2
+              id="new-channel-title"
+              className="text-xl font-semibold text-zinc-900"
+            >
               Create new channel
             </h2>
 
@@ -137,7 +145,7 @@ export function NewChannelModal({ open, onClose, onCreate }) {
               Add users
             </div>
 
-            <div className="space-y-2 rounded-2xl border border-zinc-300 bg-zinc-50 p-3">
+            <div className="max-h-[45dvh] space-y-2 overflow-y-auto rounded-2xl border border-zinc-300 bg-zinc-50 p-3 sm:max-h-80">
               {loading && (
                 <div className="text-sm text-zinc-500">
                   Loading participants...
@@ -189,7 +197,7 @@ export function NewChannelModal({ open, onClose, onCreate }) {
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-2">
+          <div className="sticky bottom-0 -mx-4 flex flex-wrap items-center justify-end gap-3 border-t bg-white px-4 pt-3 pb-[calc(1rem+env(safe-area-inset-bottom))] sm:static sm:mx-0 sm:border-t-0 sm:px-0 sm:pb-0">
             <button
               type="button"
               onClick={onClose}
