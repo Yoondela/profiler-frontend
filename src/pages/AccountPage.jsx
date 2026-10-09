@@ -56,6 +56,18 @@ export default function AccountPage() {
     status: 'idle',
     error: null,
   });
+  const [phoneVerificationAction, setPhoneVerificationAction] = useState({
+    status: 'idle',
+    error: null,
+  });
+  const [phoneCodeEntryVisible, setPhoneCodeEntryVisible] = useState(false);
+  const [phoneVerificationCode, setPhoneVerificationCode] = useState('');
+  const [phoneCodeAction, setPhoneCodeAction] = useState({
+    status: 'idle',
+    error: null,
+  });
+  const [phoneResendAvailableAt, setPhoneResendAvailableAt] = useState(null);
+  const [phoneResendSeconds, setPhoneResendSeconds] = useState(0);
 
   useEffect(() => {
     if (authLoading || !isAuthenticated) return undefined;
@@ -64,7 +76,15 @@ export default function AccountPage() {
     const loadVerification = async () => {
       try {
         const response = await api.get('/users/me/account-verification');
-        if (active) setVerification({ status: 'ready', data: response.data });
+        if (active) {
+          setVerification({ status: 'ready', data: response.data });
+          setPhoneResendAvailableAt(
+            response.data.phone?.resendAvailableAt || null,
+          );
+          setPhoneCodeEntryVisible(
+            Boolean(response.data.phone?.resendAvailableAt)
+          );
+        }
       } catch {
         if (active) setVerification({ status: 'error', data: null });
       }
@@ -85,6 +105,29 @@ export default function AccountPage() {
 
     return () => window.clearTimeout(timeout);
   }, [emailResendSeconds]);
+
+  useEffect(() => {
+    if (!phoneResendAvailableAt) {
+      setPhoneResendSeconds(0);
+      return undefined;
+    }
+
+    let timeout;
+    const updateCountdown = () => {
+      const seconds = Math.max(
+        Math.ceil(
+          (new Date(phoneResendAvailableAt).getTime() - Date.now()) / 1000,
+        ),
+        0,
+      );
+      setPhoneResendSeconds(seconds);
+      if (seconds > 0) timeout = window.setTimeout(updateCountdown, 1000);
+    };
+
+    updateCountdown();
+
+    return () => window.clearTimeout(timeout);
+  }, [phoneResendAvailableAt]);
 
   if (authLoading) {
     return <main className="p-6">Loading account…</main>;
@@ -144,6 +187,92 @@ export default function AccountPage() {
         error:
           error.data?.message ||
           'We couldn’t save your cell number. Please try again later.',
+      });
+    }
+  };
+
+  const requestPhoneVerification = async () => {
+    setPhoneVerificationAction({ status: 'sending', error: null });
+
+    try {
+      const response = await api.post(
+        '/users/me/account-verification/phone/start',
+      );
+      setPhoneVerificationAction({ status: 'sent', error: null });
+      setPhoneCodeEntryVisible(true);
+      setPhoneResendAvailableAt(response.data.resendAvailableAt);
+    } catch (error) {
+      if (error.data?.code === 'PHONE_VERIFICATION_RESEND_PENDING') {
+        setPhoneVerificationAction((current) => ({
+          status: current.status === 'sent' ? 'sent' : 'idle',
+          error: null,
+        }));
+        setPhoneResendAvailableAt(error.data.resendAvailableAt);
+        return;
+      }
+
+      if (error.data?.code === 'PHONE_ALREADY_VERIFIED') {
+        try {
+          const response = await api.get('/users/me/account-verification');
+          setVerification({ status: 'ready', data: response.data });
+          setPhoneResendAvailableAt(
+            response.data.phone?.resendAvailableAt || null,
+          );
+          setPhoneVerificationAction({ status: 'idle', error: null });
+          return;
+        } catch {
+          // Keep the phone verification error visible when the refresh fails.
+        }
+      }
+
+      setPhoneVerificationAction({
+        status: 'error',
+        error:
+          error.data?.message ||
+          'We couldn’t send a verification code. Please try again later.',
+      });
+    }
+  };
+
+  const checkPhoneVerificationCode = async (event) => {
+    event.preventDefault();
+    setPhoneCodeAction({ status: 'checking', error: null });
+
+    try {
+      await api.post('/users/me/account-verification/phone/check', {
+        code: phoneVerificationCode,
+      });
+      setVerification((current) => ({
+        status: 'ready',
+        data: {
+          ...current.data,
+          phone: { ...current.data.phone, status: 'verified' },
+        },
+      }));
+      setPhoneCodeEntryVisible(false);
+      setPhoneVerificationCode('');
+      setPhoneCodeAction({ status: 'verified', error: null });
+    } catch (error) {
+      if (error.data?.code === 'PHONE_ALREADY_VERIFIED') {
+        try {
+          const response = await api.get('/users/me/account-verification');
+          setVerification({ status: 'ready', data: response.data });
+          setPhoneResendAvailableAt(
+            response.data.phone?.resendAvailableAt || null
+          );
+          setPhoneCodeEntryVisible(false);
+          setPhoneCodeAction({ status: 'verified', error: null });
+          return;
+        } catch {
+          // Keep the code-check error visible when the status refresh fails.
+        }
+      }
+
+      setPhoneCodeAction({
+        status: 'error',
+        error:
+          error.data?.message ||
+          'We couldn’t verify this cell number. Please try again later.',
       });
     }
   };
@@ -221,6 +350,87 @@ export default function AccountPage() {
               detail={verification.data.phone?.value}
               status={verification.data.phone?.status || 'not_provided'}
             />
+            {phoneCodeAction.status === 'verified' && (
+              <p className="text-sm text-green-700" role="status">
+                Cell number verified.
+              </p>
+            )}
+            {verification.data.phone?.status === 'unverified' && (
+              <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+                <p className="text-sm text-amber-900">
+                  We’ll send a verification code to this cell number.
+                </p>
+                <button
+                  type="button"
+                  className="mt-3 rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+                  disabled={
+                    phoneVerificationAction.status === 'sending' ||
+                    phoneResendSeconds > 0
+                  }
+                  onClick={requestPhoneVerification}
+                >
+                  {phoneVerificationAction.status === 'sending'
+                    ? 'Sending…'
+                    : phoneResendSeconds > 0
+                      ? `Resend code (${phoneResendSeconds}s)`
+                      : phoneVerificationAction.status === 'sent'
+                        ? 'Resend code'
+                        : 'Verify phone'}
+                </button>
+                {phoneVerificationAction.status === 'sent' && (
+                  <p className="mt-3 text-sm text-green-700" role="status">
+                    Verification code sent. Enter the six-digit code below.
+                  </p>
+                )}
+                {phoneVerificationAction.status === 'error' && (
+                  <p className="mt-3 text-sm text-red-600" role="alert">
+                    {phoneVerificationAction.error}
+                  </p>
+                )}
+                {phoneCodeEntryVisible && (
+                  <form className="mt-4" onSubmit={checkPhoneVerificationCode}>
+                    <label
+                      htmlFor="account-phone-verification-code"
+                      className="block text-sm font-medium text-gray-900"
+                    >
+                      Six-digit verification code
+                    </label>
+                    <input
+                      id="account-phone-verification-code"
+                      type="text"
+                      inputMode="numeric"
+                      autoComplete="one-time-code"
+                      pattern="[0-9]{6}"
+                      maxLength={6}
+                      className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900"
+                      value={phoneVerificationCode}
+                      onChange={(event) => {
+                        setPhoneVerificationCode(event.target.value);
+                        setPhoneCodeAction({ status: 'idle', error: null });
+                      }}
+                      required
+                    />
+                    <button
+                      type="submit"
+                      className="mt-3 rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+                      disabled={
+                        phoneCodeAction.status === 'checking' ||
+                        !/^[0-9]{6}$/.test(phoneVerificationCode)
+                      }
+                    >
+                      {phoneCodeAction.status === 'checking'
+                        ? 'Checking…'
+                        : 'Verify code'}
+                    </button>
+                    {phoneCodeAction.status === 'error' && (
+                      <p className="mt-3 text-sm text-red-600" role="alert">
+                        {phoneCodeAction.error}
+                      </p>
+                    )}
+                  </form>
+                )}
+              </div>
+            )}
             {(verification.data.phone?.status || 'not_provided') ===
               'not_provided' && (
               <form
@@ -266,8 +476,7 @@ export default function AccountPage() {
             )}
             {phoneAction.status === 'saved' && (
               <p className="text-sm text-green-700" role="status">
-                Phone number saved. Phone verification will be available in a
-                later step.
+                Phone number saved. You can now verify it.
               </p>
             )}
             <VerificationRow
