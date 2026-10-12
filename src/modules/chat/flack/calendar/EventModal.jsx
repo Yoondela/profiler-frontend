@@ -31,6 +31,9 @@ export default function EventModal() {
     closeModal,
     handleSave,
     handleDelete,
+    isMutating,
+    mutationAction,
+    mutationError,
   } = useCalendar();
 
   useEffect(() => {
@@ -96,21 +99,33 @@ export default function EventModal() {
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[1100] flex items-center justify-center bg-black/60 p-0 backdrop-blur-sm sm:p-4"
       onClick={handleBackdropClick}
     >
       <div
-        className="max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-2xl bg-white shadow-2xl"
+        className="flex h-[100dvh] w-full max-w-xl flex-col overflow-hidden bg-white shadow-2xl sm:h-auto sm:max-h-[90dvh] sm:rounded-2xl"
         role="dialog"
         aria-modal="true"
       >
-        <div className="border-b p-6">
+        <div className="shrink-0 border-b p-4 sm:p-6">
           <h2 className="text-xl font-semibold">
             {editingEvent ? 'Edit Event' : 'Create Event'}
           </h2>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5 p-6">
+        <form
+          onSubmit={handleSubmit}
+          className="min-h-0 flex-1 space-y-5 overflow-y-auto p-4 sm:p-6"
+        >
+          {mutationError && (
+            <div
+              role="alert"
+              className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+            >
+              {mutationError}
+            </div>
+          )}
+
           <div>
             <label className="mb-2 block text-sm font-medium">Title</label>
 
@@ -122,7 +137,7 @@ export default function EventModal() {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className="mb-2 block text-sm font-medium">Start</label>
 
@@ -185,20 +200,22 @@ export default function EventModal() {
             />
           </div>
 
-          <div className="flex justify-end gap-3 pt-4">
+          <div className="sticky bottom-0 -mx-4 flex flex-wrap justify-end gap-3 border-t bg-white px-4 pt-4 pb-[calc(1rem+env(safe-area-inset-bottom))] sm:static sm:mx-0 sm:border-t-0 sm:px-0 sm:pb-0">
             {editingEvent && (
               <button
                 type="button"
                 onClick={() => handleDelete(editingEvent.id)}
+                disabled={isMutating}
                 className="rounded-lg border border-red-500 px-4 py-2 text-red-500 transition hover:bg-red-50"
               >
-                Delete
+                {mutationAction === 'delete' ? 'Deleting…' : 'Delete'}
               </button>
             )}
 
             <button
               type="button"
               onClick={closeModal}
+              disabled={isMutating}
               className="rounded-lg border px-4 py-2"
             >
               Cancel
@@ -206,9 +223,10 @@ export default function EventModal() {
 
             <button
               type="submit"
+              disabled={isMutating}
               className="rounded-lg bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700"
             >
-              Save
+              {mutationAction === 'save' ? 'Saving…' : 'Save'}
             </button>
           </div>
         </form>

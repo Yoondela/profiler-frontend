@@ -12,7 +12,7 @@ export function InnerPanel() {
   const { activeTab } = useUIStore();
 
   return (
-    <div className="w-64 bg-[#292929] border-r border-zinc-800 text-white overflow-y-auto">
+    <aside className="min-h-0 min-w-0 w-full overflow-y-auto border-r border-zinc-800 bg-[#292929] text-white md:w-64 md:shrink-0">
       {activeTab !== 'calendar' && (
         <h2 className="text-lg !font-semibold pl-4 pt-4 capitalize !text-[white]">
           {activeTab}
@@ -41,11 +41,24 @@ export function InnerPanel() {
         </div>
       )}
 
+      {activeTab === 'activity' && (
+        <div className="p-4">
+          <div className="rounded-xl border border-dashed border-zinc-700 bg-zinc-900/40 px-4 py-8 text-center">
+            <p className="text-sm font-medium text-zinc-200">
+              Activity view unavailable
+            </p>
+            <p className="mt-1 text-xs leading-5 text-zinc-400">
+              Conversation alerts remain available in the channel lists.
+            </p>
+          </div>
+        </div>
+      )}
+
       {activeTab === 'calendar' && (
         <>
           <CalendarSidebar />
         </>
       )}
-    </div>
+    </aside>
   );
 }

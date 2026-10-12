@@ -186,7 +186,7 @@
   border-radius: 999px;
 }
 
-@media (max-width: 900px) {
+@media (min-width: 768px) and (max-width: 900px) {
   .google-calendar .fc .fc-toolbar {
     align-items: flex-start;
     flex-direction: column;
@@ -194,5 +194,62 @@
 
   .google-calendar .fc .fc-toolbar-title {
     font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .google-calendar .fc .fc-toolbar {
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .google-calendar .fc .fc-toolbar-title {
+    font-size: 1rem;
+    margin-left: 0;
+    max-width: 42vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .google-calendar .fc .fc-button-primary {
+    font-size: 0.75rem;
+    min-height: 38px;
+    padding: 0.4rem 0.55rem;
+  }
+
+  .google-calendar .fc .fc-prev-button,
+  .google-calendar .fc .fc-next-button {
+    padding: 0.45rem;
+  }
+
+  .google-calendar .fc .fc-prev-button {
+    margin-left: 0;
+  }
+
+  .google-calendar .fc .fc-footer-toolbar {
+    margin-bottom: 0;
+    margin-top: 8px;
+  }
+
+  .google-calendar .fc .fc-footer-toolbar .fc-toolbar-chunk,
+  .google-calendar .fc .fc-footer-toolbar .fc-button-group {
+    display: flex;
+    width: 100%;
+  }
+
+  .google-calendar .fc .fc-footer-toolbar .fc-button {
+    flex: 1;
+  }
+
+  .google-calendar .fc .fc-list-event-time {
+    white-space: normal;
+    width: 5.5rem;
+  }
+
+  .google-calendar .fc .fc-list-event-title a {
+    overflow-wrap: anywhere;
   }
 }

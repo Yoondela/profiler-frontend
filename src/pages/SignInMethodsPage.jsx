@@ -21,7 +21,7 @@ function methodLabel(method) {
   return METHOD_LABELS[method] || method;
 }
 
-export default function SignInMethodsPage() {
+export default function SignInMethodsPage({ embedded = false }) {
   const { isAuthenticated, isLoading: authLoading } = useAuth0();
   const api = useApiClient();
   const [state, setState] = useState({ status: 'loading', data: null });
@@ -69,19 +69,42 @@ export default function SignInMethodsPage() {
   }, [api, authLoading, isAuthenticated]);
 
   if (authLoading) {
-    return <main className="p-6">Loading sign-in methods…</main>;
+    return embedded ? (
+      <p className="mt-8 text-sm text-gray-600">Loading sign-in methods…</p>
+    ) : (
+      <main className="p-6">Loading sign-in methods…</main>
+    );
   }
 
   if (!isAuthenticated) {
-    return <main className="p-6">Sign in to manage your sign-in methods.</main>;
+    return embedded ? (
+      <p className="mt-8 text-sm text-gray-600">
+        Sign in to manage your sign-in methods.
+      </p>
+    ) : (
+      <main className="p-6">Sign in to manage your sign-in methods.</main>
+    );
   }
 
   if (state.status === 'loading') {
-    return <main className="p-6">Loading sign-in methods…</main>;
+    return embedded ? (
+      <p className="mt-8 text-sm text-gray-600">Loading sign-in methods…</p>
+    ) : (
+      <main className="p-6">Loading sign-in methods…</main>
+    );
   }
 
   if (state.status === 'disabled') {
-    return (
+    return embedded ? (
+      <section className="mt-8" aria-labelledby="sign-in-methods">
+        <h2 id="sign-in-methods" className="text-lg font-medium text-gray-900">
+          Sign-in methods
+        </h2>
+        <p className="mt-3 text-sm text-gray-600">
+          Sign-in method management is not available yet.
+        </p>
+      </section>
+    ) : (
       <main className="mx-auto max-w-3xl p-6">
         <h1 className="text-2xl font-semibold text-gray-900">
           Sign-in methods
@@ -94,7 +117,17 @@ export default function SignInMethodsPage() {
   }
 
   if (state.status === 'not_found') {
-    return (
+    return embedded ? (
+      <section className="mt-8" aria-labelledby="sign-in-methods">
+        <h2 id="sign-in-methods" className="text-lg font-medium text-gray-900">
+          Sign-in methods
+        </h2>
+        <p className="mt-3 text-sm text-gray-600">
+          Your application account is still being prepared. Please try again
+          shortly.
+        </p>
+      </section>
+    ) : (
       <main className="mx-auto max-w-3xl p-6">
         <h1 className="text-2xl font-semibold text-gray-900">
           Sign-in methods
@@ -108,7 +141,16 @@ export default function SignInMethodsPage() {
   }
 
   if (state.status === 'error' || !state.data) {
-    return (
+    return embedded ? (
+      <section className="mt-8" aria-labelledby="sign-in-methods">
+        <h2 id="sign-in-methods" className="text-lg font-medium text-gray-900">
+          Sign-in methods
+        </h2>
+        <p className="mt-3 text-sm text-gray-600">
+          We couldn’t load your sign-in methods. Please try again later.
+        </p>
+      </section>
+    ) : (
       <main className="mx-auto max-w-3xl p-6">
         <h1 className="text-2xl font-semibold text-gray-900">
           Sign-in methods
@@ -264,13 +306,8 @@ export default function SignInMethodsPage() {
     }
   };
 
-  return (
-    <main className="mx-auto max-w-3xl p-4 sm:p-6">
-      <h1 className="text-2xl font-semibold text-gray-900">Sign-in methods</h1>
-      <p className="mt-2 text-gray-600">
-        These methods can be used to access your Exalt account.
-      </p>
-
+  const signInMethodsContent = (
+    <>
       <section className="mt-6 space-y-3" aria-labelledby="connected-methods">
         <h2
           id="connected-methods"
@@ -390,6 +427,30 @@ export default function SignInMethodsPage() {
           </p>
         )}
       </section>
+    </>
+  );
+
+  if (embedded) {
+    return (
+      <section className="mt-8" aria-labelledby="sign-in-methods">
+        <h2 id="sign-in-methods" className="text-lg font-medium text-gray-900">
+          Sign-in methods
+        </h2>
+        <p className="mt-2 text-sm text-gray-600">
+          These methods can be used to access your Exalt account.
+        </p>
+        {signInMethodsContent}
+      </section>
+    );
+  }
+
+  return (
+    <main className="mx-auto max-w-3xl p-4 sm:p-6">
+      <h1 className="text-2xl font-semibold text-gray-900">Sign-in methods</h1>
+      <p className="mt-2 text-gray-600">
+        These methods can be used to access your Exalt account.
+      </p>
+      {signInMethodsContent}
     </main>
   );
 }

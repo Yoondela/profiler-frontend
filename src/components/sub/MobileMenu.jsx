@@ -49,10 +49,9 @@ export default function MobileMenu({ isOpen, onClose, user, children }) {
       to: '/user-schedule',
     },
     {
-      label: 'Sign-in methods',
+      label: 'Account',
       icon: KeyRound,
-      to: '/sign-in-methods',
-      hidden: import.meta.env.VITE_ACCOUNT_LINKING_ENABLED !== 'true',
+      to: '/account',
     },
   ];
 
