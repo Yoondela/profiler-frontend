@@ -50,6 +50,7 @@ export default function AccountPage() {
     status: 'idle',
     error: null,
   });
+  const [emailResendAvailableAt, setEmailResendAvailableAt] = useState(null);
   const [emailResendSeconds, setEmailResendSeconds] = useState(0);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [phoneAction, setPhoneAction] = useState({
@@ -78,6 +79,9 @@ export default function AccountPage() {
         const response = await api.get('/users/me/account-verification');
         if (active) {
           setVerification({ status: 'ready', data: response.data });
+          setEmailResendAvailableAt(
+            response.data.email?.resendAvailableAt || null
+          );
           setPhoneResendAvailableAt(
             response.data.phone?.resendAvailableAt || null,
           );
@@ -97,14 +101,27 @@ export default function AccountPage() {
   }, [api, authLoading, isAuthenticated]);
 
   useEffect(() => {
-    if (emailResendSeconds === 0) return undefined;
+    if (!emailResendAvailableAt) {
+      setEmailResendSeconds(0);
+      return undefined;
+    }
 
-    const timeout = window.setTimeout(() => {
-      setEmailResendSeconds((seconds) => Math.max(seconds - 1, 0));
-    }, 1000);
+    let timeout;
+    const updateCountdown = () => {
+      const seconds = Math.max(
+        Math.ceil(
+          (new Date(emailResendAvailableAt).getTime() - Date.now()) / 1000
+        ),
+        0
+      );
+      setEmailResendSeconds(seconds);
+      if (seconds > 0) timeout = window.setTimeout(updateCountdown, 1000);
+    };
+
+    updateCountdown();
 
     return () => window.clearTimeout(timeout);
-  }, [emailResendSeconds]);
+  }, [emailResendAvailableAt]);
 
   useEffect(() => {
     if (!phoneResendAvailableAt) {
@@ -141,14 +158,25 @@ export default function AccountPage() {
     setEmailAction({ status: 'sending', error: null });
 
     try {
-      await api.post('/users/me/account-verification/email/resend');
+      const response = await api.post(
+        '/users/me/account-verification/email/resend'
+      );
       setEmailAction({ status: 'sent', error: null });
-      setEmailResendSeconds(30);
+      setEmailResendAvailableAt(response.data.resendAvailableAt);
     } catch (error) {
+      if (error.data?.code === 'EMAIL_VERIFICATION_RESEND_PENDING') {
+        setEmailAction({ status: 'idle', error: null });
+        setEmailResendAvailableAt(error.data.resendAvailableAt);
+        return;
+      }
+
       if (error.data?.code === 'EMAIL_ALREADY_VERIFIED') {
         try {
           const response = await api.get('/users/me/account-verification');
           setVerification({ status: 'ready', data: response.data });
+          setEmailResendAvailableAt(
+            response.data.email?.resendAvailableAt || null
+          );
           setEmailAction({ status: 'idle', error: null });
           return;
         } catch {
