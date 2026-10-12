@@ -12,12 +12,22 @@ export const fetchPortfolio = async (providerId) => {
 };
 
 /** Update user profile */
-export const updatePortfolio = async (userId, changes) => {
+export const updatePortfolio = async (
+  userId,
+  changes,
+  getAccessTokenSilently
+) => {
   console.log('ID', userId);
   if (!userId) throw new Error('No user ID provided');
+  if (!getAccessTokenSilently) throw new Error('Authentication is required');
+
+  const token = await getAccessTokenSilently();
+  if (!token) throw new Error('Authentication is required');
+
   const res = await axios.patch(
     `${import.meta.env.VITE_API_URL}/portfolios/${userId}`,
-    changes
+    changes,
+    { headers: { Authorization: `Bearer ${token}` } }
   );
   return res.data;
 };

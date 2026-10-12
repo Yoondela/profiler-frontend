@@ -95,15 +95,9 @@ const PortfolioEditDialog = ({ provider, children }) => {
 
       console.log('before the update 3.......');
 
-      // get token if needed by your API
-      let token;
-      try {
-        token = await getAccessTokenSilently?.();
-        console.log('before the update 4.............');
-      } catch (err) {
-        // token optional — continue if your API doesn't require it
-        token = undefined;
-      }
+      const token = await getAccessTokenSilently();
+      if (!token) throw new Error('Authentication is required');
+      console.log('before the update 4.............');
 
       // Acquire a stable userId for your backend. getUserID should return the id your backend expects.
       const userId = await getUserID(getAccessTokenSilently, user?.email);
@@ -116,7 +110,15 @@ const PortfolioEditDialog = ({ provider, children }) => {
       setOpen(false);
     } catch (err) {
       console.error('Portfolio update failed', err);
-      toast.error('Failed to update portfolio.');
+      if (err.response?.status === 401) {
+        toast.error('Please sign in again before editing your portfolio.');
+      } else if (err.response?.status === 403) {
+        toast.error('You do not have permission to edit this portfolio.');
+      } else if (err.message === 'Authentication is required') {
+        toast.error('Please sign in again before editing your portfolio.');
+      } else {
+        toast.error('Failed to update portfolio.');
+      }
     } finally {
       setSaving(false);
     }
