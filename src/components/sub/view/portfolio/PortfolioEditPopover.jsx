@@ -21,14 +21,20 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useAuth0 } from '@auth0/auth0-react';
 import { getUserID } from '@/api/sync/SyncUser';
 import { toast } from 'sonner'; // or use your project's toast
+import { Autocomplete } from '@react-google-maps/api';
 
 const PortfolioEditDialog = ({ provider, children }) => {
   // --- open / saving ---
   const [open, setOpen] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [loadingDetails, setLoadingDetails] = useState(false);
+  const [loadError, setLoadError] = useState(null);
 
   // --- local editable fields with safe defaults ---
   const [address, setAddress] = useState('');
+  const [savedAddress, setSavedAddress] = useState('');
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [autocomplete, setAutocomplete] = useState(null);
   const [about, setAbout] = useState('');
   const [services, setServices] = useState([]);
   const [otherSkills, setOtherSkills] = useState([]);
@@ -38,21 +44,50 @@ const PortfolioEditDialog = ({ provider, children }) => {
 
   const { user, getAccessTokenSilently } = useAuth0();
 
-  // Sync local state when provider prop becomes available / changes
+  // Load the owner's Portfolio rather than the Company-first display projection.
   useEffect(() => {
-    if (!provider) return;
+    if (!open) return undefined;
+    if (!user?.email) {
+      setLoadError('Unable to load Portfolio details.');
+      return undefined;
+    }
 
-    setAddress(provider.address ?? '');
-    setAbout(provider.about ?? '');
-    setServices(
-      Array.isArray(provider.servicesOffered)
-        ? [...provider.servicesOffered]
-        : []
-    );
-    setOtherSkills(
-      Array.isArray(provider.otherSkills) ? [...provider.otherSkills] : []
-    );
-  }, [provider]);
+    let active = true;
+    const loadPortfolio = async () => {
+      try {
+        setLoadingDetails(true);
+        setLoadError(null);
+        const userId = await getUserID(getAccessTokenSilently, user?.email);
+        const token = await getAccessTokenSilently();
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/portfolios/${userId}/edits`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        if (!active) return;
+
+        const loadedAddress = response.data.address?.formatted || '';
+        setAddress(loadedAddress);
+        setSavedAddress(loadedAddress);
+        setAbout(response.data.about || response.data.bio || '');
+        setServices(
+          (response.data.servicesOffered || [])
+            .filter(Boolean)
+            .map((service) => service.name)
+        );
+        setOtherSkills(response.data.otherSkills || []);
+      } catch (err) {
+        if (!active) return;
+        setLoadError('Unable to load Portfolio details.');
+      } finally {
+        if (active) setLoadingDetails(false);
+      }
+    };
+
+    loadPortfolio();
+    return () => {
+      active = false;
+    };
+  }, [open, user?.email, getAccessTokenSilently]);
 
   // ---------------------- Drag & Drop ---------------------- //
   const handleDragEnd = (result) => {
@@ -61,6 +96,28 @@ const PortfolioEditDialog = ({ provider, children }) => {
     const [moved] = updated.splice(result.source.index, 1);
     updated.splice(result.destination.index, 0, moved);
     setOtherSkills(updated);
+  };
+
+  const handleAddressChange = (event) => {
+    setAddress(event.target.value);
+    setSelectedAddress(null);
+  };
+
+  const handlePlaceChanged = () => {
+    if (!autocomplete) return;
+
+    const place = autocomplete.getPlace();
+    if (!place?.formatted_address) return;
+
+    const lat = place.geometry?.location?.lat?.();
+    const lng = place.geometry?.location?.lng?.();
+    setSelectedAddress({
+      formatted: place.formatted_address,
+      placeId: place.place_id,
+      addressComponents: place.address_components,
+      ...(Number.isFinite(lat) && Number.isFinite(lng) && { lat, lng }),
+    });
+    setAddress(place.formatted_address);
   };
 
   // ---------------------- API Request ---------------------- //
@@ -78,8 +135,12 @@ const PortfolioEditDialog = ({ provider, children }) => {
   // ---------------------- SAVE HANDLER ---------------------- //
   const handleSave = async () => {
     console.log('before the update');
-    if (!provider?.user?.email && !user?.email) {
+    if (!user?.email) {
       toast.error('Missing user information.');
+      return;
+    }
+    if (address !== savedAddress && !selectedAddress) {
+      toast.error('Select an address from the autocomplete suggestions.');
       return;
     }
     console.log('before the update 2........');
@@ -87,8 +148,8 @@ const PortfolioEditDialog = ({ provider, children }) => {
     setSaving(true);
     try {
       const payload = {
-        address: address || undefined,
-        about: about || undefined,
+        address: selectedAddress || undefined,
+        about,
         servicesOffered: services,
         otherSkills,
       };
@@ -105,6 +166,11 @@ const PortfolioEditDialog = ({ provider, children }) => {
       console.log('just before the update');
 
       await updatePortfolioRequest(userId, payload, token);
+
+      if (selectedAddress) {
+        setSavedAddress(selectedAddress.formatted);
+        setSelectedAddress(null);
+      }
 
       toast.success('Portfolio updated!');
       setOpen(false);
@@ -146,14 +212,33 @@ const PortfolioEditDialog = ({ provider, children }) => {
         </DialogHeader>
 
         <div className="max-h-[399px] w-full overflow-y-auto">
+          {loadError ? (
+            <p className="text-sm text-red-600">{loadError}</p>
+          ) : null}
           {/* Address */}
           <div className="space-y-1">
             <label className="text-sm font-medium">Address</label>
-            <Input
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              placeholder="Your address"
-            />
+            {typeof window !== 'undefined' && window.google ? (
+              <Autocomplete
+                onLoad={setAutocomplete}
+                onPlaceChanged={handlePlaceChanged}
+                options={{
+                  types: ['address'],
+                  componentRestrictions: { country: 'za' },
+                }}
+              >
+                <Input
+                  value={address}
+                  onChange={handleAddressChange}
+                  placeholder="Start typing your address"
+                />
+              </Autocomplete>
+            ) : (
+              <Input disabled placeholder="Loading address autocomplete…" />
+            )}
+            <p className="text-xs text-gray-500">
+              Select an address from the suggestions to update it.
+            </p>
           </div>
 
           {/* About */}
@@ -196,13 +281,13 @@ const PortfolioEditDialog = ({ provider, children }) => {
             <div className="flex flex-wrap gap-2">
               {services.map((item, index) => (
                 <Badge
-                  key={`service-${index}-${item._id}`}
+                  key={`service-${index}-${item}`}
                   className="cursor-pointer"
                   onClick={() =>
                     setServices((prev) => prev.filter((s) => s !== item))
                   }
                 >
-                  {item.name} ✕
+                  {item} ✕
                 </Badge>
               ))}
             </div>
@@ -270,7 +355,7 @@ const PortfolioEditDialog = ({ provider, children }) => {
           <Button
             className="w-full flex items-center gap-2"
             onClick={handleSave}
-            disabled={saving || !provider}
+            disabled={saving || loadingDetails || Boolean(loadError)}
           >
             {saving ? (
               <>

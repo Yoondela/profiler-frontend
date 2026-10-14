@@ -11,7 +11,7 @@ export default function ListCompanySection() {
   const { user, getAccessTokenSilently } = useAuth0();
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { listingSuccessful, setListingSuccessful } = useState(false);
+  const [listingSuccessful, setListingSuccessful] = useState(false);
 
   const { hasCompany } = usePortfolioContext();
 

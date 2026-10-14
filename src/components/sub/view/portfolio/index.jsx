@@ -126,11 +126,13 @@ const PortfolioDetailsContainer = ({ provider }) => {
       <div className="info">
         <div className="card-header">
           <h2>About</h2>
-          <PortfolioEditDialog provider={portfolio} className="">
-            <div className="edit-portfolio">
-              <Pencil size={17} className="cursor-pointer" />
-            </div>
-          </PortfolioEditDialog>
+          {portfolio?.type === 'individual' ? (
+            <PortfolioEditDialog provider={portfolio} className="">
+              <div className="edit-portfolio">
+                <Pencil size={17} className="cursor-pointer" />
+              </div>
+            </PortfolioEditDialog>
+          ) : null}
         </div>
 
         <div className="card-body">
