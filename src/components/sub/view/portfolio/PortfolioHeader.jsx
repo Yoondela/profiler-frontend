@@ -23,7 +23,10 @@ export default function PortfolioHeader({ provider }) {
   const bannerUrl = provider?.portfolio?.bannerUrl || '';
   const logoUrl = provider?.portfolio?.logoUrl || '';
   const providerName =
-    provider?.company?.name || provider?.user?.name || 'Unknown Provider';
+    provider?.portfolio?.displayName ||
+    provider?.company?.name ||
+    provider?.user?.name ||
+    'Unknown Provider';
   const averageRating = provider?.portfolio?.rating || 0;
   const reviewCount = provider?.portfolio?.completedJobs || 0;
 

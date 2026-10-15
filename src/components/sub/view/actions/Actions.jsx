@@ -4,7 +4,8 @@ import { ProviderPicker } from '@/components/bookings/bookingList';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';
 
 export default function ActionsPage() {
-  const { bookings, invites, loading, hasNew, clearNewFlag } = useBookings();
+  const { bookings, invites, loading, error, hasNew, clearNewFlag } =
+    useBookings();
   const [selected, setSelected] = React.useState('bookings');
 
   React.useEffect(() => {
@@ -12,6 +13,14 @@ export default function ActionsPage() {
   }, [clearNewFlag]);
 
   if (loading) return <div className="p-6">Loading...</div>;
+
+  if (error) {
+    return (
+      <div className="p-6 text-red-600" role="alert">
+        {error}
+      </div>
+    );
+  }
 
   return (
     <div className="p-12 flex">

@@ -11,6 +11,17 @@ export const fetchPortfolio = async (providerId) => {
   return res.data;
 };
 
+export const fetchPortfolioEdits = async (providerId, token) => {
+  if (!providerId) throw new Error('No provider ID provided');
+  if (!token) throw new Error('Authentication is required');
+
+  const res = await axios.get(
+    `${import.meta.env.VITE_API_URL}/portfolios/${providerId}/edits`,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+  return res.data;
+};
+
 /** Update user profile */
 export const updatePortfolio = async (
   userId,
