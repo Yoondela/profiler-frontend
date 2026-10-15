@@ -13,6 +13,7 @@ import {
   Settings2,
   ScanEye,
   KeyRound,
+  GalleryVertical,
 } from 'lucide-react';
 
 export default function MobileMenu({ isOpen, onClose, user, children }) {
@@ -79,6 +80,11 @@ export default function MobileMenu({ isOpen, onClose, user, children }) {
       icon: User,
       to: '/concern-config',
       action: () => setActiveEditor('portfolio'),
+    },
+    {
+      label: 'Gallery',
+      icon: GalleryVertical,
+      to: '/user-gallery',
     },
     {
       label: 'Manage',

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Check, Link as LinkIcon } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { usePortfolioContext } from '@/api/context/portfolioContext';
 import ListCompanySection from './ListCompanySection';
 import MembersSection from './MembersSection';
@@ -77,6 +78,12 @@ export default function CompanyConfigurations() {
           >
             Portfolio
           </button>
+          <Link
+            to="/user-gallery"
+            className="block w-full px-3 py-2 text-left text-sm text-gray-500 transition-colors hover:text-gray-950"
+          >
+            Gallery
+          </Link>
         </nav>
       </aside>
 

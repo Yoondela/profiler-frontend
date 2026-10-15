@@ -39,7 +39,7 @@ const GalleryManager = () => {
     }
 
     loadUserId();
-  }, [user]);
+  }, [getAccessTokenSilently, user]);
 
   useEffect(() => {
     if (!userId) return;
@@ -70,7 +70,8 @@ const GalleryManager = () => {
     if (!userId) return;
 
     try {
-      const res = await deleteGalleryImage(userId, image._id);
+      const token = await getAccessTokenSilently();
+      const res = await deleteGalleryImage(userId, image._id, token);
 
       if (res?.galleryPhotos) {
         setGalleryImages(res.galleryPhotos);
@@ -85,7 +86,8 @@ const GalleryManager = () => {
     if (!userId) return;
 
     try {
-      const res = await setPrimaryGalleryImage(userId, image._id);
+      const token = await getAccessTokenSilently();
+      const res = await setPrimaryGalleryImage(userId, image._id, token);
 
       if (res?.galleryPhotos) {
         setGalleryImages(res.galleryPhotos);
@@ -97,7 +99,8 @@ const GalleryManager = () => {
 
   const handleReorder = async (fromIndex, toIndex, previousImages) => {
     try {
-      const res = await reorderGalleryPhotos(userId, fromIndex, toIndex);
+      const token = await getAccessTokenSilently();
+      const res = await reorderGalleryPhotos(userId, fromIndex, toIndex, token);
 
       if (res?.galleryPhotos) {
         setGalleryImages(res.galleryPhotos);
