@@ -18,12 +18,11 @@ import {
 import PortfolioGallery from '@/components/sub/view/portfolio/PortfolioGallery';
 import ReviewCarousel from './ReviewCarousel';
 import WorkingHoursDisplay from '@/components/company-configuration/WorkingHoursDisplay';
-import ActiveWorkers from '@/components/sub/view/portfolio/ActiveWorkers';
 
-const PortfolioDetailsContainer = ({ provider }) => {
-  const portfolio = provider?.portfolio ?? provider;
-  const company = provider?.company ?? portfolio?.company ?? null;
+const PortfolioDetailsContainer = ({ profile }) => {
+  const portfolio = profile;
   const address = portfolio?.address ?? {};
+  const addressComponents = address.addressComponents ?? address;
   const servicesOffered = Array.isArray(portfolio?.servicesOffered)
     ? portfolio.servicesOffered
     : [];
@@ -33,30 +32,12 @@ const PortfolioDetailsContainer = ({ provider }) => {
   const galleryPhotos = Array.isArray(portfolio?.galleryPhotos)
     ? portfolio.galleryPhotos
     : [];
-  const reviews = Array.isArray(portfolio?.review)
-    ? portfolio.review
-    : Array.isArray(portfolio?.reviews)
-      ? portfolio.reviews
-      : [];
+  const reviews = Array.isArray(portfolio?.reviews) ? portfolio.reviews : [];
 
   const hasOfficeHours = Boolean(
     portfolio?.workingHours?.weeklySchedule &&
       Object.keys(portfolio.workingHours.weeklySchedule).length
   );
-
-  const displayName =
-    company?.name ||
-    portfolio?.name ||
-    portfolio?.user?.name ||
-    provider?.user?.name ||
-    'Unknown Provider';
-
-  const bioText =
-    portfolio?.about ||
-    portfolio?.bio ||
-    portfolio?.user?.profile?.bio ||
-    provider?.user?.profile?.bio ||
-    '';
 
   return (
     <div className="provider-overview-card">
@@ -66,8 +47,8 @@ const PortfolioDetailsContainer = ({ provider }) => {
             <div className="bits w-full flex">
               <div className="address flex items-center gap-2">
                 <Map size={20} />
-                <p>{address?.suburb}</p>
-                <p>{address?.city}</p>
+                <p>{addressComponents?.suburb}</p>
+                <p>{addressComponents?.city}</p>
               </div>
 
               <div className="categories flex items-start gap-2">
@@ -126,13 +107,11 @@ const PortfolioDetailsContainer = ({ provider }) => {
       <div className="info">
         <div className="card-header">
           <h2>About</h2>
-          {portfolio?.type === 'individual' ? (
-            <PortfolioEditDialog provider={portfolio} className="">
-              <div className="edit-portfolio">
-                <Pencil size={17} className="cursor-pointer" />
-              </div>
-            </PortfolioEditDialog>
-          ) : null}
+          <PortfolioEditDialog provider={portfolio} className="">
+            <div className="edit-portfolio">
+              <Pencil size={17} className="cursor-pointer" />
+            </div>
+          </PortfolioEditDialog>
         </div>
 
         <div className="card-body">
@@ -143,8 +122,6 @@ const PortfolioDetailsContainer = ({ provider }) => {
             </p>
           </div>
 
-          <ActiveWorkers members={company?.members ?? []} />
-
           {/* Working Hours */}
           <div className="pb-12">
             <Collapsible defaultOpen={hasOfficeHours}>
@@ -153,7 +130,7 @@ const PortfolioDetailsContainer = ({ provider }) => {
                 <ChevronDown className="h-4 w-4 transition-transform duration-200 data-[state=open]:rotate-180" />
               </CollapsibleTrigger>
               <CollapsibleContent className="mt-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-                <WorkingHoursDisplay />
+                <WorkingHoursDisplay workingHours={portfolio?.workingHours} />
               </CollapsibleContent>
             </Collapsible>
           </div>

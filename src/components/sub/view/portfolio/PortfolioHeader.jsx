@@ -1,62 +1,26 @@
-import { useState, useEffect } from 'react';
-import { Star, HeartIcon, BookmarkIcon, BadgeCheck } from 'lucide-react';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { BadgeCheck } from 'lucide-react';
 import LogoUpload from './LogoUploader';
 import BannerUpload from './BannerUpload';
-import { updatePortfolio } from '@/api/sync/SyncPortfolio';
+import { updateProviderBranding } from '@/api/sync/SyncPortfolio';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useUserContext } from '@/api/context/userContext';
-import { getUserID } from '@/api/sync/SyncUser';
 import { toast } from 'sonner';
-import StarDisplay from '@/components/common/StartDisplay';
-import axios from 'axios';
 
-export default function PortfolioHeader({ provider }) {
-  const { user, getAccessTokenSilently } = useAuth0();
+export default function PortfolioHeader({ profile }) {
+  const { getAccessTokenSilently } = useAuth0();
   const { setBannerUrlCtx, setLogoUrlCtx, appUser_ID } = useUserContext();
-  const [userBackendId, setUserBackendId] = useState(appUser_ID);
 
-  // todo: why are these props undefine
-
-  console.log('PortfolioHeader received provider:', provider);
-
-  const bannerUrl = provider?.portfolio?.bannerUrl || '';
-  const logoUrl = provider?.portfolio?.logoUrl || '';
-  const providerName =
-    provider?.portfolio?.displayName ||
-    provider?.company?.name ||
-    provider?.user?.name ||
-    'Unknown Provider';
-  const averageRating = provider?.portfolio?.rating || 0;
-  const reviewCount = provider?.portfolio?.completedJobs || 0;
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      if (!appUser_ID && user) {
-        const id = await getUserID(getAccessTokenSilently, user.email);
-        setUserBackendId(id);
-      }
-    };
-    fetchUser();
-  }, [appUser_ID, user, getAccessTokenSilently]);
+  const bannerUrl = profile?.bannerUrl || '';
+  const logoUrl = profile?.logoUrl || '';
+  const providerName = profile?.displayName || 'Unknown Provider';
 
   const updateDisplayedListingBranding = async (changes) => {
-    if (provider?.portfolio?.type !== 'company') {
-      return updatePortfolio(userBackendId, changes, getAccessTokenSilently);
-    }
-
-    const companyId = provider.portfolio.id;
-    if (!companyId) throw new Error('No company ID provided');
-
-    const token = await getAccessTokenSilently();
+    if (!appUser_ID) throw new Error('No provider ID provided');
+    const token = await getAccessTokenSilently({
+      audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+    });
     if (!token) throw new Error('Authentication is required');
-
-    const response = await axios.patch(
-      `${import.meta.env.VITE_API_URL}/company/${companyId}/edits`,
-      changes,
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    return response.data;
+    return updateProviderBranding(appUser_ID, changes, token);
   };
 
   const onLogoUploadSuccess = async (newImgUrl) => {

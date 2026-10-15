@@ -13,7 +13,7 @@ export default function ListCompanySection() {
   const [loading, setLoading] = useState(false);
   const [listingSuccessful, setListingSuccessful] = useState(false);
 
-  const { hasCompany } = usePortfolioContext();
+  const { hasCompany, setPortfolioDataCtx } = usePortfolioContext();
 
   const isCompany = hasCompany();
 
@@ -56,6 +56,18 @@ export default function ListCompanySection() {
       if (!res.ok) throw new Error(data.message);
 
       console.log('Upgrade response:', data);
+
+      const company = data.company;
+      if (company?._id) {
+        setPortfolioDataCtx({
+          company: { _id: company._id, name: company.name },
+          portfolio: {
+            type: 'company',
+            id: company._id,
+            workingHours: company.workingHours,
+          },
+        });
+      }
 
       setListingSuccessful(true);
       // setIsCompany(true);

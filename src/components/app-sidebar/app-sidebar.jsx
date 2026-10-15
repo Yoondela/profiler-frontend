@@ -26,7 +26,7 @@ import { useState } from 'react';
 export function AppSidebar() {
   const { user } = useAuth0();
   const { state, isMobile } = useSidebar();
-  const { portfolio, loading, error } = useProviderPortfolio();
+  const { profile, error } = useProviderPortfolio();
 
   const menuItems = [
     { to: '/provider-dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -49,9 +49,9 @@ export function AppSidebar() {
       >
         <SidebarTrigger className="cursor-pointer" />
       </div>
-      {!isMobile && portfolio && !error && (
+      {!isMobile && profile && !error && (
         <SidebarHeader className="p-1">
-          <CompanyAvatar />
+          <CompanyAvatar profile={profile} />
         </SidebarHeader>
       )}
 

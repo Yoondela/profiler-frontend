@@ -1,36 +1,20 @@
-import useProviderPortfolio from '@/hooks/useProviderPortfolio';
-import StarDisplay from '../common/StartDisplay';
 import { NavLink } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import CompanyRating from './company-rating';
-import Spinner from '../sub/LoadingSpinner';
 import { useAuth0 } from '@auth0/auth0-react';
 
-export function CompanyAvatar() {
-  const { portfolio, loading, error, refetch } = useProviderPortfolio();
+export function CompanyAvatar({ profile }) {
   const { user } = useAuth0();
-  const companyName =
-    portfolio?.company?.name ||
-    portfolio?.portfolio?.name ||
-    user.name ||
-    'Unknown Provider';
+  const companyName = profile?.displayName || user.name || 'Unknown Provider';
 
-  if (loading)
-    return (
-      <div className="p-4">
-        <Spinner />
-      </div>
-    );
-  if (error)
-    return <div className="p-4 text-red-500">Error loading portfolio.</div>;
-  if (!portfolio)
+  if (!profile)
     return <div className="p-4 text-muted-foreground">No portfolio found.</div>;
 
   return (
     <NavLink to="/provider-page">
       <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
         <Avatar className="h-8 w-8 rounded-lg">
-          <AvatarImage src={portfolio?.portfolio?.logoUrl} />
+          <AvatarImage src={profile.logoUrl} />
           <AvatarFallback className="rounded-lg">Ex</AvatarFallback>
         </Avatar>
         <div className="grid flex-1 text-left !text-black-300 text-sm leading-tight">
@@ -39,8 +23,8 @@ export function CompanyAvatar() {
           </span>
           <div className=" truncate flex items-center gap-1">
             <CompanyRating
-              averageRating={portfolio.rating}
-              reviewCount={portfolio.completedJobs}
+              averageRating={profile.rating}
+              reviewCount={profile.completedJobs}
             />
           </div>
         </div>

@@ -55,7 +55,7 @@ export const setPrimaryGalleryImage = async (userId, photoId, token) => {
   if (!userId) throw new Error('No user ID provided');
 
   const res = await axios.patch(
-    `${API}/gallery/${userId}/${photoId}/primary`,
+    `${API}/portfolios/${userId}/${photoId}/primary`,
     {},
     { headers: { Authorization: `Bearer ${token}` } }
   );
