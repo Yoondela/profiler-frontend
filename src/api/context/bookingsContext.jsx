@@ -6,34 +6,65 @@ import {
   useCallback,
 } from 'react';
 import axios from 'axios';
-import { usePortfolioContext } from './portfolioContext';
 import { useSocket } from './socketContext';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useUserContext } from './userContext';
+import { fetchPortfolioEdits } from '../sync/SyncPortfolio';
 
 const BookingsContext = createContext(null);
 
 export function BookingsProvider({ children }) {
-  const { portfolioDataCtx } = usePortfolioContext();
   const { subscribe } = useSocket();
   const { getAccessTokenSilently } = useAuth0();
+  const { appUser_ID, bootstrapStatus } = useUserContext();
 
   const [bookings, setBookings] = useState([]);
   const [invites, setInvites] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [hasNew, setHasNew] = useState(false);
 
-  const businessId =
-    portfolioDataCtx?.company?._id || portfolioDataCtx?.portfolio?.id;
-
-  console.log('BusinessId in booking context = ', businessId);
-
   useEffect(() => {
-    if (!businessId) return;
+    let active = true;
+
+    if (bootstrapStatus !== 'ready') {
+      setBookings([]);
+      setInvites([]);
+      setError(null);
+      setLoading(bootstrapStatus !== 'anonymous');
+      return () => {
+        active = false;
+      };
+    }
+
+    if (!appUser_ID) {
+      setBookings([]);
+      setInvites([]);
+      setError('No provider actions are available for this account.');
+      setLoading(false);
+      return () => {
+        active = false;
+      };
+    }
 
     const fetchBookings = async () => {
       setLoading(true);
+      setError(null);
       try {
-        const token = await getAccessTokenSilently();
+        const token = await getAccessTokenSilently({
+          audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+        });
+        const portfolio = await fetchPortfolioEdits(appUser_ID, token);
+        const companyId =
+          typeof portfolio.company === 'object'
+            ? portfolio.company?._id
+            : portfolio.company;
+        const businessId = companyId || portfolio._id;
+
+        if (!businessId) {
+          throw new Error('No Portfolio action owner found');
+        }
+
         const res = await axios.get(
           `${import.meta.env.VITE_API_URL}/actions/unresolved/${businessId}`,
           {
@@ -43,17 +74,28 @@ export function BookingsProvider({ children }) {
 
         const data = res.data || res.body || {};
         console.log(data);
-        setBookings(data.bookings || []);
-        setInvites(data.invites || []);
+        if (active) {
+          setBookings(data.bookings || []);
+          setInvites(data.invites || []);
+        }
       } catch (err) {
         console.error('Failed to fetch bookings', err);
+        if (active) {
+          setBookings([]);
+          setInvites([]);
+          setError('Unable to load actions. Please try again.');
+        }
       } finally {
-        setLoading(false);
+        if (active) setLoading(false);
       }
     };
 
     fetchBookings();
-  }, [businessId, getAccessTokenSilently]);
+
+    return () => {
+      active = false;
+    };
+  }, [appUser_ID, bootstrapStatus, getAccessTokenSilently]);
 
   const addBooking = useCallback((booking) => {
     setBookings((prev) => {
@@ -94,6 +136,7 @@ export function BookingsProvider({ children }) {
         bookings,
         invites,
         loading,
+        error,
 
         hasNew,
         clearNewFlag,

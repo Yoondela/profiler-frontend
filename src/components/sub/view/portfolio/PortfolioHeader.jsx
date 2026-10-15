@@ -9,6 +9,7 @@ import { useUserContext } from '@/api/context/userContext';
 import { getUserID } from '@/api/sync/SyncUser';
 import { toast } from 'sonner';
 import StarDisplay from '@/components/common/StartDisplay';
+import axios from 'axios';
 
 export default function PortfolioHeader({ provider }) {
   const { user, getAccessTokenSilently } = useAuth0();
@@ -22,7 +23,10 @@ export default function PortfolioHeader({ provider }) {
   const bannerUrl = provider?.portfolio?.bannerUrl || '';
   const logoUrl = provider?.portfolio?.logoUrl || '';
   const providerName =
-    provider?.company?.name || provider?.user?.name || 'Unknown Provider';
+    provider?.portfolio?.displayName ||
+    provider?.company?.name ||
+    provider?.user?.name ||
+    'Unknown Provider';
   const averageRating = provider?.portfolio?.rating || 0;
   const reviewCount = provider?.portfolio?.completedJobs || 0;
 
@@ -34,25 +38,60 @@ export default function PortfolioHeader({ provider }) {
       }
     };
     fetchUser();
-  }, [appUser_ID, user]);
+  }, [appUser_ID, user, getAccessTokenSilently]);
+
+  const updateDisplayedListingBranding = async (changes) => {
+    if (provider?.portfolio?.type !== 'company') {
+      return updatePortfolio(userBackendId, changes, getAccessTokenSilently);
+    }
+
+    const companyId = provider.portfolio.id;
+    if (!companyId) throw new Error('No company ID provided');
+
+    const token = await getAccessTokenSilently();
+    if (!token) throw new Error('Authentication is required');
+
+    const response = await axios.patch(
+      `${import.meta.env.VITE_API_URL}/company/${companyId}/edits`,
+      changes,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return response.data;
+  };
 
   const onLogoUploadSuccess = async (newImgUrl) => {
-    setLogoUrlCtx(newImgUrl);
     try {
-      await updatePortfolio(userBackendId, { logoUrl: newImgUrl });
+      await updateDisplayedListingBranding({ logoUrl: newImgUrl });
+      setLogoUrlCtx(newImgUrl);
       console.log('Portfolio updated successfully');
-    } catch {
-      toast.error('Failed to update logo. Please try again.');
+    } catch (error) {
+      if (error.response?.status === 401) {
+        toast.error('Please sign in again before updating your logo.');
+      } else if (error.response?.status === 403) {
+        toast.error('You do not have permission to edit this portfolio.');
+      } else if (error.message === 'Authentication is required') {
+        toast.error('Please sign in again before updating your logo.');
+      } else {
+        toast.error('Failed to update logo. Please try again.');
+      }
     }
   };
 
   const onBannerUploadSuccess = async (newImgUrl) => {
-    setBannerUrlCtx(newImgUrl);
     try {
-      await updatePortfolio(userBackendId, { bannerUrl: newImgUrl });
+      await updateDisplayedListingBranding({ bannerUrl: newImgUrl });
+      setBannerUrlCtx(newImgUrl);
       console.log('Portfolio updated successfully');
-    } catch {
-      toast.error('Failed to update banner. Please try again.');
+    } catch (error) {
+      if (error.response?.status === 401) {
+        toast.error('Please sign in again before updating your banner.');
+      } else if (error.response?.status === 403) {
+        toast.error('You do not have permission to edit this portfolio.');
+      } else if (error.message === 'Authentication is required') {
+        toast.error('Please sign in again before updating your banner.');
+      } else {
+        toast.error('Failed to update banner. Please try again.');
+      }
     }
   };
 

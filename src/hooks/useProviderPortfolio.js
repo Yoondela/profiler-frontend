@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { getUserID } from '@/api/sync/SyncUser';
-import { fetchPortfolio } from '@/api/sync/SyncPortfolio';
+import { fetchPortfolioEdits } from '@/api/sync/SyncPortfolio';
+import { fetchGalleryImages } from '@/api/sync/SyncGallery';
 import { usePortfolioContext } from '@/api/context/portfolioContext';
 
 export default function useProviderPortfolio() {
@@ -18,10 +19,27 @@ export default function useProviderPortfolio() {
       setLoading(true);
       setError(null);
 
-      const userId = await getUserID(getAccessTokenSilently, user.email);
-      const data = await fetchPortfolio(userId);
+      const [userId, token] = await Promise.all([
+        getUserID(getAccessTokenSilently, user.email),
+        getAccessTokenSilently({
+          audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+        }),
+      ]);
+      const [ownedPortfolio, gallery] = await Promise.all([
+        fetchPortfolioEdits(userId, token),
+        fetchGalleryImages(userId),
+      ]);
+      const { company: _company, ...portfolio } = ownedPortfolio;
+      const data = {
+        portfolio: {
+          ...portfolio,
+          type: 'individual',
+          galleryPhotos: gallery.galleryPhotos,
+        },
+        company: null,
+      };
 
-      console.log('useProviderPortfolio: fetched portfolio', data);
+      console.log('useProviderPortfolio: fetched owner portfolio', data);
       setPortfolio(data);
       setPortfolioDataCtx(data);
     } catch (err) {
@@ -30,7 +48,7 @@ export default function useProviderPortfolio() {
     } finally {
       setLoading(false);
     }
-  }, [authLoading, user?.email, getAccessTokenSilently]);
+  }, [authLoading, user?.email, getAccessTokenSilently, setPortfolioDataCtx]);
 
   useEffect(() => {
     fetchData();

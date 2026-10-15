@@ -4,6 +4,7 @@ import UserAvatar from './common/UserAvatar';
 import { MenuItem } from './MenuItem';
 import { PiLink } from 'react-icons/pi';
 import useProviderPortfolio from '@/hooks/useProviderPortfolio';
+import { useCompanyConfigurationStore } from '@/components/company-configuration/companyConfigurationStore';
 
 import {
   User,
@@ -12,12 +13,17 @@ import {
   Settings2,
   ScanEye,
   KeyRound,
+  GalleryVertical,
 } from 'lucide-react';
 
 export default function MobileMenu({ isOpen, onClose, user, children }) {
   const [copied, setCopied] = useState(false);
+  const setActiveEditor = useCompanyConfigurationStore(
+    (state) => state.setActiveEditor
+  );
 
   const { portfolio } = useProviderPortfolio();
+  const isCompany = portfolio?.portfolio?.type === 'company';
   const providerId =
     portfolio?.portfolio?.id ||
     portfolio?.portfolio?._id ||
@@ -57,9 +63,28 @@ export default function MobileMenu({ isOpen, onClose, user, children }) {
 
   const companyItems = [
     {
-      label: 'Settings',
+      label: 'Configuration',
       icon: SettingsIcon,
       to: '/concern-config',
+      action: () => setActiveEditor('configuration'),
+    },
+    {
+      label: 'Company details',
+      icon: Settings2,
+      to: '/concern-config',
+      action: () => setActiveEditor('details'),
+      hidden: !isCompany,
+    },
+    {
+      label: 'Portfolio',
+      icon: User,
+      to: '/concern-config',
+      action: () => setActiveEditor('portfolio'),
+    },
+    {
+      label: 'Gallery',
+      icon: GalleryVertical,
+      to: '/user-gallery',
     },
     {
       label: 'Manage',

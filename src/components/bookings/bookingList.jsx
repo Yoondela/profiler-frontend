@@ -156,23 +156,23 @@ function ProviderPicker({ booking }) {
             <div className="mt-2 flex flex-wrap gap-5 text-sm text-gray-600">
               <div className="flex items-center gap-2">
                 <User className="h-4 w-4" />
-                {booking.client.name}
+                {booking?.client?.name}
               </div>
 
               <div className="flex items-center gap-2">
                 <CalendarDays className="h-4 w-4" />
-                {new Date(booking.forDate).toLocaleDateString()}
+                {new Date(booking?.forDate).toLocaleDateString()}
               </div>
 
               <div className="flex items-center gap-2">
                 <Clock3 className="h-4 w-4" />
-                {booking.forTime}
+                {booking?.forTime}
               </div>
 
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
-                {booking.forAddress.addressComponents.suburb ||
-                  booking.forAddress.addressComponents.city}
+                {booking?.forAddress?.addressComponents.suburb ||
+                  booking?.forAddress?.addressComponents.city}
               </div>
             </div>
           </div>
