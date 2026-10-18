@@ -36,7 +36,9 @@ function SortableImage({ image, onDelete, onSetPrimary }) {
 
       {/* Delete */}
       <button
+        type="button"
         onClick={() => onDelete(image)}
+        aria-label="Delete gallery image"
         className="absolute top-2 right-2 bg-black/70 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition"
       >
         <X size={16} />
@@ -44,13 +46,17 @@ function SortableImage({ image, onDelete, onSetPrimary }) {
 
       {/* Primary */}
       <button
+        type="button"
         onClick={() => onSetPrimary(image)}
-        className="absolute top-2 left-2 text-white p-1 opacity-0 group-hover:opacity-100 transition"
+        aria-label={image.isPrimary ? 'Primary gallery image' : 'Make primary'}
+        title={image.isPrimary ? 'Primary image' : 'Make primary'}
+        className="absolute top-2 left-2 flex items-center gap-1 rounded bg-black/70 px-2 py-1 text-xs text-white opacity-100 transition sm:opacity-0 sm:group-hover:opacity-100"
       >
         <Star
           size={16}
           className={image.isPrimary ? 'fill-yellow-300 text-yellow-300' : ''}
         />
+        <span>{image.isPrimary ? 'Primary' : 'Make primary'}</span>
       </button>
 
       {/* Always show primary label */}

@@ -22,6 +22,29 @@ export const fetchPortfolioEdits = async (providerId, token) => {
   return res.data;
 };
 
+export const fetchProviderPage = async (providerId, token) => {
+  if (!providerId) throw new Error('No provider ID provided');
+  if (!token) throw new Error('Authentication is required');
+
+  const res = await axios.get(
+    `${import.meta.env.VITE_API_URL}/portfolios/${providerId}/provider-page`,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+  return res.data;
+};
+
+export const updateProviderBranding = async (providerId, changes, token) => {
+  if (!providerId) throw new Error('No provider ID provided');
+  if (!token) throw new Error('Authentication is required');
+
+  const res = await axios.patch(
+    `${import.meta.env.VITE_API_URL}/portfolios/${providerId}/branding`,
+    changes,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+  return res.data;
+};
+
 /** Update user profile */
 export const updatePortfolio = async (
   userId,

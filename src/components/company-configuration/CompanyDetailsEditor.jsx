@@ -32,10 +32,7 @@ export default function CompanyDetailsEditor() {
   const [error, setError] = useState(null);
   const addressInputRef = useRef(null);
 
-  const companyId =
-    portfolioDataCtx?.portfolio?.type === 'company'
-      ? portfolioDataCtx.portfolio.id
-      : null;
+  const companyId = portfolioDataCtx?.company?._id || null;
 
   useEffect(() => {
     if (!companyId) return;

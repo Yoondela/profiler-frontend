@@ -9,6 +9,7 @@ import HideServiceSection from './HideServiceSection';
 import RequestModal from '../app-modals/RequestModal';
 import CompanyDetailsEditor from './CompanyDetailsEditor';
 import PortfolioDetailsEditor from './PortfolioDetailsEditor';
+import CompanyReviews from './CompanyReviews';
 import { useCompanyConfigurationStore } from './companyConfigurationStore';
 
 export default function CompanyConfigurations() {
@@ -78,6 +79,18 @@ export default function CompanyConfigurations() {
           >
             Portfolio
           </button>
+          <button
+            type="button"
+            disabled={!isCompany}
+            onClick={() => setActiveEditor('reviews')}
+            className={`w-full px-3 py-2 text-left text-sm transition-colors ${
+              activeEditor === 'reviews'
+                ? 'font-semibold text-gray-950'
+                : 'text-gray-500 hover:text-gray-950'
+            } disabled:cursor-not-allowed disabled:opacity-40`}
+          >
+            Reviews
+          </button>
           <Link
             to="/user-gallery"
             className="block w-full px-3 py-2 text-left text-sm text-gray-500 transition-colors hover:text-gray-950"
@@ -90,6 +103,8 @@ export default function CompanyConfigurations() {
       <div className="min-w-0 flex-1">
         {activeEditor === 'details' && isCompany ? (
           <CompanyDetailsEditor />
+        ) : activeEditor === 'reviews' && isCompany ? (
+          <CompanyReviews />
         ) : activeEditor === 'portfolio' ? (
           <PortfolioDetailsEditor />
         ) : (

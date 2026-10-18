@@ -1,14 +1,14 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import useProviderPortfolio from '@/hooks/useProviderPortfolio';
+import { usePortfolioContext } from '@/api/context/portfolioContext';
 import { User, LogOut, Building2, HelpCircle, KeyRound } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function UserAvatarMenu({ placement = 'desktop', onClose }) {
   const { user, logout } = useAuth0();
-  const { portfolio } = useProviderPortfolio();
+  const { portfolioDataCtx } = usePortfolioContext();
 
   const companyName =
-    portfolio?.company?.name || user?.name || 'Service Provider';
+    portfolioDataCtx?.company?.name || user?.name || 'Service Provider';
 
   return (
     <div className={`user-menu user-menu--${placement}`}>
@@ -23,7 +23,7 @@ export default function UserAvatarMenu({ placement = 'desktop', onClose }) {
           Account
         </Link>
 
-        {portfolio && (
+        {portfolioDataCtx?.company && (
           <Link
             to="/provider-page"
             onClick={onClose}

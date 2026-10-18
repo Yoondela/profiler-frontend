@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import AvatarColors from '@/data/avatar-colors.json';
 import { useAuth0 } from '@auth0/auth0-react';
-import useProviderPortfolio from '@/hooks/useProviderPortfolio';
+import { usePortfolioContext } from '@/api/context/portfolioContext';
 
 import {
   MoreVertical,
@@ -16,18 +16,14 @@ import { PiLink } from 'react-icons/pi';
 
 export default function CompanyMenu() {
   const { user } = useAuth0();
-  const { portfolio } = useProviderPortfolio();
+  const { companyId } = usePortfolioContext();
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : 'U';
   const avatarColor = AvatarColors[userInitial] || '#888';
-  const providerId =
-    portfolio?.portfolio?.id ||
-    portfolio?.portfolio?._id ||
-    portfolio?.id ||
-    portfolio?._id;
+  const providerId = companyId;
   const publicPageUrl = providerId
     ? `${window.location.origin}/providers/${providerId}/public`
     : `${window.location.origin}/`;

@@ -1,29 +1,23 @@
-import React, { useState, useEffect } from 'react';
 import PortfolioHeader from './PortfolioHeader';
-import { getUserID } from '@/api/sync/SyncUser';
-import { fetchPortfolio } from '@/api/sync/SyncPortfolio';
-import { useAuth0 } from '@auth0/auth0-react';
 import PortfolioDetailsContainer from '@/components/sub/view/portfolio';
 import useProviderPortfolio from '@/hooks/useProviderPortfolio';
 import { PageLoadingSpinner } from '@/components/loader/page-loader';
 
 const PortfolioLayout = () => {
-  const { portfolio, loading, error, refetch } = useProviderPortfolio();
-  const companyName =
-    portfolio?.company?.name || portfolio?.user?.name || 'Unknown Provider';
+  const { profile, loading, error } = useProviderPortfolio();
 
   if (loading) return <PageLoadingSpinner />;
   if (error)
     return <div className="p-4 text-red-500">Error loading portfolio.</div>;
-  if (!portfolio)
+  if (!profile)
     return <div className="p-4 text-muted-foreground">No portfolio found.</div>;
 
   return (
     <div className="provider-page pt-1">
-      <PortfolioHeader provider={portfolio} />
+      <PortfolioHeader profile={profile} />
 
       <main className="provider-page__content">
-        <PortfolioDetailsContainer provider={portfolio} />
+        <PortfolioDetailsContainer profile={profile} />
       </main>
     </div>
   );

@@ -1,5 +1,4 @@
 import React from 'react';
-import { usePortfolioContext } from '@/api/context/portfolioContext';
 
 const days = [
   'monday',
@@ -19,10 +18,7 @@ function formatRange(dayObj) {
   return `${start} – ${end}`;
 }
 
-export default function WorkingHoursDisplay({ className = '' }) {
-  const { getWorkingHours } = usePortfolioContext();
-  const workingHours = getWorkingHours();
-
+export default function WorkingHoursDisplay({ workingHours, className = '' }) {
   if (!workingHours) return null;
 
   const { timezone, weeklySchedule = {} } = workingHours;
