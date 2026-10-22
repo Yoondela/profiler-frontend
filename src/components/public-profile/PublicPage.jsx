@@ -34,6 +34,10 @@ export default function ProviderPublicPage() {
 
       setProviderData(data);
 
+      if (data.visibility?.state === 'hiddenByOwner') {
+        return;
+      }
+
       const providerAvailability = await fetchAvailability(api, id);
       console.log('availability', providerAvailability);
       setAvailability(providerAvailability.availability);
@@ -43,6 +47,21 @@ export default function ProviderPublicPage() {
 
   if (!providerData) {
     return <PageLoadingSpinner />;
+  }
+
+  if (providerData.visibility?.state === 'hiddenByOwner') {
+    return (
+      <main className="min-h-screen bg-slate-50 px-4 py-6">
+        <section className="mx-auto mt-20 max-w-lg rounded-lg border border-slate-200 bg-white p-6 text-center shadow-sm">
+          <h1 className="text-xl font-semibold text-slate-900">
+            This provider is currently hidden
+          </h1>
+          <p className="mt-2 text-slate-600">
+            The owner has temporarily hidden this provider from the public page.
+          </p>
+        </section>
+      </main>
+    );
   }
 
   return (
