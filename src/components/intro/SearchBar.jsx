@@ -210,7 +210,7 @@ export default function SearchBar() {
                         <div className="flex flex-col">
                           <span className="text-sm">{item.label}</span>
                           <span className="text-xs text-gray-400 capitalize">
-                            {item.type}
+                            {item.matchedDisplayName || item.type}
                           </span>
                         </div>
                       </li>

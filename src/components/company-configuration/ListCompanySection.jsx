@@ -13,13 +13,16 @@ export default function ListCompanySection() {
   const [loading, setLoading] = useState(false);
   const [listingSuccessful, setListingSuccessful] = useState(false);
 
-  const { hasCompany, setPortfolioDataCtx } = usePortfolioContext();
+  const { hasCompany, setPortfolioDataCtx, companyLoading, companyError } =
+    usePortfolioContext();
 
   const isCompany = hasCompany();
 
   console.log('isCompany:', isCompany);
 
   function handleToggle() {
+    if (companyLoading || companyError) return;
+
     if (!isCompany) {
       // user is trying to enable company mode
       setShowModal(true);
@@ -59,14 +62,17 @@ export default function ListCompanySection() {
 
       const company = data.company;
       if (company?._id) {
-        setPortfolioDataCtx({
+        setPortfolioDataCtx((previous) => ({
+          ...previous,
           company: { _id: company._id, name: company.name },
           portfolio: {
             type: 'company',
             id: company._id,
             workingHours: company.workingHours,
           },
-        });
+          visibility:
+            company.visibility || previous?.visibility || { hiddenUntil: null },
+        }));
       }
 
       setListingSuccessful(true);
@@ -116,7 +122,14 @@ export default function ListCompanySection() {
 
           {/* Toggle */}
           <button
+            type="button"
             onClick={handleToggle}
+            disabled={companyLoading || Boolean(companyError) || loading}
+            aria-label={
+              companyError
+                ? 'Company status unavailable'
+                : 'Toggle company profile'
+            }
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 ${
               isCompany || listingSuccessful ? 'bg-blue-200' : 'bg-gray-200'
             }`}
@@ -130,6 +143,12 @@ export default function ListCompanySection() {
             />
           </button>
         </div>
+
+        {companyError && (
+          <p className="mt-3 text-sm text-red-600" role="alert">
+            {companyError}
+          </p>
+        )}
 
         <div className="mt-4 rounded-lg bg-gray-50 p-3 text-sm text-gray-600">
           Current status:{' '}

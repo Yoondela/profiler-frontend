@@ -66,15 +66,31 @@ export const updatePortfolio = async (
   return res.data;
 };
 
-export const updateVisibility = async (userId, date, password) => {
-  console.log('ID', userId);
-  console.log('date', date);
-  console.log('pword', password);
+export const fetchVisibility = async (token) => {
+  if (!token) throw new Error('Authentication is required');
 
-  if (!userId) throw new Error('No user ID provided');
+  const res = await axios.get(
+    `${import.meta.env.VITE_API_URL}/portfolios/visibility`,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+  return res.data;
+};
+
+export const updateVisibility = async (visibilityAction, token) => {
+  if (!token) throw new Error('Authentication is required');
+  if (
+    !visibilityAction ||
+    Array.isArray(visibilityAction) ||
+    typeof visibilityAction !== 'object' ||
+    !visibilityAction.action
+  ) {
+    throw new Error('A visibility action is required');
+  }
+
   const res = await axios.patch(
-    `${import.meta.env.VITE_API_URL}/portfolios/visibility/${userId}`,
-    { hiddenUntil: date, password }
+    `${import.meta.env.VITE_API_URL}/portfolios/visibility`,
+    visibilityAction,
+    { headers: { Authorization: `Bearer ${token}` } }
   );
   return res.data;
 };
