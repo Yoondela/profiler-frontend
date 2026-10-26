@@ -4,11 +4,10 @@ import { useAuth0 } from '@auth0/auth0-react';
 import toast from 'react-hot-toast';
 
 import BecomeCompanyDialog from './BecomeCompanyDialog';
-import { getUserID } from '@/api/sync/SyncUser';
 import { usePortfolioContext } from '@/api/context/portfolioContext';
 
 export default function ListCompanySection() {
-  const { user, getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [listingSuccessful, setListingSuccessful] = useState(false);
@@ -39,12 +38,10 @@ export default function ListCompanySection() {
     try {
       setLoading(true);
 
-      const userId = await getUserID(getAccessTokenSilently, user.email);
-
       const token = await getAccessTokenSilently();
 
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/company/create/${userId}`,
+        `${import.meta.env.VITE_API_URL}/company/create`,
         {
           method: 'POST',
           headers: {
@@ -62,16 +59,20 @@ export default function ListCompanySection() {
 
       const company = data.company;
       if (company?._id) {
+        const publicUrl = data.publicUrl;
         setPortfolioDataCtx((previous) => ({
           ...previous,
-          company: { _id: company._id, name: company.name },
+          company: { _id: company._id, name: company.name, publicUrl },
           portfolio: {
             type: 'company',
             id: company._id,
+            publicUrl,
             workingHours: company.workingHours,
           },
-          visibility:
-            company.visibility || previous?.visibility || { hiddenUntil: null },
+          visibility: company.visibility ||
+            previous?.visibility || {
+              hiddenUntil: null,
+            },
         }));
       }
 

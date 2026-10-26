@@ -1,25 +1,15 @@
-import axios from 'axios';
-
-export const fetchPublicPage = async (api, providerId) => {
-  console.log('Fetching public page for provider ID:', providerId);
-  console.log('API client:', api);
-
+export const fetchPublicTargetPage = async (api, publicSlug) => {
   const res = await api.get(
-    `${import.meta.env.VITE_API_URL}/providers/${providerId}/public`
+    `${import.meta.env.VITE_API_URL}/public-targets/${encodeURIComponent(publicSlug)}`
   );
-  console.log('found', res.data);
 
   return res.data;
 };
 
-export const fetchAvailability = async (api, providerId) => {
-  console.log('Fetching public availability for provider ID:', providerId);
-  console.log('API client:', api);
-
+export const fetchPublicTargetAvailability = async (api, publicSlug) => {
   const res = await api.get(
-    `${import.meta.env.VITE_API_URL}/providers/${providerId}/availability`
+    `${import.meta.env.VITE_API_URL}/public-targets/${encodeURIComponent(publicSlug)}/availability`
   );
-  console.log('found', res.data);
 
   return res.data;
 };

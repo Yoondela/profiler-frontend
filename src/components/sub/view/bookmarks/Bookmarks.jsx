@@ -23,6 +23,7 @@ function normalizeBookmark(item) {
     provider?.images?.[0]?.url ||
     provider?.images?.[0];
   const about = provider?.about || provider?.bio || provider?.description || '';
+  const publicUrl = provider?.publicUrl || null;
 
   return {
     raw: item,
@@ -32,6 +33,7 @@ function normalizeBookmark(item) {
     providerName,
     primaryImage,
     about,
+    publicUrl,
   };
 }
 
@@ -75,10 +77,9 @@ export default function Bookmarks() {
     };
   }, [api]);
 
-  const handleOpenProvider = (ownerId) => {
-    console.log('Opening provider', ownerId);
-    if (!ownerId) return;
-    navigate(`/providers/${ownerId}/public`);
+  const handleOpenProvider = (publicUrl) => {
+    if (!publicUrl) return;
+    navigate(publicUrl);
   };
 
   const handleRemove = async (providerId) => {
@@ -116,7 +117,7 @@ export default function Bookmarks() {
               <div className="flex gap-4 p-4">
                 <button
                   type="button"
-                  onClick={() => handleOpenProvider(b.ownerId)}
+                  onClick={() => handleOpenProvider(b.publicUrl)}
                   className="flex flex-1 gap-4 text-left"
                 >
                   <div className="h-40 w-40 shrink-0 overflow-hidden rounded-md bg-muted">

@@ -22,14 +22,14 @@ export default function CompanyConfigurations() {
     (state) => state.setActiveEditor
   );
   const isCompany = hasCompany();
-  const businessPageId = portfolioDataCtx?.portfolio?.id;
+  const businessPageUrl = portfolioDataCtx?.portfolio?.publicUrl;
 
   const copyBusinessPageLink = async () => {
-    if (!businessPageId) return;
+    if (!businessPageUrl) return;
 
     try {
       await navigator.clipboard.writeText(
-        `${window.location.origin}/providers/${businessPageId}/public`
+        `${window.location.origin}${businessPageUrl}`
       );
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1500);
@@ -55,6 +55,18 @@ export default function CompanyConfigurations() {
             }`}
           >
             Configuration
+          </button>
+          <button
+            type="button"
+            disabled={!isCompany}
+            onClick={() => setActiveEditor('roles')}
+            className={`w-full px-3 py-2 text-left text-sm transition-colors ${
+              activeEditor === 'roles'
+                ? 'font-semibold text-gray-950'
+                : 'text-gray-500 hover:text-gray-950'
+            } disabled:cursor-not-allowed disabled:opacity-40`}
+          >
+            Roles
           </button>
           <button
             type="button"
@@ -103,6 +115,8 @@ export default function CompanyConfigurations() {
       <div className="min-w-0 flex-1">
         {activeEditor === 'details' && isCompany ? (
           <CompanyDetailsEditor />
+        ) : activeEditor === 'roles' && isCompany ? (
+          <MembersSection />
         ) : activeEditor === 'reviews' && isCompany ? (
           <CompanyReviews />
         ) : activeEditor === 'portfolio' ? (
@@ -111,13 +125,12 @@ export default function CompanyConfigurations() {
           <>
             <ListCompanySection />
             <HideServiceSection />
-            {isCompany && <MembersSection />}
             <WorkingHoursSection />
           </>
         )}
       </div>
 
-      {businessPageId && (
+      {businessPageUrl && (
         <aside className="hidden w-56 shrink-0 self-start md:block">
           <p className="px-3 text-sm font-medium text-gray-950">
             Business page

@@ -22,18 +22,16 @@ export default function MobileMenu({ isOpen, onClose, user, children }) {
     (state) => state.setActiveEditor
   );
 
-  const { portfolio } = useProviderPortfolio();
-  const isCompany = portfolio?.portfolio?.type === 'company';
-  const providerId =
-    portfolio?.portfolio?.id ||
-    portfolio?.portfolio?._id ||
-    portfolio?.id ||
-    portfolio?._id;
-  const publicPageUrl = providerId
-    ? `${window.location.origin}/providers/${providerId}/public`
+  const { profile } = useProviderPortfolio();
+  const isCompany = profile?.type === 'company';
+  const publicUrl = profile?.publicUrl;
+  const publicPageUrl = publicUrl
+    ? `${window.location.origin}${publicUrl}`
     : `${window.location.origin}/`;
 
   const handleCopyPublicLink = async () => {
+    if (!publicUrl) return;
+
     try {
       await navigator.clipboard.writeText(publicPageUrl);
       setCopied(true);
@@ -94,8 +92,8 @@ export default function MobileMenu({ isOpen, onClose, user, children }) {
     {
       label: 'Business Page',
       icon: ScanEye,
-      to: providerId ? `/providers/${providerId}/public` : '/',
-      hidden: !providerId,
+      to: publicUrl || '/',
+      hidden: !publicUrl,
     },
     {
       label: copied ? 'Copied!' : 'Copy public link',

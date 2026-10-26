@@ -5,8 +5,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { useSearchContext } from './context/context';
 import { searchProviders } from '@/api/lookup/searchApi';
-import { fetchPublicPage } from '@/api/lookup/publicPageApi';
-import { useApiClient } from '@/api/useApiClient';
 
 import SearchResultCard from './SearchResultsCard';
 import SearchResultSkeleton from './SearchResultSkeleton';
@@ -41,7 +39,6 @@ export default function AppSearchResults() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { city } = useCity() || {};
-  const api = useApiClient();
 
   console.log('CITY CONTEXT:', useCity());
 
@@ -67,16 +64,8 @@ export default function AppSearchResults() {
     );
   }
 
-  async function getPublicPage(providerId) {
-    try {
-      // todo: why is this being called twice on click? investigate and fix
-      const providerInfo = await fetchPublicPage(api, providerId);
-      if (providerInfo) {
-        navigate(`/providers/${providerId}/public`);
-      }
-    } catch (err) {
-      console.error('Public page error:', err);
-    }
+  function getPublicPage(publicUrl) {
+    if (publicUrl) navigate(publicUrl);
   }
 
   useEffect(() => {
@@ -167,7 +156,7 @@ export default function AppSearchResults() {
                     <Button
                       variant="secondary"
                       size="sm"
-                      onClick={() => getPublicPage(provider._id)}
+                      onClick={() => getPublicPage(provider.publicUrl)}
                     >
                       View
                     </Button>
