@@ -22,14 +22,14 @@ export default function CompanyConfigurations() {
     (state) => state.setActiveEditor
   );
   const isCompany = hasCompany();
-  const businessPageId = portfolioDataCtx?.portfolio?.id;
+  const businessPageUrl = portfolioDataCtx?.portfolio?.publicUrl;
 
   const copyBusinessPageLink = async () => {
-    if (!businessPageId) return;
+    if (!businessPageUrl) return;
 
     try {
       await navigator.clipboard.writeText(
-        `${window.location.origin}/providers/${businessPageId}/public`
+        `${window.location.origin}${businessPageUrl}`
       );
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1500);
@@ -130,7 +130,7 @@ export default function CompanyConfigurations() {
         )}
       </div>
 
-      {businessPageId && (
+      {businessPageUrl && (
         <aside className="hidden w-56 shrink-0 self-start md:block">
           <p className="px-3 text-sm font-medium text-gray-950">
             Business page

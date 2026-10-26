@@ -102,10 +102,15 @@ export const PortfolioProvider = ({ children }) => {
         setPortfolioDataCtx(
           company
             ? {
-                company: { _id: company._id, name: company.name },
+                company: {
+                  _id: company._id,
+                  name: company.name,
+                  publicUrl: companyResult.value.data.publicUrl,
+                },
                 portfolio: {
                   type: 'company',
                   id: company._id,
+                  publicUrl: companyResult.value.data.publicUrl,
                   workingHours: company.workingHours,
                 },
                 visibility,

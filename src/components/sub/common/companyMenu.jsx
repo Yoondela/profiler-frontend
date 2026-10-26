@@ -16,16 +16,16 @@ import { PiLink } from 'react-icons/pi';
 
 export default function CompanyMenu() {
   const { user } = useAuth0();
-  const { companyId } = usePortfolioContext();
+  const { portfolioDataCtx } = usePortfolioContext();
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : 'U';
   const avatarColor = AvatarColors[userInitial] || '#888';
-  const providerId = companyId;
-  const publicPageUrl = providerId
-    ? `${window.location.origin}/providers/${providerId}/public`
+  const publicUrl = portfolioDataCtx?.company?.publicUrl;
+  const publicPageUrl = publicUrl
+    ? `${window.location.origin}${publicUrl}`
     : `${window.location.origin}/`;
 
   const toggleMenu = () => {
@@ -33,6 +33,8 @@ export default function CompanyMenu() {
   };
 
   const handleCopyPublicLink = async () => {
+    if (!publicUrl) return;
+
     try {
       await navigator.clipboard.writeText(publicPageUrl);
       setCopied(true);
@@ -71,11 +73,8 @@ export default function CompanyMenu() {
               Manage
             </Link>
 
-            {providerId && (
-              <Link
-                to={`/providers/${providerId}/public`}
-                onClick={() => setMenuOpen(false)}
-              >
+            {publicUrl && (
+              <Link to={publicUrl} onClick={() => setMenuOpen(false)}>
                 <ScanEye size={16} className="mr-2" />
                 Business Page
               </Link>

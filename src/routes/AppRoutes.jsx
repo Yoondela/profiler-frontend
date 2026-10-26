@@ -10,7 +10,7 @@ import SidebarLayout from '../layouts/SidebarLayout';
 import ProviderDashboard from '@/components/sub/view/dashboard/ProviderDashboard';
 import PortfolioLayout from '@/components/sub/view/portfolio/ProviderLayout';
 import GalleryManager from '@/components/sub/view/gallery-manager/GalleryManager';
-import ProviderPublicPage from '@/components/public-profile/PublicPage';
+import PublicTargetPage from '@/components/public-profile/PublicTargetPage';
 import SearchPage from '@/components/intro/SearchPage';
 import Bookmarks from '@/components/sub/view/bookmarks/Bookmarks';
 import BookingsPage from '@/components/sub/view/bookings/Bookings';
@@ -29,7 +29,7 @@ function AppRoutes() {
         {/* Home */}
         <Route path="/" element={<HomePage />} />
         <Route path="/flack" element={<FlackApp />} />
-        <Route path="/providers/:id/public" element={<ProviderPublicPage />} />
+        <Route path="/pub/:publicSlug" element={<PublicTargetPage />} />
         <Route path="/search-app" element={<SearchPage />} />
         <Route path="/concern-config" element={<CompanyConfigurations />} />
         <Route path="/callback" element={<AuthCallback />} />
