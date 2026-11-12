@@ -3,7 +3,13 @@ import axios from 'axios';
 const API = import.meta.env.VITE_API_URL;
 
 // EDIT
-export const editStaffRole = async (companyId, staffId, role, password) => {
+export const editStaffRole = async (
+  companyId,
+  staffId,
+  role,
+  password,
+  token
+) => {
   if (!companyId || !staffId) throw new Error('Missing company or staff ID');
 
   const res = await axios.patch(
@@ -11,17 +17,19 @@ export const editStaffRole = async (companyId, staffId, role, password) => {
     {
       role,
       password,
-    }
+    },
+    { headers: { Authorization: `Bearer ${token}` } }
   );
   return res.data;
 };
 
 // DELETE
-export const removeStaff = async (companyId, staffId, password) => {
+export const removeStaff = async (companyId, staffId, password, token) => {
   if (!companyId || !staffId) throw new Error('Missing company or staff ID');
 
   const res = await axios.delete(`${API}/staff/${companyId}/staff/${staffId}`, {
     data: { password },
+    headers: { Authorization: `Bearer ${token}` },
   });
   return res.data;
 };

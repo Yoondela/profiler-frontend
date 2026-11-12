@@ -3,6 +3,7 @@ import axios from 'axios';
 import InviteAction from './InviteAction';
 import { Search, UserCheck, UserPlus, Lock } from 'lucide-react';
 import { usePortfolioContext } from '@/api/context/portfolioContext';
+import { useAuth0 } from '@auth0/auth0-react';
 
 export default function InviteProvidersSearch() {
   const [query, setQuery] = useState('');
@@ -10,6 +11,7 @@ export default function InviteProvidersSearch() {
   const [loading, setLoading] = useState(false);
 
   const { companyId } = usePortfolioContext();
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     if (query.length < 2) {
@@ -22,8 +24,10 @@ export default function InviteProvidersSearch() {
     const searchProviders = async () => {
       setLoading(true);
       try {
+        const token = await getAccessTokenSilently();
         const res = await axios.get(`/api/invites/${companyId}/search`, {
           params: { q: query },
+          headers: { Authorization: `Bearer ${token}` },
         });
 
         console.log('Search results:', res.data);
@@ -43,7 +47,7 @@ export default function InviteProvidersSearch() {
     return () => {
       cancelled = true;
     };
-  }, [query]);
+  }, [companyId, getAccessTokenSilently, query]);
 
   return (
     <div>

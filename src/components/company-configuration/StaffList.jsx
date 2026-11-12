@@ -3,20 +3,33 @@ import axios from 'axios';
 import { usePortfolioContext } from '@/api/context/portfolioContext';
 import EditStaffOptions from './EditStaffOptions';
 import { editStaffRole, removeStaff } from '@/api/sync/SyncStaff';
+import { useAuth0 } from '@auth0/auth0-react';
+import { toast } from 'sonner';
 
 export default function StaffList() {
   const [staff, setStaff] = useState([]);
   const [loading, setLoading] = useState(true);
   const { companyId } = usePortfolioContext();
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     if (!companyId) return;
 
     const fetchStaff = async () => {
       try {
-        const res = await axios.get(`/api/company/${companyId}/staff`);
-        setStaff(res.data);
-        console.log('Staff List', res.data);
+        const token = await getAccessTokenSilently();
+        const res = await axios.get(`/api/staff/${companyId}/staff`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setStaff(
+          res.data.map((staffMember) => ({
+            staffId: staffMember._id,
+            userId: staffMember.user._id,
+            name: staffMember.user.name,
+            avatarUrl: staffMember.user.profile?.avatarUrl || '',
+            role: staffMember.role,
+          }))
+        );
       } catch (err) {
         console.error('Failed to load staff', err);
       } finally {
@@ -25,29 +38,49 @@ export default function StaffList() {
     };
 
     fetchStaff();
-  }, [companyId]);
+  }, [companyId, getAccessTokenSilently]);
 
   const doRoleChange = async ({ user, role, password }) => {
-    if (!companyId || !user?._id) return;
+    if (!companyId || !user?.staffId) {
+      const error = new Error('Missing company or staff ID');
+      toast.error(error.message);
+      throw error;
+    }
     try {
-      await editStaffRole(companyId, user._id, role, password);
+      const token = await getAccessTokenSilently();
+      await editStaffRole(companyId, user.staffId, role, password, token);
       setStaff((prev) =>
         prev.map((member) =>
-          member._id === user._id ? { ...member, role } : member
+          member.staffId === user.staffId ? { ...member, role } : member
         )
       );
+      toast.success('Staff role updated.');
     } catch (error) {
-      console.log(error);
+      toast.error(
+        error.response?.data?.message || 'Unable to update staff role.'
+      );
+      throw error;
     }
   };
 
   const doRemoveStaff = async ({ user, password }) => {
-    if (!companyId || !user?._id) return;
+    if (!companyId || !user?.staffId) {
+      const error = new Error('Missing company or staff ID');
+      toast.error(error.message);
+      throw error;
+    }
     try {
-      await removeStaff(companyId, user._id, password);
-      setStaff((prev) => prev.filter((member) => member._id !== user._id));
+      const token = await getAccessTokenSilently();
+      await removeStaff(companyId, user.staffId, password, token);
+      setStaff((prev) =>
+        prev.filter((member) => member.staffId !== user.staffId)
+      );
+      toast.success('Staff member removed.');
     } catch (error) {
-      console.log(error);
+      toast.error(
+        error.response?.data?.message || 'Unable to remove staff member.'
+      );
+      throw error;
     }
   };
 
@@ -97,14 +130,18 @@ export default function StaffList() {
 
         {staff.map((person) => (
           <div
-            key={person.portfolioId}
+            key={person.staffId}
             className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 px-3 py-2"
           >
             <div className="flex items-center gap-3">
               <img
-                src={person.avatarUrl || '/avatar-placeholder.png'}
-                alt={person.name}
+                src={person.avatarUrl || '/avatar-placeholder.svg'}
+                alt={`${person.name} avatar`}
                 className="h-8 w-8 rounded-full object-cover"
+                onError={(event) => {
+                  event.currentTarget.onerror = null;
+                  event.currentTarget.src = '/avatar-placeholder.svg';
+                }}
               />
 
               <span className="text-sm font-medium text-gray-900">

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Search } from 'lucide-react';
 import StaffInviteAction from './StaffInviteAction';
 import { usePortfolioContext } from '@/api/context/portfolioContext';
+import { useAuth0 } from '@auth0/auth0-react';
 
 export default function InviteStaffSearch() {
   const [query, setQuery] = useState('');
@@ -10,6 +11,7 @@ export default function InviteStaffSearch() {
   const [loading, setLoading] = useState(false);
 
   const { companyId } = usePortfolioContext();
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     if (query.length < 2) {
@@ -22,8 +24,10 @@ export default function InviteStaffSearch() {
     const searchStaff = async () => {
       setLoading(true);
       try {
+        const token = await getAccessTokenSilently();
         const res = await axios.get(`/api/invites/${companyId}/staff/search`, {
           params: { q: query },
+          headers: { Authorization: `Bearer ${token}` },
         });
 
         if (!cancelled) setResults(res.data);
@@ -39,7 +43,7 @@ export default function InviteStaffSearch() {
     return () => {
       cancelled = true;
     };
-  }, [query, companyId]);
+  }, [companyId, getAccessTokenSilently, query]);
 
   return (
     <div>

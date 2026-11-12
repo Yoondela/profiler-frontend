@@ -11,9 +11,12 @@ import CompanyDetailsEditor from './CompanyDetailsEditor';
 import PortfolioDetailsEditor from './PortfolioDetailsEditor';
 import CompanyReviews from './CompanyReviews';
 import { useCompanyConfigurationStore } from './companyConfigurationStore';
+import BecomeProviderSwitch from '../sub/BecomeProviderSwitch';
+import { useUserContext } from '@/api/context/userContext.jsx';
 
 export default function CompanyConfigurations() {
   const { hasCompany, portfolioDataCtx } = usePortfolioContext();
+  const { appUser_ID, isProviderCtx, setIsProviderCtx } = useUserContext();
   const [copied, setCopied] = useState(false);
   const activeEditor = useCompanyConfigurationStore(
     (state) => state.activeEditor
@@ -123,6 +126,14 @@ export default function CompanyConfigurations() {
           <PortfolioDetailsEditor />
         ) : (
           <>
+            {!isProviderCtx && appUser_ID && (
+              <div className="mb-6">
+                <BecomeProviderSwitch
+                  userId={appUser_ID}
+                  onSuccess={() => setIsProviderCtx(true)}
+                />
+              </div>
+            )}
             <ListCompanySection />
             <HideServiceSection />
             <WorkingHoursSection />

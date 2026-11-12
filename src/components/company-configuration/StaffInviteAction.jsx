@@ -1,24 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Lock, UserCheck } from 'lucide-react';
 import { sendStaffInvite } from '@/api/sync/SyncInvite';
-import { getUserID } from '@/api/sync/SyncUser';
 import { useAuth0 } from '@auth0/auth0-react';
+import { toast } from 'sonner';
 
 export default function StaffInviteAction({ status, targetUserId, companyId }) {
-  const { getAccessTokenSilently, user } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
 
   const [loading, setLoading] = useState(false);
 
   const handleInvite = async () => {
     setLoading(true);
 
-    const appUser_ID = await getUserID(getAccessTokenSilently, user.email);
-
     try {
-      const result = await sendStaffInvite(companyId, appUser_ID, targetUserId);
+      const token = await getAccessTokenSilently();
+      const result = await sendStaffInvite(companyId, targetUserId, token);
       console.log('Invite sent successfully:', result);
+      toast.success('Invitation sent.');
     } catch (error) {
       console.error('Error sending invite:', error);
+      toast.error(
+        error.response?.data?.message || 'Failed to send invitation.'
+      );
     } finally {
       setLoading(false);
     }

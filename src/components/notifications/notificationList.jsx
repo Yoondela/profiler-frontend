@@ -1,9 +1,11 @@
 import { useNotifications } from '@/api/context/notificationContext';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';
 import { respondToInvite, respondToStaffInvite } from '@/api/sync/SyncInvite';
+import { useAuth0 } from '@auth0/auth0-react';
 
 export default function NotificationList() {
   const { notifications, loading, markAsRead } = useNotifications();
+  const { getAccessTokenSilently } = useAuth0();
 
   console.log('NotificationList: notifications', notifications);
 
@@ -11,13 +13,14 @@ export default function NotificationList() {
 
   async function handleAction(nType, nId, action) {
     try {
+      const token = await getAccessTokenSilently();
       switch (nType) {
         case 'CompanyInvite':
-          await respondToInvite(nId, action);
+          await respondToInvite(nId, action, token);
           markAsRead(nId);
           break;
         case 'CompanyStaffInvite':
-          await respondToStaffInvite(nId, action);
+          await respondToStaffInvite(nId, action, token);
           markAsRead(nId);
           break;
         default:
@@ -47,7 +50,9 @@ export default function NotificationList() {
                 <p className="mt-0 min-w-0 break-words text-sm text-muted-foreground">
                   {n.message}
                 </p>
-                <p className="shrink-0 text-xs text-right">{formatTimeAgo(n.createdAt)}</p>
+                <p className="shrink-0 text-xs text-right">
+                  {formatTimeAgo(n.createdAt)}
+                </p>
               </div>
               {n.actions && (
                 <div className="mt-2 flex flex-wrap items-center gap-2">
