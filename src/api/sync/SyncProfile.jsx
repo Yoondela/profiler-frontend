@@ -1,5 +1,4 @@
 // src/utils/profileSync.js
-import axios from 'axios';
 
 /** Compare two flat objects and return changed fields */
 export const diffShallow = (original, updated) => {
@@ -43,30 +42,19 @@ export const diffPreferences = (original, updated) => {
 };
 
 /** Fetch the user profile using email */
-export const fetchProfile = async (userEmail) => {
+export const fetchProfile = async (api, userEmail) => {
   if (!userEmail) return null;
-  const res = await axios.get(
-    `${import.meta.env.VITE_API_URL}/profiles/me/mail/${userEmail}`
+  const res = await api.get(
+    `/profiles/me/mail/${encodeURIComponent(userEmail)}`
   );
   return res.data.userAccount;
 };
 
 /** Update user profile */
-export const updateProfile = async (userEmail, changes) => {
+export const updateProfile = async (api, userEmail, changes) => {
   if (!userEmail) throw new Error('No user email provided');
-  const res = await axios.patch(
-    `${import.meta.env.VITE_API_URL}/profiles/update-by-mail/${userEmail}`,
-    changes
-  );
-  return res.data;
-};
-
-/** Update user profile */
-export const updateProfileById = async (userId, changes) => {
-  console.log('Updating profile for userId:', userId);
-  if (!userId) throw new Error('No user email provided');
-  const res = await axios.patch(
-    `${import.meta.env.VITE_API_URL}/profiles/${userId}`,
+  const res = await api.patch(
+    `/profiles/update-by-mail/${encodeURIComponent(userEmail)}`,
     changes
   );
   return res.data;

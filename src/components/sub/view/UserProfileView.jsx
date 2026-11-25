@@ -8,6 +8,7 @@ import ProfileHeader from '../ProfileHeader';
 import Spinner from '../LoadingSpinner';
 import { useUserContext } from '@/api/context/userContext';
 import { PageLoadingSpinner } from '@/components/loader/page-loader';
+import { useApiClient } from '@/api/useApiClient';
 import {
   diffShallow,
   diffPreferences,
@@ -17,6 +18,7 @@ import {
 
 export default function UserProfileView() {
   const { user, isAuthenticated, isLoading } = useAuth0();
+  const api = useApiClient();
   const {
     userAccountCtx,
     setUserAccountCtx,
@@ -72,7 +74,7 @@ export default function UserProfileView() {
 
     try {
       setLoading(true);
-      const account = await fetchProfile(user.email);
+      const account = await fetchProfile(api, user.email);
       setUserAccountCtx(account);
       setAvatarUrlCtx(account.profile?.avatarUrl || null);
       setIsProviderCtx(account.user.roles.includes('provider'));
@@ -145,7 +147,7 @@ export default function UserProfileView() {
 
     try {
       setSavingBasic(true);
-      await updateProfile(user.email, changed);
+      await updateProfile(api, user.email, changed);
       toast.success('Profile updated!');
       await loadUserProfile();
       setIsEditingBasic(false);
@@ -222,7 +224,7 @@ export default function UserProfileView() {
 
     try {
       setSavingPreferences(true);
-      await updateProfile(user.email, changed);
+      await updateProfile(api, user.email, changed);
       toast.success('Preferences updated!');
       await loadUserProfile();
       setIsEditingPreferences(false);

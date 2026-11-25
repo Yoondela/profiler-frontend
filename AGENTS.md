@@ -2,6 +2,17 @@
 
 Work only in this repository unless coordinated backend implementation is explicitly requested. If a backend contract must change, describe it rather than silently changing the backend. Make small, focused, reviewable changes: no unrelated restyling/cleanup, speculative features/optimizations, broad redesigns/refactors, new state or styling systems, dependencies, or opportunistic domain renames. Do not edit `src/components/ui/`.
 
+## Single-operation change discipline
+
+Unless the user explicitly approves a broader batch, implement exactly one
+operation at a time. An operation is one externally observable behavior or one
+endpoint action, such as requiring authentication for one private profile read.
+Do not include adjacent screens, endpoints, follow-on hardening, cleanup, or
+other release-plan items in the same change. Before editing, state the single
+operation being proposed and its bounded files and contract impact. Make only
+the frontend, required backend, and focused test changes necessary to complete
+that operation, then stop after verification and ask before starting another.
+
 ## Roadmap and reporting
 
 Use root `ROADMAP.md` to identify current work; keep milestones/stages/tasks hierarchical, mark the current stage and completed work, and do not implement future milestones. Replacing a roadmap means removing the previous version. Treat `docs/NEXT_VERSION_IDEAS.md` as future-only.
