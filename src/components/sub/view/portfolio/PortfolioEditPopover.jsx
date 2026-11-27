@@ -19,7 +19,6 @@ import { Pencil, CloudUpload } from 'lucide-react';
 import Spinner from '@/components/sub/LoadingSpinner';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useAuth0 } from '@auth0/auth0-react';
-import { getUserID } from '@/api/sync/SyncUser';
 import { toast } from 'sonner'; // or use your project's toast
 import { Autocomplete } from '@react-google-maps/api';
 
@@ -57,10 +56,9 @@ const PortfolioEditDialog = ({ provider, children }) => {
       try {
         setLoadingDetails(true);
         setLoadError(null);
-        const userId = await getUserID(getAccessTokenSilently, user?.email);
         const token = await getAccessTokenSilently();
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/portfolios/${userId}/edits`,
+          `${import.meta.env.VITE_API_URL}/portfolios/me/edits`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (!active) return;
@@ -121,11 +119,11 @@ const PortfolioEditDialog = ({ provider, children }) => {
   };
 
   // ---------------------- API Request ---------------------- //
-  const updatePortfolioRequest = async (userId, changes, token) => {
+  const updatePortfolioRequest = async (changes, token) => {
     console.log('uploading portfolio');
     const headers = token ? { Authorization: `Bearer ${token}` } : {};
     const res = await axios.patch(
-      `${import.meta.env.VITE_API_URL}/portfolios/${userId}`,
+      `${import.meta.env.VITE_API_URL}/portfolios/me`,
       changes,
       { headers }
     );
@@ -160,12 +158,9 @@ const PortfolioEditDialog = ({ provider, children }) => {
       if (!token) throw new Error('Authentication is required');
       console.log('before the update 4.............');
 
-      // Acquire a stable userId for your backend. getUserID should return the id your backend expects.
-      const userId = await getUserID(getAccessTokenSilently, user?.email);
-
       console.log('just before the update');
 
-      await updatePortfolioRequest(userId, payload, token);
+      await updatePortfolioRequest(payload, token);
 
       if (selectedAddress) {
         setSavedAddress(selectedAddress.formatted);

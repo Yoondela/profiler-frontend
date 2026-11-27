@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import { Switch } from '@headlessui/react';
 import BecomeProviderDialog from './view/BecomeProviderDialog';
 
-export default function BecomeProviderSwitch({ userId, onSuccess }) {
+export default function BecomeProviderSwitch({ onSuccess }) {
   const { getAccessTokenSilently } = useAuth0();
   const [loading, setLoading] = useState(false);
   const [isProvider, setIsProvider] = useState(false);
@@ -17,7 +17,7 @@ export default function BecomeProviderSwitch({ userId, onSuccess }) {
       const token = await getAccessTokenSilently();
 
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/users/${userId}/upgrade-to-provider`,
+        `${import.meta.env.VITE_API_URL}/users/me/upgrade-to-provider`,
         {
           method: 'PATCH',
           headers: {

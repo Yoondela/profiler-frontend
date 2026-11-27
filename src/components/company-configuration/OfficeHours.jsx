@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { Clock8, ClockArrowDown } from 'lucide-react';
 import RequireAdminPassword from './RequireAdminPassword';
 import { updateOfficeHours } from '@/api/sync/SyncPortfolio';
-import { useUserContext } from '@/api/context/userContext';
 import { usePortfolioContext } from '@/api/context/portfolioContext';
 import { toast } from 'sonner';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const days = [
   'monday',
@@ -32,7 +32,7 @@ export default function OfficeHoursSection() {
   const [applySettings, setApplySettings] = useState(false);
   const [showAdminPrompt, setShowAdminPrompt] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const { userCtx, appUser_ID } = useUserContext();
+  const { getAccessTokenSilently } = useAuth0();
   const { getWorkingHours } = usePortfolioContext();
 
   const getLoadedWorkingHours = () => getWorkingHours && getWorkingHours();
@@ -127,12 +127,8 @@ export default function OfficeHoursSection() {
       setIsSaving(true);
       console.log('Submit payload:', payload);
 
-      const userId = userCtx?.id || appUser_ID;
-      if (!userId) {
-        throw new Error('No user ID available from UserContext');
-      }
-
-      await updateOfficeHours(userId, payload);
+      const token = await getAccessTokenSilently();
+      await updateOfficeHours(payload, token);
 
       toast.success('Office hours updated');
       setApplySettings(true);

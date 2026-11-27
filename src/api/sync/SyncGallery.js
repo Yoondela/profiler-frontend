@@ -2,44 +2,26 @@ import axios from 'axios';
 
 const API = import.meta.env.VITE_API_URL;
 
-// CREATE
-export const sendGalleryUrlsToApp = async (userId, urls) => {
-  if (!userId) throw new Error('No user ID provided');
-
-  const res = await axios.post(`${API}/portfolios/${userId}/gallery`, { urls });
-  return res.data;
-};
-
 // READ
 export const fetchGalleryImages = async (userId) => {
   if (!userId) throw new Error('No user ID provided');
 
-  const res = await axios.get(`${API}/portfolios/${userId}/gallery`);
+  const res = await axios.get(`${API}/gallery/${userId}`);
   return res.data;
 };
 
 // DELETE
-export const deleteGalleryImage = async (userId, photoId, token) => {
-  if (!userId) throw new Error('No user ID provided');
-
-  const res = await axios.delete(
-    `${API}/portfolios/${userId}/gallery/${photoId}`,
-    { headers: { Authorization: `Bearer ${token}` } }
-  );
+export const deleteGalleryImage = async (photoId, token) => {
+  const res = await axios.delete(`${API}/gallery/me/${photoId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
   return res.data;
 };
 
 // REORDER
-export const reorderGalleryPhotos = async (
-  userId,
-  fromIndex,
-  toIndex,
-  token
-) => {
-  if (!userId) throw new Error('No user ID provided');
-
+export const reorderGalleryPhotos = async (fromIndex, toIndex, token) => {
   const res = await axios.patch(
-    `${API}/portfolios/${userId}/gallery/reorder`,
+    `${API}/gallery/me/reorder`,
     {
       from: fromIndex,
       to: toIndex,
@@ -51,11 +33,9 @@ export const reorderGalleryPhotos = async (
 };
 
 // SET PRIMARY
-export const setPrimaryGalleryImage = async (userId, photoId, token) => {
-  if (!userId) throw new Error('No user ID provided');
-
+export const setPrimaryGalleryImage = async (photoId, token) => {
   const res = await axios.patch(
-    `${API}/portfolios/${userId}/${photoId}/primary`,
+    `${API}/gallery/me/${photoId}/primary`,
     {},
     { headers: { Authorization: `Bearer ${token}` } }
   );

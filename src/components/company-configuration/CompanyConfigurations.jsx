@@ -129,7 +129,6 @@ export default function CompanyConfigurations() {
             {!isProviderCtx && appUser_ID && (
               <div className="mb-6">
                 <BecomeProviderSwitch
-                  userId={appUser_ID}
                   onSuccess={() => setIsProviderCtx(true)}
                 />
               </div>

@@ -15,12 +15,14 @@ export default function PortfolioHeader({ profile }) {
   const providerName = profile?.displayName || 'Unknown Provider';
 
   const updateDisplayedListingBranding = async (changes) => {
-    if (!appUser_ID) throw new Error('No provider ID provided');
+    if (!appUser_ID) {
+      throw new Error('Unable to identify the authenticated user');
+    }
     const token = await getAccessTokenSilently({
       audience: import.meta.env.VITE_AUTH0_AUDIENCE,
     });
     if (!token) throw new Error('Authentication is required');
-    return updateProviderBranding(appUser_ID, changes, token);
+    return updateProviderBranding(changes, token);
   };
 
   const onLogoUploadSuccess = async (newImgUrl) => {

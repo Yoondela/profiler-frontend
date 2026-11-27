@@ -54,7 +54,7 @@ export function BookingsProvider({ children }) {
         const token = await getAccessTokenSilently({
           audience: import.meta.env.VITE_AUTH0_AUDIENCE,
         });
-        const portfolio = await fetchPortfolioEdits(appUser_ID, token);
+        const portfolio = await fetchPortfolioEdits(token);
         const companyId =
           typeof portfolio.company === 'object'
             ? portfolio.company?._id

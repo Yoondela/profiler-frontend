@@ -11,34 +11,31 @@ export const fetchPortfolio = async (providerId) => {
   return res.data;
 };
 
-export const fetchPortfolioEdits = async (providerId, token) => {
-  if (!providerId) throw new Error('No provider ID provided');
+export const fetchPortfolioEdits = async (token) => {
   if (!token) throw new Error('Authentication is required');
 
   const res = await axios.get(
-    `${import.meta.env.VITE_API_URL}/portfolios/${providerId}/edits`,
+    `${import.meta.env.VITE_API_URL}/portfolios/me/edits`,
     { headers: { Authorization: `Bearer ${token}` } }
   );
   return res.data;
 };
 
-export const fetchProviderPage = async (providerId, token) => {
-  if (!providerId) throw new Error('No provider ID provided');
+export const fetchProviderPage = async (token) => {
   if (!token) throw new Error('Authentication is required');
 
   const res = await axios.get(
-    `${import.meta.env.VITE_API_URL}/portfolios/${providerId}/provider-page`,
+    `${import.meta.env.VITE_API_URL}/portfolios/me/provider-page`,
     { headers: { Authorization: `Bearer ${token}` } }
   );
   return res.data;
 };
 
-export const updateProviderBranding = async (providerId, changes, token) => {
-  if (!providerId) throw new Error('No provider ID provided');
+export const updateProviderBranding = async (changes, token) => {
   if (!token) throw new Error('Authentication is required');
 
   const res = await axios.patch(
-    `${import.meta.env.VITE_API_URL}/portfolios/${providerId}/branding`,
+    `${import.meta.env.VITE_API_URL}/portfolios/me/branding`,
     changes,
     { headers: { Authorization: `Bearer ${token}` } }
   );
@@ -46,20 +43,14 @@ export const updateProviderBranding = async (providerId, changes, token) => {
 };
 
 /** Update user profile */
-export const updatePortfolio = async (
-  userId,
-  changes,
-  getAccessTokenSilently
-) => {
-  console.log('ID', userId);
-  if (!userId) throw new Error('No user ID provided');
+export const updatePortfolio = async (changes, getAccessTokenSilently) => {
   if (!getAccessTokenSilently) throw new Error('Authentication is required');
 
   const token = await getAccessTokenSilently();
   if (!token) throw new Error('Authentication is required');
 
   const res = await axios.patch(
-    `${import.meta.env.VITE_API_URL}/portfolios/${userId}`,
+    `${import.meta.env.VITE_API_URL}/portfolios/me`,
     changes,
     { headers: { Authorization: `Bearer ${token}` } }
   );
@@ -95,13 +86,12 @@ export const updateVisibility = async (visibilityAction, token) => {
   return res.data;
 };
 
-export const updateOfficeHours = async (userId, payload) => {
-  console.log('ID', userId);
-
-  if (!userId) throw new Error('No user ID provided');
+export const updateOfficeHours = async (payload, token) => {
+  if (!token) throw new Error('Authentication is required');
   const res = await axios.patch(
-    `${import.meta.env.VITE_API_URL}/portfolios/office/${userId}/working-hours`,
-    { payload }
+    `${import.meta.env.VITE_API_URL}/portfolios/me/office/working-hours`,
+    { payload },
+    { headers: { Authorization: `Bearer ${token}` } }
   );
   return res.data;
 };

@@ -5,7 +5,6 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { getUserID } from '@/api/sync/SyncUser';
 
 const emptyDetails = {
   about: '',
@@ -28,10 +27,9 @@ export default function PortfolioDetailsEditor() {
       try {
         setStatus('loading');
         setError(null);
-        const userId = await getUserID(getAccessTokenSilently, user.email);
         const token = await getAccessTokenSilently();
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/portfolios/${userId}/edits`,
+          `${import.meta.env.VITE_API_URL}/portfolios/me/edits`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (!active) return;
@@ -83,10 +81,9 @@ export default function PortfolioDetailsEditor() {
 
     try {
       setStatus('saving');
-      const userId = await getUserID(getAccessTokenSilently, user.email);
       const token = await getAccessTokenSilently();
       await axios.patch(
-        `${import.meta.env.VITE_API_URL}/portfolios/${userId}`,
+        `${import.meta.env.VITE_API_URL}/portfolios/me`,
         {
           about: details.about,
           otherSkills: details.otherSkills

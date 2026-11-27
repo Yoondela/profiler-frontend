@@ -71,7 +71,7 @@ const GalleryManager = () => {
 
     try {
       const token = await getAccessTokenSilently();
-      const res = await deleteGalleryImage(userId, image._id, token);
+      const res = await deleteGalleryImage(image._id, token);
 
       if (res?.galleryPhotos) {
         setGalleryImages(res.galleryPhotos);
@@ -87,7 +87,7 @@ const GalleryManager = () => {
 
     try {
       const token = await getAccessTokenSilently();
-      const res = await setPrimaryGalleryImage(userId, image._id, token);
+      const res = await setPrimaryGalleryImage(image._id, token);
 
       if (res?.galleryPhotos) {
         setGalleryImages(res.galleryPhotos);
@@ -100,7 +100,7 @@ const GalleryManager = () => {
   const handleReorder = async (fromIndex, toIndex, previousImages) => {
     try {
       const token = await getAccessTokenSilently();
-      const res = await reorderGalleryPhotos(userId, fromIndex, toIndex, token);
+      const res = await reorderGalleryPhotos(fromIndex, toIndex, token);
 
       if (res?.galleryPhotos) {
         setGalleryImages(res.galleryPhotos);

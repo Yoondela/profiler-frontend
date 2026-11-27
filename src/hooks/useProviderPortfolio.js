@@ -31,7 +31,7 @@ export default function useProviderPortfolio() {
       const token = await getAccessTokenSilently({
         audience: import.meta.env.VITE_AUTH0_AUDIENCE,
       });
-      const data = await fetchProviderPage(appUser_ID, token);
+      const data = await fetchProviderPage(token);
 
       setProfile(data.profile);
     } catch (err) {

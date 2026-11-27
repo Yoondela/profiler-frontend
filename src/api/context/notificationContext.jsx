@@ -31,7 +31,7 @@ export function NotificationProvider({ children }) {
         const token = await getAccessTokenSilently();
 
         const res = await axios.get(
-          `${import.meta.env.VITE_API_URL}/notifications/${userCtx._id}`,
+          `${import.meta.env.VITE_API_URL}/notifications/me`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
